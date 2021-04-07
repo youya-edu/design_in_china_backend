@@ -1,0 +1,6 @@
+spring:
+  mvc:
+    converters:
+      preferred-json-mapper: gson
+  gson:
+    serialize-nulls: true

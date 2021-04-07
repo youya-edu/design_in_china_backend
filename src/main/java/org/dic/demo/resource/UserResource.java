@@ -1,40 +1,57 @@
 package org.dic.demo.resource;
 
 import org.dic.demo.model.User;
+import org.dic.demo.service.UserService;
+import org.dic.demo.util.HttpUtils;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
-import java.util.Arrays;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
 @RestController
-@RequestMapping(value = "/users", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(
+        value = "/users",
+        produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE },
+        consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }
+)
 public class UserResource {
 
+    private final UserService userService;
+
+    public UserResource(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping("/{userId}")
-    public User getUser(@PathParam("userId") long userId) {
-        return new User();
+    public ResponseEntity<User> getUser(@PathVariable("userId") long userId) {
+        return ResponseEntity.ok(userService.getUserById(userId));
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return Arrays.asList(new User());
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @PostMapping
-    public User createUser(User user) {
-        return new User();
+    public ResponseEntity<User> createUser(@RequestBody User payload, HttpServletRequest req) {
+        System.out.println(payload);
+        User newUser = userService.createUser(payload);
+        return ResponseEntity
+                .created(HttpUtils.uriWithPath(req, String.valueOf(newUser.getId())))
+                .body(newUser);
     }
 
-    @PutMapping("/{userId}")
-    public User updateUser(@PathParam("userId") long userId) {
-        return new User();
+    @PutMapping
+    public ResponseEntity<User> updateUser(@RequestBody User payload) {
+        return ResponseEntity.ok(userService.updateUser(payload));
     }
 
     @DeleteMapping("/{userId}")
-    public User deleteUser(@PathParam("userId") long userId) {
-        return new User();
+    public ResponseEntity<Void> deleteUser(@PathVariable("userId") long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
     }
 }
