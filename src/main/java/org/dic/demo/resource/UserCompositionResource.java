@@ -30,7 +30,7 @@ public class UserCompositionResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<Composition>> getCompositions() {
+    public ResponseEntity<List<Composition>> getAllCompositions() {
         return ResponseEntity.ok(compositionService.getAllCompositions());
     }
 

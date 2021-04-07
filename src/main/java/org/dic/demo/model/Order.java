@@ -13,7 +13,7 @@ public class Order {
     private Date orderDate;
     private Date requireDate;
     private Date shippedDate;
-    private String comment;
+    private String memo;
     private OrderStatus status;
 
     public enum OrderStatus {
