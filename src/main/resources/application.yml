@@ -4,3 +4,6 @@ spring:
       preferred-json-mapper: gson
   gson:
     serialize-nulls: true
+server:
+  error:
+    include-message: always

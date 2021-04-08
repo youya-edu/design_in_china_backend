@@ -1,5 +1,6 @@
 package org.dic.demo.repository.servicestub;
 
+import org.dic.demo.exception.UserNotFoundException;
 import org.dic.demo.model.User;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ public class UserServiceStub {
     private static final Map<Long, User> users = new ConcurrentHashMap<>();
 
     public User getUserById(long userId) {
+        checkUserExistence(userId);
         return users.get(userId);
     }
 
@@ -34,15 +36,20 @@ public class UserServiceStub {
     }
 
     public User updateUser(User user) {
-        if (!users.containsKey(user.getId())) {
-            throw new RuntimeException("No such user.");
-        }
+        checkUserExistence(user.getId());
         users.put(user.getId(), user);
         return user;
     }
 
     public void deleteUser(long userId) {
+        checkUserExistence(userId);
         users.remove(userId);
+    }
+
+    private void checkUserExistence(long userId) {
+        if (!users.containsKey(userId)) {
+            throw new UserNotFoundException("No such user: " + userId);
+        }
     }
 
     private String randomUsername() {

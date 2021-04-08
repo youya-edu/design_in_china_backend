@@ -1,12 +1,12 @@
 package org.dic.demo.repository.servicestub;
 
+import org.dic.demo.exception.OrderNotFoundException;
 import org.dic.demo.model.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -30,6 +30,7 @@ public class OrderServiceStub {
     }
 
     public Order getOrderById(long orderId) {
+        checkOrderExistence(orderId);
         return orders.get(orderId);
     }
 
@@ -45,11 +46,19 @@ public class OrderServiceStub {
     }
 
     public Order updateOrder(Order order) {
+        checkOrderExistence(order.getId());
         orders.put(order.getId(), order);
         return order;
     }
 
     public void deleteOrder(long orderId) {
+        checkOrderExistence(orderId);
         orders.remove(orderId);
+    }
+
+    private void checkOrderExistence(long orderId) {
+        if (!orders.containsKey(orderId)) {
+            throw new OrderNotFoundException("No such order: " + orderId);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package org.dic.demo.repository.servicestub;
 
+import org.dic.demo.exception.CompositionNotFoundException;
 import org.dic.demo.model.Composition;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ public class CompositionServiceStub {
     private static final Map<Long, Composition> compositions = new ConcurrentHashMap<>();
 
     public Composition getCompositionById(long compositionId) {
+        checkCompositionExistence(compositionId);
         return compositions.get(compositionId);
     }
 
@@ -34,12 +36,20 @@ public class CompositionServiceStub {
     }
 
     public Composition updateComposition(Composition composition) {
+        checkCompositionExistence(composition.getId());
         compositions.put(composition.getId(), composition);
         return composition;
     }
 
     public void deleteComposition(long compositionId) {
+        checkCompositionExistence(compositionId);
         compositions.remove(compositionId);
+    }
+
+    private void checkCompositionExistence(long compositionId) {
+        if (!compositions.containsKey(compositionId)) {
+            throw new CompositionNotFoundException("No such composition: " + compositionId);
+        }
     }
 
     private String randomCompositionName() {
