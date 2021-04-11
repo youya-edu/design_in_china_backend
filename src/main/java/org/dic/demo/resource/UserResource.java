@@ -1,9 +1,9 @@
 package org.dic.demo.resource;
 
 import org.dic.demo.model.User;
+import org.dic.demo.model.UserCollection;
 import org.dic.demo.service.UserService;
-import org.dic.demo.util.HttpUtils;
-import org.springframework.http.MediaType;
+import org.dic.demo.util.http.HttpUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +12,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping(
-        value = "/users",
-        produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE },
-        consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }
-)
+@RequestMapping(value = "/users")
 public class UserResource {
 
     private final UserService userService;
@@ -31,13 +27,16 @@ public class UserResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    public ResponseEntity<UserCollection> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        UserCollection userCollection = new UserCollection();
+        userCollection.setUsers(users);
+        userCollection.setSize(users.size());
+        return ResponseEntity.ok(userCollection);
     }
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User payload, HttpServletRequest req) {
-        System.out.println(payload);
         User newUser = userService.createUser(payload);
         return ResponseEntity
                 .created(HttpUtils.uriWithPath(req, String.valueOf(newUser.getId())))

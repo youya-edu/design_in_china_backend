@@ -2,7 +2,7 @@ package org.dic.demo.resource;
 
 import org.dic.demo.model.Order;
 import org.dic.demo.service.OrderService;
-import org.dic.demo.util.HttpUtils;
+import org.dic.demo.util.http.HttpUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

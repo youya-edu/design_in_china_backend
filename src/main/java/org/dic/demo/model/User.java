@@ -15,9 +15,11 @@ public class User {
     private long id;
     private String username;
     private String email;
+    private transient String password;
+    private String avatar;
     private String phone;
     private String description;
-    private Date createdAt;
+    private transient Date createdAt;
     private List<Long> compositions = new ArrayList<>();
     private List<Long> orders = new ArrayList<>();
     private List<Long> followed = new ArrayList<>();

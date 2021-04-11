@@ -9,29 +9,31 @@ import java.util.List;
 @Repository
 public class UserRepository {
 
-    private final UserServiceStub userServiceStub;
-
-    public UserRepository(UserServiceStub userServiceStub) {
-        this.userServiceStub = userServiceStub;
+    public User getUserById(long userId) {
+        return UserServiceStub.getUserById(userId);
     }
 
-    public User getUserById(long userId) {
-        return userServiceStub.getUserById(userId);
+    public User getUserByUsername(String username) {
+        return UserServiceStub.getUserByUsername(username);
+    }
+
+    public User getUserByEmail(String email) {
+        return UserServiceStub.getUserByEmail(email);
     }
 
     public List<User> getAllUsers() {
-        return userServiceStub.getAllUsers();
+        return UserServiceStub.getAllUsers();
     }
 
     public User createUser(User user) {
-        return userServiceStub.createUser(user);
+        return UserServiceStub.createUser(user);
     }
 
     public User updateUser(User user) {
-        return userServiceStub.updateUser(user);
+        return UserServiceStub.updateUser(user);
     }
 
     public void deleteUser(long userId) {
-        userServiceStub.deleteUser(userId);
+        UserServiceStub.deleteUser(userId);
     }
 }

@@ -1,4 +1,4 @@
-package org.dic.demo.util;
+package org.dic.demo.util.http;
 
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.util.UriComponentsBuilder;

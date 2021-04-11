@@ -9,29 +9,23 @@ import java.util.List;
 @Repository
 public class OrderRepository {
 
-    private final OrderServiceStub orderServiceStub;
-
-    public OrderRepository(OrderServiceStub orderServiceStub) {
-        this.orderServiceStub = orderServiceStub;
-    }
-
     public Order getOrderById(long orderId) {
-        return orderServiceStub.getOrderById(orderId);
+        return OrderServiceStub.getOrderById(orderId);
     }
 
     public List<Order> getAllOrders() {
-        return orderServiceStub.getAllOrders();
+        return OrderServiceStub.getAllOrders();
     }
 
     public Order createOrder(Order order) {
-        return orderServiceStub.createOrder(order);
+        return OrderServiceStub.createOrder(order);
     }
 
     public Order updateOrder(Order order) {
-        return orderServiceStub.updateOrder(order);
+        return OrderServiceStub.updateOrder(order);
     }
 
     public void deleteOrder(long orderId) {
-        orderServiceStub.deleteOrder(orderId);
+        OrderServiceStub.deleteOrder(orderId);
     }
 }

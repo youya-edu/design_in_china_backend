@@ -2,63 +2,91 @@ package org.dic.demo.repository.servicestub;
 
 import org.dic.demo.exception.UserNotFoundException;
 import org.dic.demo.model.User;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Component
 public class UserServiceStub {
 
     private static final AtomicLong idCounter = new AtomicLong(-1);
-    private static final Map<Long, User> users = new ConcurrentHashMap<>();
+    private static final Map<Long, User> id2Users = new ConcurrentHashMap<>();
+    private static final Map<String, User> username2Users = new ConcurrentHashMap<>();
+    private static final Map<String, User> email2Users = new ConcurrentHashMap<>();
 
-    public User getUserById(long userId) {
-        checkUserExistence(userId);
-        return users.get(userId);
+    static {
+        User luffy = new User();
+        luffy.setUsername("Luffy");
+        luffy.setEmail("luffy@dic.com");
+        luffy.setPassword("123");
+        luffy.setAvatar("https://c-ssl.duitang.com/uploads/item/201502/12/20150212120024_URACr.jpeg");
+        luffy.setDescription("我要成为海贼王！");
+        createUser(luffy);
+
+        User zoro = new User();
+        zoro.setUsername("Zoro");
+        zoro.setEmail("zoro@dic.com");
+        zoro.setPassword("123");
+        zoro.setAvatar("https://c-ssl.duitang.com/uploads/item/201502/12/20150212120107_UjFVY.jpeg");
+        zoro.setDescription("我要成为世界第一大剑豪！");
+        createUser(zoro);
     }
 
-    public List<User> getAllUsers() {
-        return new ArrayList<>(users.values());
+    public static User getUserById(long userId) {
+        checkIdExistence(userId);
+        return id2Users.get(userId);
     }
 
-    public User createUser(User user) {
+    public static User getUserByUsername(String username) {
+        checkUsernameExistence(username);
+        return username2Users.get(username);
+    }
+
+    public static User getUserByEmail(String email) {
+        checkEmailExistence(email);
+        return email2Users.get(email);
+    }
+
+    public static List<User> getAllUsers() {
+        return new ArrayList<>(id2Users.values());
+    }
+
+    public static User createUser(User user) {
         user.setId(idCounter.incrementAndGet());
-        if (user.getUsername() == null) {
-            user.setUsername(randomUsername());
-        }
-        users.put(user.getId(), user);
+        id2Users.put(user.getId(), user);
+        username2Users.put(user.getUsername(), user);
+        email2Users.put(user.getEmail(), user);
         return user;
     }
 
-    public User updateUser(User user) {
-        checkUserExistence(user.getId());
-        users.put(user.getId(), user);
+    public static User updateUser(User user) {
+        checkIdExistence(user.getId());
+        id2Users.put(user.getId(), user);
         return user;
     }
 
-    public void deleteUser(long userId) {
-        checkUserExistence(userId);
-        users.remove(userId);
+    public static void deleteUser(long userId) {
+        checkIdExistence(userId);
+        id2Users.remove(userId);
     }
 
-    private void checkUserExistence(long userId) {
-        if (!users.containsKey(userId)) {
-            throw new UserNotFoundException("No such user: " + userId);
+    private static void checkIdExistence(long userId) {
+        if (!id2Users.containsKey(userId)) {
+            throw new UserNotFoundException("No such user id: " + userId);
         }
     }
 
-    private String randomUsername() {
-        String dictionary = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        Random random = new Random();
-        StringBuilder dummyName = new StringBuilder();
-        for (int i = 0; i < 6; i++) {
-            dummyName.append(dictionary.charAt(random.nextInt(dictionary.length())));
+    private static void checkUsernameExistence(String username) {
+        if (!username2Users.containsKey(username)) {
+            throw new UserNotFoundException("No such username: " + username);
         }
-        return dummyName.toString();
+    }
+
+    private static void checkEmailExistence(String email) {
+        if (!email2Users.containsKey(email)) {
+            throw new UserNotFoundException("No such email: " + email);
+        }
     }
 }
