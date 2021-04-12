@@ -21,7 +21,7 @@ public class UserServiceStub {
         luffy.setUsername("Luffy");
         luffy.setEmail("luffy@dic.com");
         luffy.setPassword("123");
-        luffy.setAvatar("https://c-ssl.duitang.com/uploads/item/201502/12/20150212120024_URACr.jpeg");
+        luffy.setAvatar("luffy.jpeg");
         luffy.setDescription("我要成为海贼王！");
         createUser(luffy);
 
@@ -29,7 +29,7 @@ public class UserServiceStub {
         zoro.setUsername("Zoro");
         zoro.setEmail("zoro@dic.com");
         zoro.setPassword("123");
-        zoro.setAvatar("https://c-ssl.duitang.com/uploads/item/201502/12/20150212120107_UjFVY.jpeg");
+        zoro.setAvatar("zoro.jpeg");
         zoro.setDescription("我要成为世界第一大剑豪！");
         createUser(zoro);
     }
