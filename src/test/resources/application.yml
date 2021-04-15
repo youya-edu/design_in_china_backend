@@ -5,9 +5,10 @@ spring:
   gson:
     serialize-nulls: true
   profiles:
-    active: dev
+    active: test
   datasource:
-    url: jdbc:mysql://localhost:3306/dic
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
     username: dic
     password: dic
   flyway:
