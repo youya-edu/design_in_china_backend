@@ -15,5 +15,10 @@ spring:
 server:
   error:
     include-message: always
+  servlet:
+    session:
+      timeout: 30m
+      cookie:
+        max-age: 30m
 mybatis:
   config-location: classpath:/mybatis/mybatis-config.xml

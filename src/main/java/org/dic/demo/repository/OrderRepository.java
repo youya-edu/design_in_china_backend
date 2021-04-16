@@ -1,7 +1,7 @@
 package org.dic.demo.repository;
 
 import org.dic.demo.model.Order;
-import org.dic.demo.repository.servicestub.OrderServiceStub;
+import org.dic.demo.servicestub.OrderServiceStub;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

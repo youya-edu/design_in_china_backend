@@ -2,8 +2,8 @@ package org.dic.demo.repository;
 
 import org.dic.demo.model.Composition;
 import org.dic.demo.model.User;
-import org.dic.demo.repository.servicestub.CompositionServiceStub;
-import org.dic.demo.repository.servicestub.UserServiceStub;
+import org.dic.demo.servicestub.CompositionServiceStub;
+import org.dic.demo.servicestub.UserServiceStub;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

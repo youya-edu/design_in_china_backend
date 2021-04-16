@@ -1,4 +1,4 @@
-package org.dic.demo.repository.servicestub;
+package org.dic.demo.servicestub;
 
 import org.dic.demo.exception.OrderNotFoundException;
 import org.dic.demo.model.Order;
