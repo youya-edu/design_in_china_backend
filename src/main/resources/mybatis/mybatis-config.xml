@@ -4,6 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <typeAlias type="org.dic.demo.model.User" alias="User" />
+        <typeAlias type="org.dic.demo.user.model.User" alias="User" />
     </typeAliases>
 </configuration>
