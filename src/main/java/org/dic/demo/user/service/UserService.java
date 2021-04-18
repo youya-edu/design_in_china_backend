@@ -6,13 +6,17 @@ import org.dic.demo.user.exception.UserNotAuthenticatedException;
 import org.dic.demo.user.exception.UserNotFoundException;
 import org.dic.demo.user.model.User;
 import org.dic.demo.user.repository.UserRepository;
-import org.dic.demo.user.model.LoginInfo;
+import org.dic.demo.security.LoginInfo;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -37,19 +41,15 @@ public class UserService {
         if (!loginInfo.isValid()) {
             throw new LoginInfoNotEnoughException();
         }
-        try {
-            if (loginInfo.isUsernameValid()) {
-                user =  getUserByUsername(loginInfo.getUsername());
-            }
-            if (loginInfo.isEmailValid()) {
-                user =  getUserByEmail(loginInfo.getEmail());
-            }
-        } catch (UserNotFoundException e) {
-            throw new UserNotAuthenticatedException();
+        if (loginInfo.isUsernameValid()) {
+            user =  getUserByUsername(loginInfo.getUsername());
         }
-
+        if (loginInfo.isEmailValid()) {
+            user =  getUserByEmail(loginInfo.getEmail());
+        }
+        assert user != null;
         if (!StringUtils.equals(loginInfo.getPassword(), user.getPassword())) {
-            throw new UserNotAuthenticatedException();
+            throw new BadCredentialsException("Bad Credentials");
         }
         return user;
     }
@@ -68,5 +68,10 @@ public class UserService {
 
     public void deleteUser(long userId) {
         userRepository.deleteUser(userId);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return getUserByUsername(username);
     }
 }

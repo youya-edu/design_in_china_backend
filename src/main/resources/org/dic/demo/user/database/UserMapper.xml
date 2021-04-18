@@ -7,8 +7,11 @@
         insert into user (id, username, email, password, avatar, phone, description)
         values (#{id}, #{username}, #{email}, #{password}, #{avatar}, #{phone}, #{description})
     </insert>
-    <select id="select" resultType="User">
-        select username
+    <resultMap id="userResultMap" type="User">
+        <result property="createdAt" column="created_at" />
+    </resultMap>
+    <select id="select" resultMap="userResultMap">
+        select username, created_at
         from user
         where id = #{id}
     </select>

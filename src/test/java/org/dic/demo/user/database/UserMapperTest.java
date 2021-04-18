@@ -16,12 +16,14 @@ public class UserMapperTest {
 
     @Test
     void testInsertAndSelect() {
-        User user = new User();
-        user.setUsername("test-username");
-        user.setEmail("email@example.com");
-        user.setPassword("test-password");
-        userMapper.insert(user);
-        User selectedUser = userMapper.select(user.getId());
+        User user = User.builder()
+                .username("test-username")
+                .email("email@example.com")
+                .password("test-password")
+                .build();
+        DatabaseUser databaseUser = DatabaseUser.fromDomainObject(user);
+        userMapper.insert(databaseUser);
+        DatabaseUser selectedUser = userMapper.select(databaseUser.getId());
         assertEquals("test-username", selectedUser.getUsername());
         assertNotNull(selectedUser.getCreatedAt());
     }

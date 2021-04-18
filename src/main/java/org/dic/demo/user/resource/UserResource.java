@@ -3,7 +3,7 @@ package org.dic.demo.user.resource;
 import org.dic.demo.user.model.User;
 import org.dic.demo.user.model.UserCollection;
 import org.dic.demo.user.service.UserService;
-import org.dic.demo.util.http.HttpUtils;
+import org.dic.demo.util.HttpUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

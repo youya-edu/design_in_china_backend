@@ -17,20 +17,32 @@ public class UserServiceStub {
     private static final Map<String, User> email2Users = new ConcurrentHashMap<>();
 
     static {
-        User luffy = new User();
-        luffy.setUsername("Luffy");
-        luffy.setEmail("luffy@dic.com");
-        luffy.setPassword("123");
-        luffy.setAvatar("luffy.jpeg");
-        luffy.setDescription("我要成为海贼王！");
+        User luffy = User.builder()
+                .id(idCounter.incrementAndGet())
+                .username("Luffy")
+                .email("luffy@dic.com")
+                .password("123")
+                .avatar("luffy.jpeg")
+                .description("我要成为海贼王！")
+                .enabled(true)
+                .accountNonLocked(true)
+                .accountNonExpired(true)
+                .credentialsNonExpired(true)
+                .build();
         createUser(luffy);
 
-        User zoro = new User();
-        zoro.setUsername("Zoro");
-        zoro.setEmail("zoro@dic.com");
-        zoro.setPassword("123");
-        zoro.setAvatar("zoro.jpeg");
-        zoro.setDescription("我要成为世界第一大剑豪！");
+        User zoro = User.builder()
+                .id(idCounter.incrementAndGet())
+                .username("Zoro")
+                .email("zoro@dic.com")
+                .password("123")
+                .avatar("zoro.jpeg")
+                .description("我要成为世界第一大剑豪！")
+                .enabled(true)
+                .accountNonLocked(true)
+                .accountNonExpired(true)
+                .credentialsNonExpired(true)
+                .build();
         createUser(zoro);
     }
 
@@ -54,7 +66,6 @@ public class UserServiceStub {
     }
 
     public static User createUser(User user) {
-        user.setId(idCounter.incrementAndGet());
         id2Users.put(user.getId(), user);
         username2Users.put(user.getUsername(), user);
         email2Users.put(user.getEmail(), user);

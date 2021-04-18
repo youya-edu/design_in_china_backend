@@ -2,7 +2,7 @@ package org.dic.demo.user.resource;
 
 import org.dic.demo.composition.model.Composition;
 import org.dic.demo.composition.service.CompositionService;
-import org.dic.demo.util.http.HttpUtils;
+import org.dic.demo.util.HttpUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

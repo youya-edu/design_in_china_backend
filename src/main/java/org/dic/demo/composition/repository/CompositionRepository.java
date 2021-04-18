@@ -23,7 +23,7 @@ public class CompositionRepository {
         User user = UserServiceStub.getUserById(userId);
         if (user == null) return null;
         Composition newComposition = CompositionServiceStub.createComposition(composition);
-        user.getCompositions().add(newComposition.getId());
+        user.getCompositions().add(newComposition);
         newComposition.setAuthor(user);
         return newComposition;
     }
