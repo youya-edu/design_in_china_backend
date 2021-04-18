@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.dic.demo.user.database.UserMapper">
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into user (id, username, email, password, avatar, phone, description)
-        values (#{id}, #{username}, #{email}, #{password}, #{avatar}, #{phone}, #{description})
-    </insert>
-    <resultMap id="userResultMap" type="User">
-        <result property="createdAt" column="created_at" />
-    </resultMap>
-    <select id="select" resultMap="userResultMap">
-        select username, created_at
-        from user
-        where id = #{id}
-    </select>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    insert into user (id, username, email, password, avatar, phone, description)
+    values (#{id}, #{username}, #{email}, #{password}, #{avatar}, #{phone}, #{description})
+  </insert>
+  <resultMap id="userResultMap" type="User">
+    <result property="createdAt" column="created_at"/>
+  </resultMap>
+  <select id="select" resultMap="userResultMap">
+    select username, created_at
+    from user
+    where id = #{id}
+  </select>
 </mapper>

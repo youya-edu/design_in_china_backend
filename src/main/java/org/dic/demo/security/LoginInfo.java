@@ -11,19 +11,20 @@ import org.springframework.util.StringUtils;
 @NoArgsConstructor
 @ToString
 public class LoginInfo {
-    private String username;
-    private String email;
-    private String password;
 
-    public boolean isValid() {
-        return isUsernameValid() || isEmailValid();
-    }
+  private String username;
+  private String email;
+  private String password;
 
-    public boolean isUsernameValid() {
-        return StringUtils.hasText(this.username);
-    }
+  public boolean isValid() {
+    return isUsernameValid() || isEmailValid();
+  }
 
-    public boolean isEmailValid() {
-        return StringUtils.hasText(email);
-    }
+  public boolean isUsernameValid() {
+    return StringUtils.hasText(this.username);
+  }
+
+  public boolean isEmailValid() {
+    return StringUtils.hasText(email);
+  }
 }

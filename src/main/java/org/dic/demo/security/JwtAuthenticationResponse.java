@@ -1,9 +1,9 @@
 package org.dic.demo.security;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.dic.demo.user.model.User;
 
 @Setter
@@ -11,6 +11,7 @@ import org.dic.demo.user.model.User;
 @AllArgsConstructor
 @NoArgsConstructor
 public class JwtAuthenticationResponse {
-    private String jwtToken;
-    private User user;
+
+  private String jwtToken;
+  private User user;
 }

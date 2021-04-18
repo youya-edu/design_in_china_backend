@@ -1,5 +1,83 @@
 # 后端开发
 
+## 配置数据库
+
+### 事前准备
+
+下载并安装 MySQL。
+
+### 添加用户
+
+```sql
+create user 'dic' identified by 'dic';
+```
+
+### 赋予所有权限
+
+```sql
+GRANT ALL PRIVILEGES ON * . * TO 'dic';
+```
+
+### 登录
+
+```shell
+$ mysql -u dic -p
+# 这里输入密码dic
+```
+
+### 创建数据库
+
+```mysql
+create database dic;
+show databases;
+use dic;
+```
+
+## Intellij 配置
+
+### 风格
+
+---
+
+风格包括两部分，
+
+1. 写的时候用什么风格（Code Style）
+2. 写完的代码以什么风格来进行检查（Check Style）
+
+<br>
+
+**Code Style 配置**
+
+使用 Google 的 Java 风格。
+
+> Settings > Editor > Code Style > Java > Import Schema
+
+导入的 code style 的 xml 为`src/main/resource/style/intellij-java-google-style.xml`。
+
+**Check Style 配置**
+
+下载 CheckStyle-IDEA，
+
+> Settings > Plugin > Install CheckStyle-IDEA
+
+配置 CheckStyle-IDEA，
+
+> Settings > Tools > Checkstyle
+
+- 勾选 Treat Checkstyle errors as warnings
+- Scan Scope: All sources（including tests）
+- 在 Configuration File 中选择 Google Checks
+
+<br>
+
+## 后端启动
+
+1. 用 IntelliJ 打开 backend 文件夹
+2. 导入所有的 Gradle 依赖
+3. 启动应用（运行在 8080 端口）
+
+<br>
+
 ## 后端结构
 
 ### package 结构

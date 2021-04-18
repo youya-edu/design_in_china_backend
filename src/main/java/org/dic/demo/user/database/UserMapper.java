@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public interface UserMapper {
 
-    void insert(DatabaseUser user);
-    DatabaseUser select(long id);
+  void insert(DatabaseUser user);
+
+  DatabaseUser select(long id);
 }
