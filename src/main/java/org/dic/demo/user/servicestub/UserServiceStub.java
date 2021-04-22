@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import org.dic.demo.user.exception.UserNotFoundException;
 import org.dic.demo.user.model.User;
+import org.dic.demo.user.model.UserKeyInfo;
 
 public class UserServiceStub {
 
@@ -18,9 +19,13 @@ public class UserServiceStub {
   static {
     User luffy = User.builder()
         .id(idCounter.incrementAndGet())
-        .username("Luffy")
-        .email("luffy@dic.com")
-        .password("123")
+        .userKeyInfo(
+            UserKeyInfo.builder()
+                .username("Luffy")
+                .email("luffy@dic.com")
+                .password("123")
+                .build()
+        )
         .avatar("luffy.jpeg")
         .description("我要成为海贼王！")
         .enabled(true)
@@ -32,9 +37,13 @@ public class UserServiceStub {
 
     User zoro = User.builder()
         .id(idCounter.incrementAndGet())
-        .username("Zoro")
-        .email("zoro@dic.com")
-        .password("123")
+        .userKeyInfo(
+            UserKeyInfo.builder()
+                .username("Zoro")
+                .email("zoro@dic.com")
+                .password("123")
+                .build()
+        )
         .avatar("zoro.jpeg")
         .description("我要成为世界第一大剑豪！")
         .enabled(true)
@@ -46,17 +55,14 @@ public class UserServiceStub {
   }
 
   public static User getUserById(long userId) {
-    checkIdExistence(userId);
     return id2Users.get(userId);
   }
 
   public static User getUserByUsername(String username) {
-    checkUsernameExistence(username);
     return username2Users.get(username);
   }
 
   public static User getUserByEmail(String email) {
-    checkEmailExistence(email);
     return email2Users.get(email);
   }
 
@@ -72,31 +78,29 @@ public class UserServiceStub {
   }
 
   public static User updateUser(User user) {
-    checkIdExistence(user.getId());
+    if (!checkIfIdExisted(user.getId())) {
+      throw new UserNotFoundException();
+    }
     id2Users.put(user.getId(), user);
     return user;
   }
 
   public static void deleteUser(long userId) {
-    checkIdExistence(userId);
+    if (!checkIfIdExisted(userId)) {
+      throw new UserNotFoundException();
+    }
     id2Users.remove(userId);
   }
 
-  private static void checkIdExistence(long userId) {
-    if (!id2Users.containsKey(userId)) {
-      throw new UserNotFoundException("No such user id: " + userId);
-    }
+  private static boolean checkIfIdExisted(long userId) {
+    return id2Users.containsKey(userId);
   }
 
-  private static void checkUsernameExistence(String username) {
-    if (!username2Users.containsKey(username)) {
-      throw new UserNotFoundException("No such username: " + username);
-    }
+  private static boolean checkIfUsernameExisted(String username) {
+    return username2Users.containsKey(username);
   }
 
-  private static void checkEmailExistence(String email) {
-    if (!email2Users.containsKey(email)) {
-      throw new UserNotFoundException("No such email: " + email);
-    }
+  private static boolean checkIfEmailExisted(String email) {
+    return email2Users.containsKey(email);
   }
 }

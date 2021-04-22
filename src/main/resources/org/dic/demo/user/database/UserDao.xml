@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.dic.demo.user.database.UserDao">
+  <insert id="createUser" useGeneratedKeys="true" keyProperty="id">
+    insert into user (username, email, password, avatar, phone, description)
+    values (#{username}, #{email}, #{password}, #{avatar}, #{phone}, #{description})
+    <selectKey resultType="long" order="AFTER" keyProperty="id">
+      select last_insert_id() as id
+    </selectKey>
+  </insert>
+  <resultMap id="userResultMap" type="User">
+    <result property="createdAt" column="created_at"/>
+    <result property="accountExpired" column="account_expired"/>
+    <result property="accountLocked" column="account_locked"/>
+    <result property="credentialsExpired" column="credentials_expired"/>
+  </resultMap>
+  <select id="getUserById" resultMap="userResultMap">
+    select *
+    from user
+    where id = #{id}
+  </select>
+  <select id="getUserByUsername" resultMap="userResultMap">
+    select *
+    from user
+    where username = #{username}
+  </select>
+  <select id="getUserByEmail" resultMap="userResultMap">
+    select *
+    from user
+    where email = #{email}
+  </select>
+  <select id="getAllUsers" resultMap="userResultMap">
+    select *
+    from user
+  </select>
+</mapper>

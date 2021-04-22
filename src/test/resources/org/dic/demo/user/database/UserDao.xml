@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.dic.demo.user.database.UserMapper">
+<mapper namespace="org.dic.demo.user.database.UserDao">
   <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-    insert into user (id, username, email, password, avatar, phone, description)
-    values (#{id}, #{username}, #{email}, #{password}, #{avatar}, #{phone}, #{description})
+    insert into user (username, email, password, avatar, phone, description)
+    values (#{username}, #{email}, #{password}, #{avatar}, #{phone}, #{description})
   </insert>
   <resultMap id="userResultMap" type="User">
     <result property="createdAt" column="created_at"/>

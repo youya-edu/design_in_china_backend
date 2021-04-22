@@ -1,25 +1,23 @@
 package org.dic.demo.user.service;
 
 import java.util.List;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.dic.demo.security.LoginInfo;
 import org.dic.demo.user.exception.LoginInfoNotEnoughException;
+import org.dic.demo.user.exception.UserNotAuthenticatedException;
 import org.dic.demo.user.model.User;
+import org.dic.demo.user.model.UserKeyInfo;
 import org.dic.demo.user.repository.UserRepository;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+@AllArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
 
   private final UserRepository userRepository;
-
-  public UserService(UserRepository userRepository) {
-    this.userRepository = userRepository;
-  }
 
   public User getUserById(long userId) {
     return userRepository.getUserById(userId);
@@ -33,20 +31,19 @@ public class UserService implements UserDetailsService {
     return userRepository.getUserByEmail(email);
   }
 
-  public User authenticateUser(LoginInfo loginInfo) {
+  public User authenticateUser(UserKeyInfo userKeyInfo) {
     User user = null;
-    if (!loginInfo.isValid()) {
+    if (!userKeyInfo.isValid()) {
       throw new LoginInfoNotEnoughException();
     }
-    if (loginInfo.isUsernameValid()) {
-      user = getUserByUsername(loginInfo.getUsername());
+    if (userKeyInfo.isUsernameValid()) {
+      user = getUserByUsername(userKeyInfo.getUsername());
     }
-    if (loginInfo.isEmailValid()) {
-      user = getUserByEmail(loginInfo.getEmail());
+    if (userKeyInfo.isEmailValid()) {
+      user = getUserByEmail(userKeyInfo.getEmail());
     }
-    assert user != null;
-    if (!StringUtils.equals(loginInfo.getPassword(), user.getPassword())) {
-      throw new BadCredentialsException("Bad Credentials");
+    if (user == null || !StringUtils.equals(userKeyInfo.getPassword(), user.getPassword())) {
+      throw new UserNotAuthenticatedException();
     }
     return user;
   }
@@ -55,8 +52,8 @@ public class UserService implements UserDetailsService {
     return userRepository.getAllUsers();
   }
 
-  public User createUser(User user) {
-    return userRepository.createUser(user);
+  public User createUser(UserKeyInfo userKeyInfo) {
+    return userRepository.createUser(userKeyInfo);
   }
 
   public User updateUser(User user) {

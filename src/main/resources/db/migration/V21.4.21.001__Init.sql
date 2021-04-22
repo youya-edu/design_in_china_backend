@@ -1,16 +1,21 @@
 create table user
 (
-    id          bigint unsigned auto_increment,
-    username    varchar(255) not null,
-    email       varchar(255) not null,
-    password    varchar(255) not null,
-    avatar      varchar(255),
-    phone       varchar(255),
-    description text,
-    created_at  datetime default current_timestamp,
+    id                  bigint unsigned auto_increment,
+    username            varchar(255) not null unique,
+    email               varchar(255) not null unique,
+    password            varchar(255) not null,
+    account_expired     boolean not null default false,
+    account_locked      boolean not null default false,
+    credentials_expired boolean not null default false,
+    enabled             boolean not null default true,
+    avatar              varchar(255),
+    phone               varchar(255),
+    description         text,
+    created_at          datetime default current_timestamp,
 
     primary key (id),
-    unique (id, username, email)
+    index using btree (username),
+    index using btree (email)
 );
 
 create table composition
@@ -29,7 +34,6 @@ create table composition
     price        double,
 
     primary key (id),
-    unique (id),
     foreign key (author) references user (id)
 );
 
@@ -45,7 +49,6 @@ create table comment
     dislikes       bigint unsigned not null,
 
     primary key (id),
-    unique (id),
     foreign key (author) references user (id)
 );
 
@@ -60,7 +63,6 @@ create table orders
     status       int             not null,
 
     primary key (id),
-    unique (id),
     foreign key (customer_id) references user (id)
 );
 
@@ -70,6 +72,5 @@ create table follow
     followee_id bigint unsigned not null,
     follower_id bigint unsigned not null,
 
-    primary key (id),
-    unique (id)
+    primary key (id)
 );

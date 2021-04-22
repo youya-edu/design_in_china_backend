@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.dic.demo.user.model.User;
+import org.dic.demo.user.model.UserKeyInfo;
 
 @Getter
 @Setter
@@ -17,6 +18,10 @@ public class DatabaseUser {
   private String username;
   private String email;
   private String password;
+  private boolean accountExpired;
+  private boolean accountLocked;
+  private boolean credentialsExpired;
+  private boolean enabled;
   private String avatar;
   private String phone;
   private String description;
@@ -25,9 +30,17 @@ public class DatabaseUser {
   public static User asDomainObject(DatabaseUser databaseUser) {
     return User.builder()
         .id(databaseUser.id)
-        .username(databaseUser.username)
-        .email(databaseUser.email)
-        .password(databaseUser.password)
+        .userKeyInfo(
+            UserKeyInfo.builder()
+                .username(databaseUser.username)
+                .email(databaseUser.email)
+                .password(databaseUser.password)
+                .build()
+        )
+        .accountNonExpired(!databaseUser.accountExpired)
+        .accountNonLocked(!databaseUser.accountLocked)
+        .credentialsNonExpired(!databaseUser.credentialsExpired)
+        .enabled(databaseUser.enabled)
         .avatar(databaseUser.avatar)
         .phone(databaseUser.phone)
         .description(databaseUser.description)
@@ -41,6 +54,10 @@ public class DatabaseUser {
     databaseUser.setUsername(user.getUsername());
     databaseUser.setEmail(user.getEmail());
     databaseUser.setPassword(user.getPassword());
+    databaseUser.setAccountExpired(!user.isAccountNonExpired());
+    databaseUser.setAccountLocked(!user.isAccountNonLocked());
+    databaseUser.setCredentialsExpired(!user.isCredentialsNonExpired());
+    databaseUser.setEnabled(user.isEnabled());
     databaseUser.setAvatar(user.getAvatar());
     databaseUser.setPhone(user.getPhone());
     databaseUser.setDescription(user.getDescription());

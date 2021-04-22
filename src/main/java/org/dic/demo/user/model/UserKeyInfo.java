@@ -1,5 +1,6 @@
-package org.dic.demo.security;
+package org.dic.demo.user.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,9 +9,9 @@ import org.springframework.util.StringUtils;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @ToString
-public class LoginInfo {
+@Builder(toBuilder = true)
+public class UserKeyInfo {
 
   private String username;
   private String email;

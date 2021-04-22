@@ -1,10 +1,13 @@
 package org.dic.demo.user.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,10 +25,9 @@ public class User implements UserDetails {
   private static final long serialVersionUID = 4358298328226766436L;
 
   private final long id;
-  private final String username;
-  private String email;
-  private transient String password;
-  private final Set<GrantedAuthority> authorities;
+  private final UserKeyInfo userKeyInfo;
+  @Default
+  private Set<GrantedAuthority> authorities = new HashSet<>();
   private final boolean accountNonExpired;
   private final boolean accountNonLocked;
   private final boolean credentialsNonExpired;
@@ -34,14 +36,32 @@ public class User implements UserDetails {
   private String phone;
   private String description;
   private transient Date createdAt;
-  private List<Composition> compositions;
-  private List<Order> orders;
-  private List<User> followed;
-  private List<User> following;
+  @Default
+  private List<Composition> compositions = new ArrayList<>();
+  @Default
+  private List<Order> orders = new ArrayList<>();
+  @Default
+  private List<User> followed = new ArrayList<>();
+  @Default
+  private List<User> following = new ArrayList<>();
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return this.authorities;
+  }
+
+  @Override
+  public String getUsername() {
+    return userKeyInfo.getUsername();
+  }
+
+  public String getEmail() {
+    return userKeyInfo.getEmail();
+  }
+
+  @Override
+  public String getPassword() {
+    return userKeyInfo.getPassword();
   }
 
   @Override
