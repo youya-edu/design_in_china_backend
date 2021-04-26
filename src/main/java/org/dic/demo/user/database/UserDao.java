@@ -18,4 +18,5 @@ public interface UserDao {
 
   List<DatabaseUser> getAllUsers();
 
+  void updateUser(DatabaseUser user);
 }

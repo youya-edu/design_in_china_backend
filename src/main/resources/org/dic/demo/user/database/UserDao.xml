@@ -4,8 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.dic.demo.user.database.UserDao">
   <insert id="createUser" useGeneratedKeys="true" keyProperty="id">
-    insert into user (username, email, password, avatar, phone, description)
-    values (#{username}, #{email}, #{password}, #{avatar}, #{phone}, #{description})
+    insert into user (username, email, password, nickname, avatar, phone, description)
+    values (#{username}, #{email}, #{password}, #{nickname}, #{avatar}, #{phone}, #{description})
     <selectKey resultType="long" order="AFTER" keyProperty="id">
       select last_insert_id() as id
     </selectKey>
@@ -35,4 +35,13 @@
     select *
     from user
   </select>
+  <update id="updateUser">
+    update user
+    set username = #{username},
+        email = #{email},
+        avatar = #{avatar},
+        nickname = #{nickname},
+        description = #{description}
+    where id = #{id}
+  </update>
 </mapper>

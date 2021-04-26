@@ -80,12 +80,13 @@ public class UserRepository {
    */
   public User createUser(UserKeyInfo userKeyInfo) {
     User user = User.builder().userKeyInfo(userKeyInfo).build();
+    user.setNickname(user.getUsername());
     long id = userDao.createUser(DatabaseUser.fromDomainObject(user));
     return user.toBuilder().id(id).build();
   }
 
-  public User updateUser(User user) {
-    return UserServiceStub.updateUser(user);
+  public void updateUser(User user) {
+    userDao.updateUser(DatabaseUser.fromDomainObject(user));
   }
 
   public void deleteUser(long userId) {

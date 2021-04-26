@@ -15,6 +15,7 @@ import org.dic.demo.user.resource.entity.ApiUserCollection;
 import org.dic.demo.user.service.UserChecker;
 import org.dic.demo.user.service.UserService;
 import org.dic.demo.util.HttpUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,8 +69,10 @@ public class UserResource {
   }
 
   @PutMapping
-  public ResponseEntity<User> updateUser(@RequestBody User payload) {
-    return ResponseEntity.ok(userService.updateUser(payload));
+  public ResponseEntity<ApiUser> updateUser(@RequestBody ApiUser payload) {
+    User user = ApiUser.asDomainObject(payload);
+    userService.updateUser(user);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
   @DeleteMapping("/{userId}")

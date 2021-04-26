@@ -32,6 +32,7 @@ public class User implements UserDetails {
   private final boolean accountNonLocked;
   private final boolean credentialsNonExpired;
   private final boolean enabled;
+  private String nickname;
   private String avatar;
   private String phone;
   private String description;

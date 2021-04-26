@@ -1,6 +1,7 @@
 package org.dic.demo.user.database;
 
 import java.util.Date;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import org.dic.demo.user.model.UserKeyInfo;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@Builder
 @ToString
 public class DatabaseUser {
 
@@ -22,6 +23,7 @@ public class DatabaseUser {
   private boolean accountLocked;
   private boolean credentialsExpired;
   private boolean enabled;
+  private String nickname;
   private String avatar;
   private String phone;
   private String description;
@@ -41,6 +43,7 @@ public class DatabaseUser {
         .accountNonLocked(!databaseUser.accountLocked)
         .credentialsNonExpired(!databaseUser.credentialsExpired)
         .enabled(databaseUser.enabled)
+        .nickname(databaseUser.getNickname())
         .avatar(databaseUser.avatar)
         .phone(databaseUser.phone)
         .description(databaseUser.description)
@@ -49,19 +52,20 @@ public class DatabaseUser {
   }
 
   public static DatabaseUser fromDomainObject(User user) {
-    DatabaseUser databaseUser = new DatabaseUser();
-    databaseUser.setId(user.getId());
-    databaseUser.setUsername(user.getUsername());
-    databaseUser.setEmail(user.getEmail());
-    databaseUser.setPassword(user.getPassword());
-    databaseUser.setAccountExpired(!user.isAccountNonExpired());
-    databaseUser.setAccountLocked(!user.isAccountNonLocked());
-    databaseUser.setCredentialsExpired(!user.isCredentialsNonExpired());
-    databaseUser.setEnabled(user.isEnabled());
-    databaseUser.setAvatar(user.getAvatar());
-    databaseUser.setPhone(user.getPhone());
-    databaseUser.setDescription(user.getDescription());
-    databaseUser.setCreatedAt(user.getCreatedAt());
-    return databaseUser;
+    return DatabaseUser.builder()
+        .id(user.getId())
+        .username(user.getUsername())
+        .email(user.getEmail())
+        .password(user.getPassword())
+        .accountExpired(!user.isAccountNonExpired())
+        .accountLocked(!user.isAccountNonLocked())
+        .credentialsExpired(!user.isCredentialsNonExpired())
+        .enabled(user.isEnabled())
+        .nickname(user.getNickname())
+        .avatar(user.getAvatar())
+        .phone(user.getPhone())
+        .description(user.getDescription())
+        .createdAt(user.getCreatedAt())
+        .build();
   }
 }

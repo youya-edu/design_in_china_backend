@@ -56,8 +56,8 @@ public class UserService implements UserDetailsService {
     return userRepository.createUser(userKeyInfo);
   }
 
-  public User updateUser(User user) {
-    return userRepository.updateUser(user);
+  public void updateUser(User user) {
+    userRepository.updateUser(user);
   }
 
   public void deleteUser(long userId) {
