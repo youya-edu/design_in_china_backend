@@ -17,40 +17,40 @@ public class UserServiceStub {
   private static final Map<String, User> email2Users = new ConcurrentHashMap<>();
 
   static {
-    User luffy = User.builder()
-        .id(idCounter.incrementAndGet())
-        .userKeyInfo(
-            UserKeyInfo.builder()
-                .username("Luffy")
-                .email("luffy@dic.com")
-                .password("123")
-                .build()
-        )
-        .avatar("luffy.jpeg")
-        .description("我要成为海贼王！")
-        .enabled(true)
-        .accountNonLocked(true)
-        .accountNonExpired(true)
-        .credentialsNonExpired(true)
-        .build();
+    User luffy =
+        User.builder()
+            .id(idCounter.incrementAndGet())
+            .userKeyInfo(
+                UserKeyInfo.builder()
+                    .username("Luffy")
+                    .email("luffy@dic.com")
+                    .password("123")
+                    .build())
+            .avatar("luffy.jpeg")
+            .description("我要成为海贼王！")
+            .enabled(true)
+            .accountNonLocked(true)
+            .accountNonExpired(true)
+            .credentialsNonExpired(true)
+            .build();
     createUser(luffy);
 
-    User zoro = User.builder()
-        .id(idCounter.incrementAndGet())
-        .userKeyInfo(
-            UserKeyInfo.builder()
-                .username("Zoro")
-                .email("zoro@dic.com")
-                .password("123")
-                .build()
-        )
-        .avatar("zoro.jpeg")
-        .description("我要成为世界第一大剑豪！")
-        .enabled(true)
-        .accountNonLocked(true)
-        .accountNonExpired(true)
-        .credentialsNonExpired(true)
-        .build();
+    User zoro =
+        User.builder()
+            .id(idCounter.incrementAndGet())
+            .userKeyInfo(
+                UserKeyInfo.builder()
+                    .username("Zoro")
+                    .email("zoro@dic.com")
+                    .password("123")
+                    .build())
+            .avatar("zoro.jpeg")
+            .description("我要成为世界第一大剑豪！")
+            .enabled(true)
+            .accountNonLocked(true)
+            .accountNonExpired(true)
+            .credentialsNonExpired(true)
+            .build();
     createUser(zoro);
   }
 

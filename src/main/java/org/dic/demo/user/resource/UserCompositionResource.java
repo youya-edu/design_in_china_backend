@@ -20,8 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(
     value = {"/users/{userId}/compositions"},
     produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-    consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
-)
+    consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 public class UserCompositionResource {
 
   private final CompositionService compositionService;
@@ -45,21 +44,20 @@ public class UserCompositionResource {
   public ResponseEntity<Composition> createComposition(
       @PathVariable("userId") long userId,
       @RequestBody Composition composition,
-      HttpServletRequest req
-  ) {
+      HttpServletRequest req) {
     return ResponseEntity.created(HttpUtils.uriWithPath(req, String.valueOf(composition.getId())))
         .body(compositionService.createComposition(userId, composition));
   }
 
   @PutMapping
-  public ResponseEntity<Composition> updateComposition(@PathVariable("userId") long userId,
-      @RequestBody Composition composition) {
+  public ResponseEntity<Composition> updateComposition(
+      @PathVariable("userId") long userId, @RequestBody Composition composition) {
     return ResponseEntity.ok(compositionService.updateComposition(userId, composition));
   }
 
   @DeleteMapping("/{compositionId}")
-  public ResponseEntity<Void> deleteComposition(@PathVariable("userId") long userId,
-      @PathVariable("compositionId") long compositionId) {
+  public ResponseEntity<Void> deleteComposition(
+      @PathVariable("userId") long userId, @PathVariable("compositionId") long compositionId) {
     compositionService.deleteComposition(userId, compositionId);
     return ResponseEntity.noContent().build();
   }

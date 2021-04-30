@@ -11,9 +11,7 @@ import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Only for playing and learning, never use in production...!!
- */
+/** Only for playing and learning, never use in production...!! */
 @Profile("dev")
 @RestController
 public class BasicAuthenticationController {
@@ -26,8 +24,8 @@ public class BasicAuthenticationController {
     if (AuthenticationType.isBasic(authorizationHeader)) {
       // 解码Base64
       String encodedBase64UsernamePassword = authorizationHeader.split(" ")[1];
-      String usernamePassword = new String(
-          Base64Utils.decodeFromString(encodedBase64UsernamePassword));
+      String usernamePassword =
+          new String(Base64Utils.decodeFromString(encodedBase64UsernamePassword));
       String username = usernamePassword.split(":")[0];
       String password = usernamePassword.split(":")[1];
 
@@ -41,4 +39,3 @@ public class BasicAuthenticationController {
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
   }
 }
-

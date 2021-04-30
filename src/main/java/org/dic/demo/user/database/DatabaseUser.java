@@ -3,7 +3,6 @@ package org.dic.demo.user.database;
 import java.util.Date;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.dic.demo.user.model.User;
@@ -37,8 +36,7 @@ public class DatabaseUser {
                 .username(databaseUser.username)
                 .email(databaseUser.email)
                 .password(databaseUser.password)
-                .build()
-        )
+                .build())
         .accountNonExpired(!databaseUser.accountExpired)
         .accountNonLocked(!databaseUser.accountLocked)
         .credentialsNonExpired(!databaseUser.credentialsExpired)

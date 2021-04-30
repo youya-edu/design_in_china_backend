@@ -18,5 +18,4 @@ public class Comment {
   private Date lastModified;
   private AtomicLong likes;
   private AtomicLong dislikes;
-
 }

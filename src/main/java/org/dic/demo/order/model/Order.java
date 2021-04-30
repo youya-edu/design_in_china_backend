@@ -18,6 +18,8 @@ public class Order {
   private OrderStatus status;
 
   public enum OrderStatus {
-    PREPARING, SENT, DONE
+    PREPARING,
+    SENT,
+    DONE
   }
 }

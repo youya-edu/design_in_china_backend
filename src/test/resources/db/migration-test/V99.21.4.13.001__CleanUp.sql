@@ -1,5 +1,19 @@
-drop table if exists composition;
-drop table if exists orders;
-drop table if exists comment;
-drop table if exists follow;
-drop table if exists user;
+DROP
+    TABLE
+        IF EXISTS composition;
+
+DROP
+    TABLE
+        IF EXISTS orders;
+
+DROP
+    TABLE
+        IF EXISTS comment;
+
+DROP
+    TABLE
+        IF EXISTS follow;
+
+DROP
+    TABLE
+        IF EXISTS USER;

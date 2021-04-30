@@ -18,16 +18,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   private final UserDetailsService userService;
   private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
-  public SecurityConfig(UserDetailsService userService,
-      JwtAuthorizationFilter jwtAuthorizationFilter) {
+  public SecurityConfig(
+      UserDetailsService userService, JwtAuthorizationFilter jwtAuthorizationFilter) {
     this.userService = userService;
     this.jwtAuthorizationFilter = jwtAuthorizationFilter;
   }
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.userDetailsService(userService)
-        .passwordEncoder(passwordEncoder());
+    auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
   }
 
   @Override
@@ -35,17 +34,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .csrf().disable()
+        .csrf()
+        .disable()
         .authorizeRequests()
-        .antMatchers("/login").permitAll()
-        .antMatchers("/logout").permitAll()
-        .antMatchers("/basic-authenticate").permitAll()
-        .antMatchers("/users").permitAll()
-        .antMatchers("/users/**").permitAll()
-        .antMatchers("/compositions").permitAll()
-        .antMatchers("/compositions/**").permitAll()
-        .antMatchers("/signup/**").permitAll()
-        .anyRequest().authenticated();
+        .antMatchers("/login")
+        .permitAll()
+        .antMatchers("/logout")
+        .permitAll()
+        .antMatchers("/basic-authenticate")
+        .permitAll()
+        .antMatchers("/users")
+        .permitAll()
+        .antMatchers("/users/**")
+        .permitAll()
+        .antMatchers("/compositions")
+        .permitAll()
+        .antMatchers("/compositions/**")
+        .permitAll()
+        .antMatchers("/signup/**")
+        .permitAll()
+        .anyRequest()
+        .authenticated();
 
     http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
   }

@@ -58,10 +58,7 @@ public class ApiUser {
   public static User asDomainObject(ApiUser apiUser) {
     return User.builder()
         .id(apiUser.id)
-        .userKeyInfo(UserKeyInfo.builder()
-            .email(apiUser.email)
-            .username(apiUser.username)
-            .build())
+        .userKeyInfo(UserKeyInfo.builder().email(apiUser.email).username(apiUser.username).build())
         .nickname(apiUser.nickname)
         .avatar(apiUser.avatar)
         .description(apiUser.description)

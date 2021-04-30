@@ -26,8 +26,7 @@ public class User implements UserDetails {
 
   private final long id;
   private final UserKeyInfo userKeyInfo;
-  @Default
-  private Set<GrantedAuthority> authorities = new HashSet<>();
+  @Default private Set<GrantedAuthority> authorities = new HashSet<>();
   private final boolean accountNonExpired;
   private final boolean accountNonLocked;
   private final boolean credentialsNonExpired;
@@ -37,14 +36,10 @@ public class User implements UserDetails {
   private String phone;
   private String description;
   private transient Date createdAt;
-  @Default
-  private List<Composition> compositions = new ArrayList<>();
-  @Default
-  private List<Order> orders = new ArrayList<>();
-  @Default
-  private List<User> followed = new ArrayList<>();
-  @Default
-  private List<User> following = new ArrayList<>();
+  @Default private List<Composition> compositions = new ArrayList<>();
+  @Default private List<Order> orders = new ArrayList<>();
+  @Default private List<User> followed = new ArrayList<>();
+  @Default private List<User> following = new ArrayList<>();
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

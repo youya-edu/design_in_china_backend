@@ -1,0 +1,40 @@
+#!/bin/sh
+
+set -u
+
+echo "Current dir: $(pwd)"
+echo "Stashing all staged and unstaged files..."
+git stash -k
+
+echo "Stashing all staged files..."
+git stash -k
+
+./gradlew spotlessApply --daemon
+SPOTLESS_RESULT=$?
+if [ $SPOTLESS_RESULT -ne 0 ]
+then
+	echo "please run {./gradlew spotlessApply} in backend folder."
+fi
+
+echo "Adding modified files after reformatting..."
+git add -u .
+
+echo "Writting all unstaged changes to temp patch file..."
+git diff stash@{0} stash@{1} > temp.patch
+
+echo "Applying temp patch file..."
+if [ -s temp.patch ]
+then
+	git apply temp.patch
+else
+	# do nothing
+	:
+fi
+rm temp.patch
+
+echo "Dropping the top 2 stash..."
+for i in {1..2}; do git stash drop; done
+
+echo "Reformating finished!!"
+
+exit $SPOTLESS_RESULT

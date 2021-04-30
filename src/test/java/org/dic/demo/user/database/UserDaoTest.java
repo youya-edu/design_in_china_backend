@@ -14,24 +14,23 @@ import org.springframework.context.annotation.Profile;
 @Profile("test")
 public class UserDaoTest {
 
-  @Autowired
-  private UserDao userDao;
+  @Autowired private UserDao userDao;
 
   @Test
   void testInsertAndSelect() {
-    User user = User.builder()
-        .userKeyInfo(
-            UserKeyInfo.builder()
-            .username("test-username")
-            .email("email@example.com")
-            .password("test-password")
-            .build()
-        ).build();
+    User user =
+        User.builder()
+            .userKeyInfo(
+                UserKeyInfo.builder()
+                    .username("test-username")
+                    .email("email@example.com")
+                    .password("test-password")
+                    .build())
+            .build();
     DatabaseUser databaseUser = DatabaseUser.fromDomainObject(user);
     userDao.createUser(databaseUser);
     DatabaseUser selectedUser = userDao.getUserById(databaseUser.getId());
     assertEquals("test-username", selectedUser.getUsername());
     assertNotNull(selectedUser.getCreatedAt());
   }
-
 }

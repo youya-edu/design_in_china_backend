@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(
     value = "/signup",
     consumes = MediaType.APPLICATION_JSON_VALUE,
-    produces = MediaType.APPLICATION_JSON_VALUE
-)
+    produces = MediaType.APPLICATION_JSON_VALUE)
 public class SignupController {
 
   private final UserChecker userChecker;
@@ -25,14 +24,16 @@ public class SignupController {
   @PostMapping("/check_email")
   public ResponseEntity<?> checkIfEmailExisted(@RequestBody UserKeyInfo userKeyInfo) {
     boolean emailExisted = userChecker.isEmailExisted(userKeyInfo);
-    return emailExisted ? ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build()
+    return emailExisted
+        ? ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build()
         : ResponseEntity.ok().build();
   }
 
   @PostMapping("/check_username")
   public ResponseEntity<?> checkIfUsernameExisted(@RequestBody UserKeyInfo userKeyInfo) {
     boolean usernameExisted = userChecker.isUsernameExisted(userKeyInfo);
-    return usernameExisted ? ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build()
+    return usernameExisted
+        ? ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build()
         : ResponseEntity.ok().build();
   }
 }
