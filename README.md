@@ -23,6 +23,10 @@
 
 ## git 配置
 
+git的配置是必须的。
+
+### 配置crlf
+
 在 clone 仓库之前，务必运行以下命令！（否则非常麻烦）
 
 > `git config --global core.autocrlf true`
@@ -37,7 +41,11 @@
 
 具体详情参照这个[链接](https://qiita.com/uggds/items/00a1974ec4f115616580)
 
-<br>
+### 配置hookspath
+
+> `git config core.hookspath .githooks`
+
+这样可以在commit的时候自动format代码。
 
 ## 配置数据库
 

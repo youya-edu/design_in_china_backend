@@ -1,11 +1,12 @@
 #!/bin/sh
+
 set -u
 
 echo "Current dir: $(pwd)"
 
 STASH_NUMBER=1
 
-echo "Checking if there are unstaged & untracked files..."
+echo "Checking if there are unstaged files..."
 git diff > diff.check
 if [ -s diff.check ]
 then
