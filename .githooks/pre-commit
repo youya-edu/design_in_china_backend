@@ -1,50 +1,18 @@
 #!/bin/sh
 
-set -u
-
 echo "Current dir: $(pwd)"
 
-STASH_NUMBER=1
-
-echo "Checking if there are unstaged files..."
-git diff > diff.check
-if [ -s diff.check ]
-then
-	STASH_NUMBER=2
-fi
-rm diff.check
-
-echo "Stashing all staged and unstaged files..."
-for i in `seq $STASH_NUMBER`; do git stash -k; done
+STAGED_FILES=$(git diff --name-only --cached | tr '\n' ' ')
+echo "All staged files: $STAGED_FILES"
 
 ./gradlew spotlessApply --daemon
 SPOTLESS_RESULT=$?
 if [ $SPOTLESS_RESULT -ne 0 ]
 then
-	echo "please run {./gradlew spotlessApply} in backend folder."
+        echo "spotlessApply failed"
 fi
 
-echo "Adding modified files after reformatting..."
-git add -u .
-
-if [ $STASH_NUMBER -eq 2 ]
-then
-	echo "Writting all unstaged changes to temp patch file..."
-	git diff stash@{0} stash@{1} > temp.patch
-	echo "Applying temp patch file..."
-	if [ -s temp.patch ]
-	then
-		git apply temp.patch
-	else
-		# do nothing
-		:
-	fi
-	rm temp.patch
-fi
-
-echo "Dropping the top stashes pushed before..."
-for i in `seq $STASH_NUMBER`; do git stash drop; done
-
-echo "Reformating finished!!"
+echo "git add $STAGED_FILES"
+git add "$STAGED_FILES"
 
 exit $SPOTLESS_RESULT
