@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.4.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id "com.diffplug.spotless" version "5.12.4"
 }
 
 group = 'org.dic'
@@ -42,4 +43,18 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+spotless {
+    java {
+        googleJavaFormat()
+    }
+    sql {
+        target 'src/**/*.sql'
+        dbeaver()
+    }
+    format 'xml', {
+        target 'src/**/*.xml'
+        prettier(['prettier': '2.2.1', '@prettier/plugin-xml': '0.13.1'])
+    }
 }

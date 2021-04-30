@@ -27,15 +27,18 @@ public class JwtUtils {
 
   private static String createToken(Map<String, Object> claims, String subject) {
     long currentTimeInMillis = System.currentTimeMillis();
-    return Jwts.builder().setClaims(claims).setSubject(subject)
+    return Jwts.builder()
+        .setClaims(claims)
+        .setSubject(subject)
         .setIssuedAt(new Date(currentTimeInMillis))
         .setExpiration(new Date(currentTimeInMillis + TOKEN_EXPIRE_PERIOD))
-        .signWith(SignatureAlgorithm.HS512, SECRET_KEY).compact();
+        .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+        .compact();
   }
 
   public static boolean validateToken(String token, UserDetails userDetails) {
-    return !isTokenExpired(token) && StringUtils
-        .equals(extractUsername(token), userDetails.getUsername());
+    return !isTokenExpired(token)
+        && StringUtils.equals(extractUsername(token), userDetails.getUsername());
   }
 
   private static boolean isTokenExpired(String token) {

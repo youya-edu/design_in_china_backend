@@ -1,7 +1,6 @@
 package org.dic.demo.user.resource;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
@@ -49,8 +48,7 @@ public class UserResource {
     if (users == null) {
       users = new ArrayList<>();
     }
-    List<ApiUser> apiUsers = users.stream().map(ApiUser::from)
-        .collect(Collectors.toList());
+    List<ApiUser> apiUsers = users.stream().map(ApiUser::from).collect(Collectors.toList());
     ApiUserCollection apiUserCollection = new ApiUserCollection();
     apiUserCollection.setUsers(apiUsers);
     apiUserCollection.setSize(apiUsers.size());
@@ -63,8 +61,7 @@ public class UserResource {
       throw new UserUniqueViolationException();
     }
     User newUser = userService.createUser(payload);
-    return ResponseEntity
-        .created(HttpUtils.uriWithPath(req, String.valueOf(newUser.getId())))
+    return ResponseEntity.created(HttpUtils.uriWithPath(req, String.valueOf(newUser.getId())))
         .body(newUser);
   }
 

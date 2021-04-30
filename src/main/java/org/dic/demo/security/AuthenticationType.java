@@ -30,7 +30,7 @@ public enum AuthenticationType {
   }
 
   private static boolean is(String authorizationHeader, AuthenticationType authenticationType) {
-    return StringUtils.isNotBlank(authorizationHeader) && authorizationHeader
-        .startsWith(authenticationType.value());
+    return StringUtils.isNotBlank(authorizationHeader)
+        && authorizationHeader.startsWith(authenticationType.value());
   }
 }

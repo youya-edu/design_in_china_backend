@@ -11,5 +11,4 @@ public class CompositionNotFoundException extends RuntimeException {
   public CompositionNotFoundException(String message) {
     super(message);
   }
-
 }

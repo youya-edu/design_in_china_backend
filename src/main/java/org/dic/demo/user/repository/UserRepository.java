@@ -68,7 +68,8 @@ public class UserRepository {
     if (databaseUser == null) {
       return null;
     }
-    return userDao.getAllUsers().stream().map(DatabaseUser::asDomainObject)
+    return userDao.getAllUsers().stream()
+        .map(DatabaseUser::asDomainObject)
         .collect(Collectors.toList());
   }
 
