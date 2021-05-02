@@ -43,7 +43,10 @@ git的配置是必须的。
 
 ### 配置hookspath
 
-> `git config core.hookspath .githooks`
+```shell
+$ cd design_in_china_backend
+$ git config core.hookspath .githooks
+```
 
 这样可以在commit的时候自动format代码。
 
@@ -52,6 +55,20 @@ git的配置是必须的。
 ### 事前准备
 
 下载并安装 MySQL。
+
+- windows msi: https://dev.mysql.com/downloads/installer/
+- mac: https://dev.mysql.com/downloads/mysql/
+  - Select Operating System > macOS
+  
+### 进入mysql终端
+
+```shell
+$ mysql -u root
+# 如果你给root设置了密码
+$ mysql -u root -p
+```
+
+进入mysql终端后执行下述sql。
 
 ### 添加用户
 
