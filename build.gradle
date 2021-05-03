@@ -57,4 +57,8 @@ spotless {
         target 'src/**/*.xml'
         prettier(['prettier': '2.2.1', '@prettier/plugin-xml': '0.13.1'])
     }
+    format 'markdown', {
+        target '**/*.md'
+        prettier()
+    }
 }
