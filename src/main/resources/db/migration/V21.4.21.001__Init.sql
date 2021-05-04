@@ -25,19 +25,32 @@ CREATE
     TABLE
         composition(
             id BIGINT unsigned auto_increment,
-            author BIGINT unsigned NOT NULL,
+            author_id BIGINT unsigned NOT NULL,
             name VARCHAR(255) NOT NULL,
             description text NOT NULL,
-            created_at datetime DEFAULT CURRENT_TIMESTAMP,
-            lastModified datetime,
-            heat BIGINT unsigned NOT NULL,
-            likes BIGINT unsigned NOT NULL,
-            dislikes BIGINT unsigned NOT NULL,
             image VARCHAR(1024),
+            likes BIGINT unsigned,
+            viewed BIGINT unsigned,
+            status VARCHAR(20) NOT NULL DEFAULT 'DRAFT',
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            last_modified datetime,
+            issued_at datetime,
+            for_sale BOOLEAN NOT NULL DEFAULT FALSE,
+            PRIMARY KEY(id)
+        );
+
+CREATE
+    TABLE
+        product(
+            id BIGINT unsigned auto_increment,
+            price DECIMAL(
+                65,
+                2
+            ),
             stock BIGINT,
-            price DOUBLE,
+            composition_id BIGINT unsigned NOT NULL,
             PRIMARY KEY(id),
-            FOREIGN KEY(author) REFERENCES USER(id)
+            FOREIGN KEY(composition_id) REFERENCES composition(id)
         );
 
 CREATE
