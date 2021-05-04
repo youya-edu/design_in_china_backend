@@ -23,9 +23,9 @@
 
 ## git 配置
 
-git的配置是必须的。
+git 的配置是必须的。
 
-### 配置crlf
+### 配置 crlf
 
 在 clone 仓库之前，务必运行以下命令！（否则非常麻烦）
 
@@ -41,14 +41,14 @@ git的配置是必须的。
 
 具体详情参照这个[链接](https://qiita.com/uggds/items/00a1974ec4f115616580)
 
-### 配置hookspath
+### 配置 hookspath
 
 ```shell
 $ cd design_in_china_backend
 $ git config core.hookspath .githooks
 ```
 
-这样可以在commit的时候自动format代码。
+这样可以在 commit 的时候自动 format 代码。
 
 ## 配置数据库
 
@@ -58,9 +58,10 @@ $ git config core.hookspath .githooks
 
 - windows msi: https://dev.mysql.com/downloads/installer/
 - mac: https://dev.mysql.com/downloads/mysql/
+
   - Select Operating System > macOS
-  
-### 进入mysql终端
+
+### 进入 mysql 终端
 
 ```shell
 $ mysql -u root
@@ -68,7 +69,7 @@ $ mysql -u root
 $ mysql -u root -p
 ```
 
-进入mysql终端后执行下述sql。
+进入 mysql 终端后执行下述 sql。
 
 ### 添加用户
 
