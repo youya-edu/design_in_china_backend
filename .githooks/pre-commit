@@ -2,7 +2,7 @@
 
 echo "Current dir: $(pwd)"
 
-STAGED_FILES=$(git diff --name-only --cached | tr '\n' ' ')
+STAGED_FILES=$(git --no-pager diff --name-only --cached | tr '\n' ' ')
 echo "All staged files: $STAGED_FILES"
 
 ./gradlew spotlessApply --daemon
@@ -13,6 +13,6 @@ then
 fi
 
 echo "git add $STAGED_FILES"
-git add "$STAGED_FILES"
+git add $STAGED_FILES
 
 exit $SPOTLESS_RESULT
