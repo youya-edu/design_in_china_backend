@@ -59,6 +59,6 @@ spotless {
     }
     format 'markdown', {
         target '**/*.md'
-        prettier()
+        prettier('2.2.1')
     }
 }
