@@ -113,7 +113,11 @@ use dic;
 
 1. 用 IntelliJ 打开 backend 文件夹
 2. 导入所有的 Gradle 依赖
-3. 启动应用（运行在 8080 端口）
+3. 给 IntelliJ 配置JDK
+- IntelliJ会（通过右上角蓝色链接）提示配置JDK，点击该链接
+- 如果已安装JDK，在下拉菜单中选择“Add JDK...”
+- 如果未安装JDK，在下拉菜单中选择“Download JDK...”，并选择一个JDK的版本，之后IntelliJ会自动下载并安装和配置该JDK
+4. 启动应用（运行在 8080 端口）
 
 <br>
 
