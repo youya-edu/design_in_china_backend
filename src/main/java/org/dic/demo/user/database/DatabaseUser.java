@@ -28,7 +28,7 @@ public class DatabaseUser {
   private String description;
   private Date createdAt;
 
-  public static User asDomainObject(DatabaseUser databaseUser) {
+  public static User toDomainObject(DatabaseUser databaseUser) {
     return User.builder()
         .id(databaseUser.id)
         .userKeyInfo(

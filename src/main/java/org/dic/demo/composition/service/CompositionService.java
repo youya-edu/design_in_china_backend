@@ -22,6 +22,10 @@ public class CompositionService {
     return compositionRepository.getAllCompositions();
   }
 
+  public List<Composition> getCompositionsByUserId(long userId) {
+    return compositionRepository.getCompositionsByUserId(userId);
+  }
+
   public Composition createComposition(long userId, Composition composition) {
     return compositionRepository.createComposition(userId, composition);
   }

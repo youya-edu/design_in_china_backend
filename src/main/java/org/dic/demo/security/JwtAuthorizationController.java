@@ -35,6 +35,7 @@ public class JwtAuthorizationController {
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(user.getUsername(), userKeyInfo.getPassword()));
     String jwtToken = JwtUtils.generateToken(user);
-    return ResponseEntity.ok(new JwtAuthorizationResponse(jwtToken, ViewUser.from(user)));
+    return ResponseEntity.ok(
+        new JwtAuthorizationResponse(jwtToken, ViewUser.fromDomainObject(user)));
   }
 }

@@ -37,24 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .csrf()
         .disable()
         .authorizeRequests()
-        .antMatchers("/login")
-        .permitAll()
-        .antMatchers("/logout")
-        .permitAll()
-        .antMatchers("/basic-authenticate")
-        .permitAll()
-        .antMatchers("/users")
-        .permitAll()
-        .antMatchers("/users/**")
-        .permitAll()
-        .antMatchers("/compositions")
-        .permitAll()
-        .antMatchers("/compositions/**")
-        .permitAll()
-        .antMatchers("/signup/**")
-        .permitAll()
         .anyRequest()
-        .authenticated();
+        .permitAll();
 
     http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
   }
