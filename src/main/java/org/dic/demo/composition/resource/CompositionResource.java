@@ -1,7 +1,9 @@
 package org.dic.demo.composition.resource;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import org.dic.demo.composition.model.Composition;
+import org.dic.demo.composition.resource.entity.ApiComposition;
 import org.dic.demo.composition.service.CompositionService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +32,10 @@ public class CompositionResource {
   }
 
   @GetMapping
-  public ResponseEntity<List<Composition>> getAllCompositions() {
-    return ResponseEntity.ok(compositionService.getAllCompositions());
+  public ResponseEntity<List<ApiComposition>> getAllCompositions() {
+    return ResponseEntity.ok(
+        compositionService.getAllCompositions().stream()
+            .map(ApiComposition::fromDomainObject)
+            .collect(Collectors.toList()));
   }
 }

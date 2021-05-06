@@ -9,28 +9,22 @@
       select last_insert_id() as id
     </selectKey>
   </insert>
-  <resultMap id="userResultMap" type="User">
-    <result property="createdAt" column="created_at" />
-    <result property="accountExpired" column="account_expired" />
-    <result property="accountLocked" column="account_locked" />
-    <result property="credentialsExpired" column="credentials_expired" />
-  </resultMap>
-  <select id="getUserById" resultMap="userResultMap">
+  <select id="getUserById" resultType="User">
     select *
     from user
     where id = #{id}
   </select>
-  <select id="getUserByUsername" resultMap="userResultMap">
+  <select id="getUserByUsername" resultType="User">
     select *
     from user
     where username = #{username}
   </select>
-  <select id="getUserByEmail" resultMap="userResultMap">
+  <select id="getUserByEmail" resultType="User">
     select *
     from user
     where email = #{email}
   </select>
-  <select id="getAllUsers" resultMap="userResultMap">
+  <select id="getAllUsers" resultType="User">
     select *
     from user
   </select>

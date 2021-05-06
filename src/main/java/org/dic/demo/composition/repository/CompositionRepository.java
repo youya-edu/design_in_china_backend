@@ -1,21 +1,49 @@
 package org.dic.demo.composition.repository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import org.dic.demo.composition.database.CompositionDao;
+import org.dic.demo.composition.database.DatabaseComposition;
+import org.dic.demo.composition.database.DatabaseProduct;
 import org.dic.demo.composition.model.Composition;
 import org.dic.demo.composition.servicestub.CompositionServiceStub;
 import org.dic.demo.user.model.User;
+import org.dic.demo.user.repository.UserRepository;
 import org.dic.demo.user.servicestub.UserServiceStub;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@AllArgsConstructor
 public class CompositionRepository {
+
+  private final CompositionDao compositionDao;
+  private final UserRepository userRepository;
 
   public Composition getCompositionById(long compositionId) {
     return CompositionServiceStub.getCompositionById(compositionId);
   }
 
   public List<Composition> getAllCompositions() {
-    return CompositionServiceStub.getAllCompositions();
+    Map<Long, Composition> compositionMap =
+        compositionDao.getAllCompositions().stream()
+            .map(
+                databaseComposition ->
+                    DatabaseComposition.asDomainObject(
+                        databaseComposition,
+                        userRepository.getUserById(databaseComposition.getAuthorId())))
+            .collect(Collectors.toMap(Composition::getId, Function.identity()));
+    compositionDao
+        .getAllProducts()
+        .forEach(
+            databaseProduct -> {
+              Composition composition = compositionMap.get(databaseProduct.getCompositionId());
+              composition.setProduct(DatabaseProduct.asDomainObject(databaseProduct, composition));
+            });
+    return new ArrayList<>(compositionMap.values());
   }
 
   public Composition createComposition(long userId, Composition composition) {

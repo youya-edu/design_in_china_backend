@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.dic.demo.composition.database.CompositionDao">
+  <select id="existComposition" resultType="boolean">
+    select exists(select 1 from composition)
+  </select>
+  <select id="getAllCompositions" resultType="Composition">
+    select *
+    from composition
+  </select>
+  <select id="getAllProducts" resultType="Product">
+    select * from product
+  </select>
+  <insert
+    id="createCompositions"
+    parameterType="Composition"
+    useGeneratedKeys="true"
+    keyProperty="id"
+    keyColumn="id"
+  >
+    insert into composition (author_id, name, description, image, likes, viewed, status, last_modified, issued_at, for_sale)
+    values
+    <foreach collection="compositions" item="c" separator=",">
+      (#{c.authorId}, #{c.name}, #{c.description}, #{c.image}, #{c.likes}, #{c.viewed}, #{c.status}, #{c.lastModified}, #{c.issuedAt}, #{c.forSale})
+    </foreach>
+  </insert>
+  <insert
+    id="createProducts"
+    parameterType="Product"
+    useGeneratedKeys="true"
+    keyProperty="id"
+    keyColumn="id"
+  >
+    insert into product (price, stock, composition_id)
+    values
+    <foreach collection="products" item="p" separator=",">
+      (#{p.price}, #{p.stock}, #{p.compositionId})
+    </foreach>
+  </insert>
+</mapper>
