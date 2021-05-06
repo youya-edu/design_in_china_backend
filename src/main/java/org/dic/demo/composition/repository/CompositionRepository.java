@@ -1,14 +1,10 @@
 package org.dic.demo.composition.repository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.dic.demo.composition.database.CompositionDao;
 import org.dic.demo.composition.database.DatabaseComposition;
-import org.dic.demo.composition.database.DatabaseProduct;
 import org.dic.demo.composition.model.Composition;
 import org.dic.demo.composition.servicestub.CompositionServiceStub;
 import org.dic.demo.user.model.User;
@@ -28,22 +24,22 @@ public class CompositionRepository {
   }
 
   public List<Composition> getAllCompositions() {
-    Map<Long, Composition> compositionMap =
-        compositionDao.getAllCompositions().stream()
-            .map(
-                databaseComposition ->
-                    DatabaseComposition.asDomainObject(
-                        databaseComposition,
-                        userRepository.getUserById(databaseComposition.getAuthorId())))
-            .collect(Collectors.toMap(Composition::getId, Function.identity()));
-    compositionDao
-        .getAllProducts()
-        .forEach(
-            databaseProduct -> {
-              Composition composition = compositionMap.get(databaseProduct.getCompositionId());
-              composition.setProduct(DatabaseProduct.asDomainObject(databaseProduct, composition));
-            });
-    return new ArrayList<>(compositionMap.values());
+    return compositionDao.getAllCompositions().stream()
+        .map(
+            databaseComposition ->
+                DatabaseComposition.asDomainObject(
+                    databaseComposition,
+                    userRepository.getUserById(databaseComposition.getAuthorId())))
+        .collect(Collectors.toList());
+  }
+
+  public List<Composition> getCompositionsByUserId(long userId) {
+    return compositionDao.getCompositionsByUserId(userId).stream()
+        .map(
+            databaseComposition ->
+                DatabaseComposition.asDomainObject(
+                    databaseComposition, User.builder().id(userId).build()))
+        .collect(Collectors.toList());
   }
 
   public Composition createComposition(long userId, Composition composition) {

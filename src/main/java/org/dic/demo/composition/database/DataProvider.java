@@ -26,6 +26,8 @@ public class DataProvider {
     if (compositionDao.compositionExists()) {
       return;
     }
+
+    Random random = new Random();
     List<DatabaseComposition> compositions =
         IntStream.range(0, 500)
             .mapToObj(
@@ -41,21 +43,12 @@ public class DataProvider {
                       .lastModified(now)
                       .issuedAt(now)
                       .forSale(true)
+                      .price(BigDecimal.valueOf(random.nextDouble() * 1000))
+                      .stock(random.nextInt(10))
                       .build();
                 })
             .collect(Collectors.toList());
     compositionDao.createCompositions(compositions);
-    Random random = new Random();
-    List<DatabaseProduct> products =
-        compositions.stream()
-            .map(
-                composition ->
-                    DatabaseProduct.builder()
-                        .price(BigDecimal.valueOf(random.nextDouble() * 1000))
-                        .stock(random.nextInt(10))
-                        .compositionId(composition.getId())
-                        .build())
-            .collect(Collectors.toList());
-    compositionDao.createProducts(products);
+    compositionDao.createProducts(compositions);
   }
 }

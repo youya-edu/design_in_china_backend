@@ -11,9 +11,5 @@
       type="org.dic.demo.composition.database.DatabaseComposition"
       alias="Composition"
     />
-    <typeAlias
-      type="org.dic.demo.composition.database.DatabaseProduct"
-      alias="Product"
-    />
   </typeAliases>
 </configuration>

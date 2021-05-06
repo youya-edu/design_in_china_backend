@@ -20,18 +20,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(value = "/users")
 public class UserResource {
 
   private final UserService userService;
   private final UserChecker userChecker;
 
-  @GetMapping("/{username}")
+  @GetMapping("/u/{username}")
   public ResponseEntity<ViewUser> getUser(@PathVariable("username") String username) {
     User user = userService.getUserByUsername(username);
     if (user == null) {
@@ -40,20 +38,19 @@ public class UserResource {
     return ResponseEntity.ok(ViewUser.from(user));
   }
 
-  @GetMapping
+  @GetMapping("/users")
   public ResponseEntity<ViewUserCollection> getAllUsers() {
     List<User> users = userService.getAllUsers();
     if (users == null) {
       users = new ArrayList<>();
     }
     List<ViewUser> viewUsers = users.stream().map(ViewUser::from).collect(Collectors.toList());
-    ViewUserCollection viewUserCollection = new ViewUserCollection();
-    viewUserCollection.setUsers(viewUsers);
-    viewUserCollection.setSize(viewUsers.size());
+    ViewUserCollection viewUserCollection =
+        ViewUserCollection.builder().users(viewUsers).size(viewUsers.size()).build();
     return ResponseEntity.ok(viewUserCollection);
   }
 
-  @PostMapping
+  @PostMapping("/users")
   public ResponseEntity<User> signup(@RequestBody UserKeyInfo payload, HttpServletRequest req) {
     if (userChecker.isEmailExisted(payload) || userChecker.isUsernameExisted(payload)) {
       throw new UserUniqueViolationException();
@@ -63,14 +60,14 @@ public class UserResource {
         .body(newUser);
   }
 
-  @PutMapping
+  @PutMapping("/users")
   public ResponseEntity<ViewUser> updateUser(@RequestBody ViewUser payload) {
     User user = ViewUser.asDomainObject(payload);
     userService.updateUser(user);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
-  @DeleteMapping("/{userId}")
+  @DeleteMapping("/users/{userId}")
   public ResponseEntity<Void> deleteUser(@PathVariable("userId") long userId) {
     userService.deleteUser(userId);
     return ResponseEntity.noContent().build();

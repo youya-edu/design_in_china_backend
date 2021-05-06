@@ -3,6 +3,7 @@ package org.dic.demo.user.service;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.dic.demo.composition.repository.CompositionRepository;
 import org.dic.demo.user.exception.LoginInfoNotEnoughException;
 import org.dic.demo.user.exception.UserNotAuthenticatedException;
 import org.dic.demo.user.model.User;
@@ -18,13 +19,17 @@ import org.springframework.stereotype.Service;
 public class UserService implements UserDetailsService {
 
   private final UserRepository userRepository;
+  private final CompositionRepository compositionRepository;
 
   public User getUserById(long userId) {
     return userRepository.getUserById(userId);
   }
 
   public User getUserByUsername(String username) {
-    return userRepository.getUserByUsername(username);
+    User user = userRepository.getUserByUsername(username);
+    user.setCompositions(compositionRepository.getCompositionsByUserId(user.getId()));
+    user.getCompositions().forEach(composition -> composition.setAuthor(user));
+    return user;
   }
 
   public User getUserByEmail(String email) {
@@ -49,7 +54,13 @@ public class UserService implements UserDetailsService {
   }
 
   public List<User> getAllUsers() {
-    return userRepository.getAllUsers();
+    List<User> users = userRepository.getAllUsers();
+    users.forEach(
+        user -> {
+          user.setCompositions(compositionRepository.getCompositionsByUserId(user.getId()));
+          user.getCompositions().forEach(composition -> composition.setAuthor(user));
+        });
+    return users;
   }
 
   public User createUser(UserKeyInfo userKeyInfo) {
