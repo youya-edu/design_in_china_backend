@@ -3,9 +3,7 @@ package org.dic.demo.composition.resource;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.dic.demo.composition.model.Composition;
-import org.dic.demo.composition.resource.entity.ApiComposition;
 import org.dic.demo.composition.service.CompositionService;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(
-    value = {"/compositions"},
-    produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-    consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+@RequestMapping("/compositions")
 public class CompositionResource {
 
   private final CompositionService compositionService;
@@ -32,10 +27,10 @@ public class CompositionResource {
   }
 
   @GetMapping
-  public ResponseEntity<List<ApiComposition>> getAllCompositions() {
+  public ResponseEntity<List<ViewComposition>> getAllCompositions() {
     return ResponseEntity.ok(
         compositionService.getAllCompositions().stream()
-            .map(ApiComposition::fromDomainObject)
+            .map(ViewComposition::fromDomainObject)
             .collect(Collectors.toList()));
   }
 }

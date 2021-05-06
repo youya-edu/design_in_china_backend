@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.dic.demo.composition.model.Composition;
 import org.dic.demo.composition.service.CompositionService;
 import org.dic.demo.util.HttpUtils;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(
-    value = {"/users/{userId}/compositions"},
-    produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-    consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+@RequestMapping("/users/{userId}/compositions")
 public class UserCompositionResource {
 
   private final CompositionService compositionService;

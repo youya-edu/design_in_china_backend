@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.dic.demo.user.resource.entity.ApiUser;
+import org.dic.demo.user.resource.ViewUser;
 
 @Setter
 @Getter
@@ -13,5 +13,5 @@ import org.dic.demo.user.resource.entity.ApiUser;
 public class JwtAuthorizationResponse {
 
   private String jwtToken;
-  private ApiUser user;
+  private ViewUser user;
 }
