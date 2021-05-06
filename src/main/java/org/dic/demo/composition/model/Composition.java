@@ -20,27 +20,12 @@ public class Composition {
   private String image;
   private AtomicLong likes;
   private AtomicLong viewed;
-  private Status status;
+  private CompositionStatus status;
   private Date createdAt;
   private Date lastModified;
   private Date issuedAt;
   private boolean forSale;
   private Product product;
-
-  public enum Status {
-    DRAFT,
-    PUBLIC,
-    DISCARD;
-
-    public static Status from(String name) {
-      for (Status status : Status.values()) {
-        if (status.name().equals(name)) {
-          return status;
-        }
-      }
-      return null;
-    }
-  }
 
   public BigDecimal getPrice() {
     return this.product.getPrice();

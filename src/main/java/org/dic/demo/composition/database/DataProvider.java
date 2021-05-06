@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
-import org.dic.demo.composition.model.Composition.Status;
+import org.dic.demo.composition.model.CompositionStatus;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,7 @@ public class DataProvider {
 
   @PostConstruct
   private void addCompositionData() {
-    if (compositionDao.existComposition()) {
+    if (compositionDao.compositionExists()) {
       return;
     }
     List<DatabaseComposition> compositions =
@@ -36,7 +36,7 @@ public class DataProvider {
                       .name(String.format("作品%d", idx))
                       .description("这是一个测试用的作品")
                       .image("test.png")
-                      .status(Status.PUBLIC.name())
+                      .status(CompositionStatus.PUBLIC.name())
                       .createdAt(now)
                       .lastModified(now)
                       .issuedAt(now)

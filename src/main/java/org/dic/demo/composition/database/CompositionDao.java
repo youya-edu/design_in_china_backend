@@ -13,7 +13,7 @@ public interface CompositionDao {
 
   List<DatabaseProduct> getAllProducts();
 
-  boolean existComposition();
+  boolean compositionExists();
 
   int createCompositions(@Param("compositions") List<DatabaseComposition> compositions);
 

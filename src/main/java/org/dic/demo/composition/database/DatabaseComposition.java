@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.dic.demo.composition.model.Composition;
+import org.dic.demo.composition.model.CompositionStatus;
 import org.dic.demo.user.model.User;
 
 @Setter
@@ -35,7 +36,7 @@ public class DatabaseComposition {
         .image(databaseComposition.image)
         .likes(new AtomicLong(databaseComposition.likes))
         .viewed(new AtomicLong(databaseComposition.viewed))
-        .status(Composition.Status.from(databaseComposition.status))
+        .status(CompositionStatus.from(databaseComposition.status))
         .createdAt(databaseComposition.createdAt)
         .lastModified(databaseComposition.lastModified)
         .issuedAt(databaseComposition.issuedAt)
