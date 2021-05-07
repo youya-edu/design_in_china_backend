@@ -19,6 +19,11 @@ repositories {
     mavenCentral()
 }
 
+bootRun {
+    // for remote debug
+    jvmArgs "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.11.4'
