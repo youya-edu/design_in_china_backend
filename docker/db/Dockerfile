@@ -1,3 +1,0 @@
-FROM mysql/mysql-server
-
-ENV MYSQL_ROOT_PASSWORD=123
