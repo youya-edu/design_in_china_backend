@@ -1,4 +1,4 @@
-package org.dic.demo.user.resource.entity;
+package org.dic.demo.user.resource;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -22,7 +22,7 @@ import org.springframework.security.core.GrantedAuthority;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @ToString
-public class ApiUser {
+public class ViewUser {
 
   private long id;
   private String username;
@@ -37,8 +37,8 @@ public class ApiUser {
   private List<String> followed;
   private List<String> following;
 
-  public static ApiUser from(User user) {
-    return ApiUser.builder()
+  public static ViewUser from(User user) {
+    return ViewUser.builder()
         .id(user.getId())
         .username(user.getUsername())
         .email(user.getEmail())
@@ -55,13 +55,14 @@ public class ApiUser {
         .build();
   }
 
-  public static User asDomainObject(ApiUser apiUser) {
+  public static User asDomainObject(ViewUser viewUser) {
     return User.builder()
-        .id(apiUser.id)
-        .userKeyInfo(UserKeyInfo.builder().email(apiUser.email).username(apiUser.username).build())
-        .nickname(apiUser.nickname)
-        .avatar(apiUser.avatar)
-        .description(apiUser.description)
+        .id(viewUser.id)
+        .userKeyInfo(
+            UserKeyInfo.builder().email(viewUser.email).username(viewUser.username).build())
+        .nickname(viewUser.nickname)
+        .avatar(viewUser.avatar)
+        .description(viewUser.description)
         .build();
   }
 }

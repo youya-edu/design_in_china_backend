@@ -1,4 +1,4 @@
-package org.dic.demo.user.resource.entity;
+package org.dic.demo.user.resource;
 
 import java.util.List;
 import lombok.Getter;
@@ -8,8 +8,8 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-public class ApiUserCollection {
+public class ViewUserCollection {
 
-  private List<ApiUser> users;
+  private List<ViewUser> users;
   private int size;
 }

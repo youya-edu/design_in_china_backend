@@ -1,4 +1,4 @@
-package org.dic.demo.composition.resource.entity;
+package org.dic.demo.composition.resource;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -11,7 +11,7 @@ import org.dic.demo.composition.model.Composition;
 @Getter
 @Setter
 @Builder(toBuilder = true)
-public class ApiComposition {
+public class ViewComposition {
   private long id;
   private String author;
   private String name;
@@ -27,8 +27,8 @@ public class ApiComposition {
   private BigDecimal price;
   private long stock;
 
-  public static ApiComposition fromDomainObject(Composition composition) {
-    return ApiComposition.builder()
+  public static ViewComposition fromDomainObject(Composition composition) {
+    return ViewComposition.builder()
         .id(composition.getId())
         .author(composition.getAuthor() != null ? composition.getAuthor().getUsername() : "佚名")
         .name(composition.getName())

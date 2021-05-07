@@ -9,8 +9,6 @@ import org.dic.demo.user.exception.UserNotFoundException;
 import org.dic.demo.user.exception.UserUniqueViolationException;
 import org.dic.demo.user.model.User;
 import org.dic.demo.user.model.UserKeyInfo;
-import org.dic.demo.user.resource.entity.ApiUser;
-import org.dic.demo.user.resource.entity.ApiUserCollection;
 import org.dic.demo.user.service.UserChecker;
 import org.dic.demo.user.service.UserService;
 import org.dic.demo.util.HttpUtils;
@@ -34,25 +32,25 @@ public class UserResource {
   private final UserChecker userChecker;
 
   @GetMapping("/{username}")
-  public ResponseEntity<ApiUser> getUser(@PathVariable("username") String username) {
+  public ResponseEntity<ViewUser> getUser(@PathVariable("username") String username) {
     User user = userService.getUserByUsername(username);
     if (user == null) {
       throw new UserNotFoundException();
     }
-    return ResponseEntity.ok(ApiUser.from(user));
+    return ResponseEntity.ok(ViewUser.from(user));
   }
 
   @GetMapping
-  public ResponseEntity<ApiUserCollection> getAllUsers() {
+  public ResponseEntity<ViewUserCollection> getAllUsers() {
     List<User> users = userService.getAllUsers();
     if (users == null) {
       users = new ArrayList<>();
     }
-    List<ApiUser> apiUsers = users.stream().map(ApiUser::from).collect(Collectors.toList());
-    ApiUserCollection apiUserCollection = new ApiUserCollection();
-    apiUserCollection.setUsers(apiUsers);
-    apiUserCollection.setSize(apiUsers.size());
-    return ResponseEntity.ok(apiUserCollection);
+    List<ViewUser> viewUsers = users.stream().map(ViewUser::from).collect(Collectors.toList());
+    ViewUserCollection viewUserCollection = new ViewUserCollection();
+    viewUserCollection.setUsers(viewUsers);
+    viewUserCollection.setSize(viewUsers.size());
+    return ResponseEntity.ok(viewUserCollection);
   }
 
   @PostMapping
@@ -66,8 +64,8 @@ public class UserResource {
   }
 
   @PutMapping
-  public ResponseEntity<ApiUser> updateUser(@RequestBody ApiUser payload) {
-    User user = ApiUser.asDomainObject(payload);
+  public ResponseEntity<ViewUser> updateUser(@RequestBody ViewUser payload) {
+    User user = ViewUser.asDomainObject(payload);
     userService.updateUser(user);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
