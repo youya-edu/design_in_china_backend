@@ -1,5 +1,6 @@
 package org.dic.demo.composition.database;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
 import lombok.Builder;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.dic.demo.composition.model.Composition;
 import org.dic.demo.composition.model.CompositionStatus;
+import org.dic.demo.composition.model.Product;
 import org.dic.demo.user.model.User;
 
 @Setter
@@ -26,6 +28,8 @@ public class DatabaseComposition {
   private Date lastModified;
   private Date issuedAt;
   private boolean forSale;
+  private BigDecimal price;
+  private long stock;
 
   public static Composition asDomainObject(DatabaseComposition databaseComposition, User author) {
     return Composition.builder()
@@ -41,6 +45,11 @@ public class DatabaseComposition {
         .lastModified(databaseComposition.lastModified)
         .issuedAt(databaseComposition.issuedAt)
         .forSale(databaseComposition.forSale)
+        .product(
+            Product.builder()
+                .price(databaseComposition.getPrice())
+                .stock(new AtomicLong(databaseComposition.getStock()))
+                .build())
         .build();
   }
 
