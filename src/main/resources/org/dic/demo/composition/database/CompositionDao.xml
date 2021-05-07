@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.dic.demo.composition.database.CompositionDao">
-  <select id="existComposition" resultType="boolean">
+  <select id="compositionExists" resultType="boolean">
     select exists(select 1 from composition)
   </select>
   <select id="getAllCompositions" resultType="Composition">
