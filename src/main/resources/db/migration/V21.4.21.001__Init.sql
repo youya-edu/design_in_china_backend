@@ -48,9 +48,8 @@ CREATE
                 2
             ),
             stock BIGINT,
-            composition_id BIGINT unsigned NOT NULL,
             PRIMARY KEY(id),
-            FOREIGN KEY(composition_id) REFERENCES composition(id)
+            FOREIGN KEY(id) REFERENCES composition(id)
         );
 
 CREATE

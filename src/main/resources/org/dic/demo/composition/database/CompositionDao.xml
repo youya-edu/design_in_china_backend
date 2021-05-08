@@ -7,10 +7,7 @@
   </select>
   <select id="getAllCompositions" resultType="Composition">
     select *
-    from composition
-  </select>
-  <select id="getAllProducts" resultType="Product">
-    select * from product
+    from composition c left join product p on c.id = p.id
   </select>
   <insert
     id="createCompositions"
@@ -27,15 +24,15 @@
   </insert>
   <insert
     id="createProducts"
-    parameterType="Product"
+    parameterType="Composition"
     useGeneratedKeys="true"
     keyProperty="id"
     keyColumn="id"
   >
-    insert into product (price, stock, composition_id)
+    insert into product (price, stock)
     values
-    <foreach collection="products" item="p" separator=",">
-      (#{p.price}, #{p.stock}, #{p.compositionId})
+    <foreach collection="compositions" item="c" separator=",">
+      (#{c.price}, #{c.stock})
     </foreach>
   </insert>
 </mapper>
