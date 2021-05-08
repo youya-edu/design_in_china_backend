@@ -1,18 +1,26 @@
 package org.dic.demo.user.service;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.dic.demo.composition.repository.CompositionRepository;
 import org.dic.demo.user.exception.LoginInfoNotEnoughException;
+import org.dic.demo.user.exception.NoPermissionException;
 import org.dic.demo.user.exception.UserNotAuthenticatedException;
 import org.dic.demo.user.model.User;
 import org.dic.demo.user.model.UserKeyInfo;
 import org.dic.demo.user.repository.UserRepository;
+import org.dic.demo.util.HttpUtils;
+import org.dic.demo.util.media.MediaType;
+import org.dic.demo.util.media.MediaUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @AllArgsConstructor
 @Service
@@ -78,5 +86,29 @@ public class UserService implements UserDetailsService {
       throw new UserNotAuthenticatedException();
     }
     return user;
+  }
+
+  public String uploadAvatar(String targetUsername, String oldAvatarUrl, MultipartFile newAvatar)
+      throws UsernameNotFoundException {
+    // Check user's permission.
+    // User can only change their own avatar.
+    String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+    if (!StringUtils.equals(targetUsername, currentUsername)) {
+      throw new NoPermissionException();
+    }
+
+    try {
+      String origin = HttpUtils.getOriginFromUrl(oldAvatarUrl);
+      String path = HttpUtils.resolveFilePathFromUrl(oldAvatarUrl);
+
+      // Delete old avatar.
+      MediaUtils.deleteFile(path);
+
+      // Save new avatar.
+      return Paths.get(origin, MediaUtils.uploadFile(MediaType.AVATAR, newAvatar)).toString();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 }

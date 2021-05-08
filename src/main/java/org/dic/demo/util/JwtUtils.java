@@ -42,7 +42,7 @@ public class JwtUtils {
   }
 
   private static boolean isTokenExpired(String token) {
-    return extractExpiration(token).after(new Date());
+    return extractExpiration(token).before(new Date());
   }
 
   public static String extractUsername(String token) {

@@ -18,4 +18,12 @@ public final class HttpUtils {
   public static String getAuthorizationHeader(HttpServletRequest req) {
     return req.getHeader(HttpHeaders.AUTHORIZATION);
   }
+
+  public static String getOriginFromUrl(String url) {
+    return url.replace(resolveFilePathFromUrl(url), "");
+  }
+
+  public static String resolveFilePathFromUrl(String url) {
+    return URI.create(url).getPath();
+  }
 }
