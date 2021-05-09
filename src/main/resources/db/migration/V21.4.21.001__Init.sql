@@ -1,6 +1,6 @@
 CREATE
     TABLE
-        USER(
+        user(
             id BIGINT unsigned auto_increment,
             username VARCHAR(255) NOT NULL UNIQUE,
             email VARCHAR(255) NOT NULL UNIQUE,
@@ -64,7 +64,7 @@ CREATE
             likes BIGINT unsigned NOT NULL,
             dislikes BIGINT unsigned NOT NULL,
             PRIMARY KEY(id),
-            FOREIGN KEY(author) REFERENCES USER(id)
+            FOREIGN KEY(author) REFERENCES user(id)
         );
 
 CREATE
@@ -78,7 +78,7 @@ CREATE
             memo text,
             status INT NOT NULL,
             PRIMARY KEY(id),
-            FOREIGN KEY(customer_id) REFERENCES USER(id)
+            FOREIGN KEY(customer_id) REFERENCES user(id)
         );
 
 CREATE
