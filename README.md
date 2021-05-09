@@ -29,17 +29,19 @@ git 的配置是必须的。
 
 在 clone 仓库之前，务必运行以下命令！（否则非常麻烦）
 
+**MAC**
+
+> `git config --global core.autocrlf input`
+
+**Windows**
+
 > `git config --global core.autocrlf true`
 
-这个命令可以消除 Windows 和 Mac/Linux 的换行符差异。结果如下，
+**Linux**
 
-| 设定值 | checkout 时 | commit 时  |
-| ------ | ----------- | ---------- |
-| true   | LF -> CRLF  | CRLF -> LF |
-| input  | 不变        | CRLF -> LF |
-| false  | 不变        | 不变       |
+> `git config --global core.autocrlf input`
 
-具体详情参照这个[链接](https://qiita.com/uggds/items/00a1974ec4f115616580)
+详情参见[文档](https://docs.github.com/en/github/getting-started-with-github/configuring-git-to-handle-line-endings)。
 
 ### 配置 hookspath
 
