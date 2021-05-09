@@ -29,17 +29,23 @@ git 的配置是必须的。
 
 在 clone 仓库之前，务必运行以下命令！（否则非常麻烦）
 
-**MAC**
+#### MAC
 
-> `git config --global core.autocrlf input`
+```shell
+git config --global core.autocrlf input
+```
 
-**Windows**
+#### Windows
 
-> `git config --global core.autocrlf true`
+```shell
+git config --global core.autocrlf true
+```
 
-**Linux**
+#### Linux
 
-> `git config --global core.autocrlf input`
+```shell
+git config --global core.autocrlf input
+```
 
 详情参见[文档](https://docs.github.com/en/github/getting-started-with-github/configuring-git-to-handle-line-endings)。
 
