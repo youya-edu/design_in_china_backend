@@ -11,9 +11,11 @@ public interface CompositionDao {
 
   List<DatabaseComposition> getAllCompositions();
 
+  List<DatabaseComposition> getCompositionsByUserId(long userId);
+
   boolean compositionExists();
 
   int createCompositions(@Param("compositions") List<DatabaseComposition> compositions);
 
-  int createProducts(@Param("compositions") List<DatabaseComposition> products);
+  int createProducts(@Param("compositions") List<DatabaseComposition> compositions);
 }

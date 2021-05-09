@@ -24,12 +24,24 @@ public class CompositionRepository {
   }
 
   public List<Composition> getAllCompositions() {
-    return compositionDao.getAllCompositions().stream()
+    List<DatabaseComposition> databaseCompositions = compositionDao.getAllCompositions();
+    return convertToCompositions(databaseCompositions);
+  }
+
+  public List<Composition> getCompositionsByUserId(long userId) {
+    List<DatabaseComposition> databaseCompositions = compositionDao.getCompositionsByUserId(userId);
+    return convertToCompositions(databaseCompositions);
+  }
+
+  private List<Composition> convertToCompositions(List<DatabaseComposition> databaseCompositions) {
+    return databaseCompositions.stream()
         .map(
-            databaseComposition ->
-                DatabaseComposition.asDomainObject(
-                    databaseComposition,
-                    userRepository.getUserById(databaseComposition.getAuthorId())))
+            databaseComposition -> {
+              Composition composition = DatabaseComposition.toDomainObject(databaseComposition);
+              User author = userRepository.getUserById(databaseComposition.getAuthorId());
+              composition.setAuthor(author);
+              return composition;
+            })
         .collect(Collectors.toList());
   }
 

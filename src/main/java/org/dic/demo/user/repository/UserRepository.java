@@ -27,7 +27,7 @@ public class UserRepository {
     if (databaseUser == null) {
       return null;
     }
-    return DatabaseUser.asDomainObject(databaseUser);
+    return DatabaseUser.toDomainObject(databaseUser);
   }
 
   /**
@@ -41,7 +41,7 @@ public class UserRepository {
     if (databaseUser == null) {
       return null;
     }
-    return DatabaseUser.asDomainObject(userDao.getUserByUsername(username));
+    return DatabaseUser.toDomainObject(userDao.getUserByUsername(username));
   }
 
   /**
@@ -55,7 +55,7 @@ public class UserRepository {
     if (databaseUser == null) {
       return null;
     }
-    return DatabaseUser.asDomainObject(userDao.getUserByEmail(email));
+    return DatabaseUser.toDomainObject(userDao.getUserByEmail(email));
   }
 
   /**
@@ -69,7 +69,7 @@ public class UserRepository {
       return null;
     }
     return userDao.getAllUsers().stream()
-        .map(DatabaseUser::asDomainObject)
+        .map(DatabaseUser::toDomainObject)
         .collect(Collectors.toList());
   }
 

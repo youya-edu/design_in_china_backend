@@ -9,7 +9,6 @@ import lombok.Setter;
 import org.dic.demo.composition.model.Composition;
 import org.dic.demo.composition.model.CompositionStatus;
 import org.dic.demo.composition.model.Product;
-import org.dic.demo.user.model.User;
 
 @Setter
 @Getter
@@ -31,10 +30,9 @@ public class DatabaseComposition {
   private BigDecimal price;
   private long stock;
 
-  public static Composition asDomainObject(DatabaseComposition databaseComposition, User author) {
+  public static Composition toDomainObject(DatabaseComposition databaseComposition) {
     return Composition.builder()
         .id(databaseComposition.id)
-        .author(author)
         .name(databaseComposition.name)
         .description(databaseComposition.description)
         .image(databaseComposition.image)
