@@ -35,6 +35,9 @@ public class UserService implements UserDetailsService {
 
   public User getUserByUsername(String username) {
     User user = userRepository.getUserByUsername(username);
+    if (user == null) {
+      return null;
+    }
     fillUserWithCompositions(user);
     return user;
   }
