@@ -2,7 +2,7 @@ package org.dic.demo.security;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.dic.demo.util.HttpUtils;
+import org.dic.demo.util.web.WebUtils;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ public class BasicAuthenticationController {
 
   @GetMapping("/basic-authenticate")
   public ResponseEntity<String> authenticate(HttpServletRequest req, HttpServletResponse res) {
-    String authorizationHeader = HttpUtils.getAuthorizationHeader(req);
+    String authorizationHeader = WebUtils.getAuthorizationHeader(req);
 
     // 如果存在Authorization Header
     if (AuthenticationType.isBasic(authorizationHeader)) {

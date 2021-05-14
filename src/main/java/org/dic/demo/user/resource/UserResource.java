@@ -12,7 +12,7 @@ import org.dic.demo.user.model.User;
 import org.dic.demo.user.model.UserKeyInfo;
 import org.dic.demo.user.service.UserChecker;
 import org.dic.demo.user.service.UserService;
-import org.dic.demo.util.HttpUtils;
+import org.dic.demo.util.web.WebUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -63,7 +63,7 @@ public class UserResource {
       throw new UserUniqueViolationException();
     }
     User newUser = userService.createUser(payload);
-    return ResponseEntity.created(HttpUtils.uriWithPath(req, String.valueOf(newUser.getId())))
+    return ResponseEntity.created(WebUtils.uriWithPath(req, String.valueOf(newUser.getId())))
         .body(newUser);
   }
 

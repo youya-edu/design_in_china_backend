@@ -1,7 +1,6 @@
 package org.dic.demo.user.service;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -12,9 +11,10 @@ import org.dic.demo.user.exception.UserNotAuthenticatedException;
 import org.dic.demo.user.model.User;
 import org.dic.demo.user.model.UserKeyInfo;
 import org.dic.demo.user.repository.UserRepository;
-import org.dic.demo.util.HttpUtils;
 import org.dic.demo.util.media.MediaType;
 import org.dic.demo.util.media.MediaUtils;
+import org.dic.demo.util.web.WebHelper;
+import org.dic.demo.util.web.WebUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,6 +28,7 @@ public class UserService implements UserDetailsService {
 
   private final UserRepository userRepository;
   private final CompositionRepository compositionRepository;
+  private final WebHelper webHelper;
 
   public User getUserById(long userId) {
     return userRepository.getUserById(userId);
@@ -101,14 +102,13 @@ public class UserService implements UserDetailsService {
     }
 
     try {
-      String origin = HttpUtils.getOriginFromUrl(oldAvatarUrl);
-      String path = HttpUtils.resolveFilePathFromUrl(oldAvatarUrl);
+      String path = WebUtils.resolveFilePathFromUrl(oldAvatarUrl);
 
       // Delete old avatar.
       MediaUtils.deleteFile(path);
 
       // Save new avatar.
-      return Paths.get(origin, MediaUtils.uploadFile(MediaType.AVATAR, newAvatar)).toString();
+      return webHelper.getOrigin() + MediaUtils.uploadFile(MediaType.AVATAR, newAvatar);
     } catch (IOException e) {
       e.printStackTrace();
     }

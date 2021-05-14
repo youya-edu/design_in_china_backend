@@ -1,4 +1,4 @@
-package org.dic.demo.util;
+package org.dic.demo.util.web;
 
 import java.net.URI;
 import javax.servlet.http.HttpServletRequest;
@@ -6,7 +6,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.util.UriComponentsBuilder;
 
-public final class HttpUtils {
+public final class WebUtils {
+
+  private WebUtils() {}
 
   public static URI uriWithPath(HttpServletRequest req, String path) {
     return UriComponentsBuilder.fromHttpRequest(new ServletServerHttpRequest(req))
@@ -17,10 +19,6 @@ public final class HttpUtils {
 
   public static String getAuthorizationHeader(HttpServletRequest req) {
     return req.getHeader(HttpHeaders.AUTHORIZATION);
-  }
-
-  public static String getOriginFromUrl(String url) {
-    return url.replace(resolveFilePathFromUrl(url), "");
   }
 
   public static String resolveFilePathFromUrl(String url) {
