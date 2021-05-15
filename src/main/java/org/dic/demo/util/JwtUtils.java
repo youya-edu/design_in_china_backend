@@ -16,6 +16,8 @@ public class JwtUtils {
   public static final String SECRET_KEY = "dic_secret";
   public static final long TOKEN_EXPIRE_PERIOD = 30 * 60 * 60 * 1000L;
 
+  private JwtUtils() {}
+
   public static String getToken(String authorizationHeader) {
     return authorizationHeader.substring(AuthenticationType.BEARER.value().length() + 1);
   }

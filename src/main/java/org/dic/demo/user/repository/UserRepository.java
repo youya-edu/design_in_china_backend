@@ -8,6 +8,9 @@ import org.dic.demo.user.database.UserDao;
 import org.dic.demo.user.model.User;
 import org.dic.demo.user.model.UserKeyInfo;
 import org.dic.demo.user.servicestub.UserServiceStub;
+import org.dic.demo.util.media.MediaType;
+import org.dic.demo.util.media.MediaUtils;
+import org.dic.demo.util.web.WebHelper;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Repository;
 public class UserRepository {
 
   private final UserDao userDao;
+  private final WebHelper webHelper;
 
   /**
    * Gets user by id.
@@ -82,6 +86,10 @@ public class UserRepository {
   public User createUser(UserKeyInfo userKeyInfo) {
     User user = User.builder().userKeyInfo(userKeyInfo).build();
     user.setNickname(user.getUsername());
+    // set default avatar
+    String avatarPath = MediaUtils.getDefaultFile(MediaType.AVATAR);
+    String avatarUrl = webHelper.getOrigin() + avatarPath;
+    user.setAvatar(avatarUrl);
     long id = userDao.createUser(DatabaseUser.fromDomainObject(user));
     return user.toBuilder().id(id).build();
   }
