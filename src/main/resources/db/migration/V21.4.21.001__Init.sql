@@ -54,6 +54,20 @@ create
 
 create
     table
+        cart(
+            owner_id bigint unsigned not null,
+            product_id bigint unsigned not null,
+            quantity int not null default 0,
+            primary key(
+                owner_id,
+                product_id
+            ),
+            foreign key(owner_id) references user(id),
+            foreign key(product_id) references product(id)
+        );
+
+create
+    table
         comment(
             id bigint unsigned auto_increment,
             author bigint unsigned not null,
