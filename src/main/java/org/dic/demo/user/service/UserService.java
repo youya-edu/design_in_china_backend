@@ -5,8 +5,8 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.dic.demo.composition.repository.CompositionRepository;
+import org.dic.demo.security.SecurityGuard;
 import org.dic.demo.user.exception.LoginInfoNotEnoughException;
-import org.dic.demo.user.exception.NoPermissionException;
 import org.dic.demo.user.exception.UserNotAuthenticatedException;
 import org.dic.demo.user.model.User;
 import org.dic.demo.user.model.UserKeyInfo;
@@ -15,7 +15,6 @@ import org.dic.demo.util.media.MediaType;
 import org.dic.demo.util.media.MediaUtils;
 import org.dic.demo.util.web.WebHelper;
 import org.dic.demo.util.web.WebUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -96,10 +95,7 @@ public class UserService implements UserDetailsService {
       throws UsernameNotFoundException {
     // Check user's permission.
     // User can only change their own avatar.
-    String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-    if (!StringUtils.equals(targetUsername, currentUsername)) {
-      throw new NoPermissionException();
-    }
+    SecurityGuard.checkUserPermission(targetUsername);
 
     try {
       String path = WebUtils.resolveFilePathFromUrl(oldAvatarUrl);

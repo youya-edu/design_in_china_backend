@@ -1,4 +1,4 @@
-package org.dic.demo.user.exception;
+package org.dic.demo.security;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

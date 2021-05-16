@@ -11,9 +11,9 @@ import org.dic.demo.user.servicestub.UserServiceStub;
 import org.dic.demo.util.media.MediaType;
 import org.dic.demo.util.media.MediaUtils;
 import org.dic.demo.util.web.WebHelper;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
-@Repository
+@Component
 @AllArgsConstructor
 public class UserRepository {
 
@@ -45,7 +45,7 @@ public class UserRepository {
     if (databaseUser == null) {
       return null;
     }
-    return DatabaseUser.toDomainObject(userDao.getUserByUsername(username));
+    return DatabaseUser.toDomainObject(databaseUser);
   }
 
   /**
@@ -59,7 +59,7 @@ public class UserRepository {
     if (databaseUser == null) {
       return null;
     }
-    return DatabaseUser.toDomainObject(userDao.getUserByEmail(email));
+    return DatabaseUser.toDomainObject(databaseUser);
   }
 
   /**
