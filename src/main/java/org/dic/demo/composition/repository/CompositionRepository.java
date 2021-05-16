@@ -10,9 +10,9 @@ import org.dic.demo.composition.servicestub.CompositionServiceStub;
 import org.dic.demo.user.model.User;
 import org.dic.demo.user.repository.UserRepository;
 import org.dic.demo.user.servicestub.UserServiceStub;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
-@Repository
+@Component
 @AllArgsConstructor
 public class CompositionRepository {
 

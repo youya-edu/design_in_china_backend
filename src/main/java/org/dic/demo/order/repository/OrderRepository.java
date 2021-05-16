@@ -3,9 +3,9 @@ package org.dic.demo.order.repository;
 import java.util.List;
 import org.dic.demo.order.model.Order;
 import org.dic.demo.order.servicestub.OrderServiceStub;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
-@Repository
+@Component
 public class OrderRepository {
 
   public Order getOrderById(long orderId) {
