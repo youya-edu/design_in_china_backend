@@ -14,6 +14,11 @@
     from composition c left join product p on c.id = p.id
     where c.author_id = #{userId}
   </select>
+  <select id="getCompositionById" resultType="Composition">
+    select *
+    from composition c left join product p on c.id = p.id
+    where c.id = #{compositionId}
+  </select>
   <insert
     id="createCompositions"
     parameterType="Composition"
