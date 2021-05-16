@@ -57,7 +57,7 @@ spotless {
     }
     sql {
         target 'src/**/*.sql'
-        dbeaver()
+        dbeaver().configFile('src/main/resources/style/sql/dbeaver.properties')
     }
     format 'xml', {
         target 'src/**/*.xml'

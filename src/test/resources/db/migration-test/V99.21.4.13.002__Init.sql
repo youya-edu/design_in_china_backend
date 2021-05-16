@@ -1,79 +1,79 @@
-CREATE
-    TABLE
-        USER(
-            id BIGINT unsigned auto_increment,
-            username VARCHAR(255) NOT NULL,
-            email VARCHAR(255) NOT NULL,
-            password VARCHAR(255) NOT NULL,
-            avatar VARCHAR(255),
-            phone VARCHAR(255),
+create
+    table
+        user(
+            id bigint unsigned auto_increment,
+            username varchar(255) not null,
+            email varchar(255) not null,
+            password varchar(255) not null,
+            avatar varchar(255),
+            phone varchar(255),
             description text,
-            created_at datetime DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY(id),
-            UNIQUE(
+            created_at datetime default current_timestamp,
+            primary key(id),
+            unique(
                 id,
                 username,
                 email
             )
         );
 
-CREATE
-    TABLE
+create
+    table
         composition(
-            id BIGINT unsigned auto_increment,
-            author BIGINT unsigned NOT NULL,
-            name VARCHAR(255) NOT NULL,
-            description text NOT NULL,
-            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            id bigint unsigned auto_increment,
+            author bigint unsigned not null,
+            name varchar(255) not null,
+            description text not null,
+            created_at datetime default current_timestamp,
             lastModified datetime,
-            heat BIGINT unsigned NOT NULL,
-            likes BIGINT unsigned NOT NULL,
-            dislikes BIGINT unsigned NOT NULL,
-            image VARCHAR(1024),
-            stock BIGINT,
-            price DOUBLE,
-            PRIMARY KEY(id),
-            UNIQUE(id),
-            FOREIGN KEY(author) REFERENCES USER(id)
+            heat bigint unsigned not null,
+            likes bigint unsigned not null,
+            dislikes bigint unsigned not null,
+            image varchar(1024),
+            stock bigint,
+            price double,
+            primary key(id),
+            unique(id),
+            foreign key(author) references user(id)
         );
 
-CREATE
-    TABLE
+create
+    table
         comment(
-            id BIGINT unsigned auto_increment,
-            author BIGINT unsigned NOT NULL,
-            composition_id BIGINT NOT NULL,
-            content text NOT NULL,
-            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            id bigint unsigned auto_increment,
+            author bigint unsigned not null,
+            composition_id bigint not null,
+            content text not null,
+            created_at datetime default current_timestamp,
             lastModified datetime,
-            likes BIGINT unsigned NOT NULL,
-            dislikes BIGINT unsigned NOT NULL,
-            PRIMARY KEY(id),
-            UNIQUE(id),
-            FOREIGN KEY(author) REFERENCES USER(id)
+            likes bigint unsigned not null,
+            dislikes bigint unsigned not null,
+            primary key(id),
+            unique(id),
+            foreign key(author) references user(id)
         );
 
-CREATE
-    TABLE
+create
+    table
         orders(
-            id BIGINT unsigned auto_increment,
-            customer_id BIGINT unsigned NOT NULL,
-            orderDate datetime NOT NULL,
-            requiredDate datetime NOT NULL,
-            shippedDate datetime NOT NULL,
+            id bigint unsigned auto_increment,
+            customer_id bigint unsigned not null,
+            orderDate datetime not null,
+            requiredDate datetime not null,
+            shippedDate datetime not null,
             memo text,
-            status INT NOT NULL,
-            PRIMARY KEY(id),
-            UNIQUE(id),
-            FOREIGN KEY(customer_id) REFERENCES USER(id)
+            status int not null,
+            primary key(id),
+            unique(id),
+            foreign key(customer_id) references user(id)
         );
 
-CREATE
-    TABLE
+create
+    table
         follow(
-            id BIGINT unsigned auto_increment,
-            followee_id BIGINT unsigned NOT NULL,
-            follower_id BIGINT unsigned NOT NULL,
-            PRIMARY KEY(id),
-            UNIQUE(id)
+            id bigint unsigned auto_increment,
+            followee_id bigint unsigned not null,
+            follower_id bigint unsigned not null,
+            primary key(id),
+            unique(id)
         );
