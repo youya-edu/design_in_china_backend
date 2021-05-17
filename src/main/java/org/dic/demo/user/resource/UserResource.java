@@ -39,7 +39,7 @@ public class UserResource {
     if (user == null) {
       throw new UserNotFoundException();
     }
-    return ResponseEntity.ok(ViewUser.fromDomainObject(user));
+    return ResponseEntity.ok(user.toViewObject());
   }
 
   @GetMapping("/users")
@@ -48,8 +48,7 @@ public class UserResource {
     if (users == null) {
       users = new ArrayList<>();
     }
-    List<ViewUser> viewUsers =
-        users.stream().map(ViewUser::fromDomainObject).collect(Collectors.toList());
+    List<ViewUser> viewUsers = users.stream().map(User::toViewObject).collect(Collectors.toList());
     ViewUserCollection viewUserCollection =
         ViewUserCollection.builder().users(viewUsers).size(viewUsers.size()).build();
     return ResponseEntity.ok(viewUserCollection);
@@ -67,7 +66,7 @@ public class UserResource {
 
   @PutMapping("/users")
   public ResponseEntity<ViewUser> updateUser(@RequestBody ViewUser payload) {
-    User user = ViewUser.toDomainObject(payload);
+    User user = payload.toDomainObject();
     userService.updateUser(user);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }

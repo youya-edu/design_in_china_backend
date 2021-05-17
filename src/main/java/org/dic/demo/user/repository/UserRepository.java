@@ -27,7 +27,7 @@ public class UserRepository {
     if (databaseUser == null) {
       return null;
     }
-    return DatabaseUser.toDomainObject(databaseUser);
+    return databaseUser.toDomainObject();
   }
 
   /**
@@ -41,7 +41,7 @@ public class UserRepository {
     if (databaseUser == null) {
       return null;
     }
-    return DatabaseUser.toDomainObject(userDao.getUserByUsername(username));
+    return userDao.getUserByUsername(username).toDomainObject();
   }
 
   /**
@@ -55,7 +55,7 @@ public class UserRepository {
     if (databaseUser == null) {
       return null;
     }
-    return DatabaseUser.toDomainObject(userDao.getUserByEmail(email));
+    return userDao.getUserByEmail(email).toDomainObject();
   }
 
   /**
@@ -68,9 +68,7 @@ public class UserRepository {
     if (databaseUser == null) {
       return null;
     }
-    return userDao.getAllUsers().stream()
-        .map(DatabaseUser::toDomainObject)
-        .collect(Collectors.toList());
+    return databaseUser.stream().map(DatabaseUser::toDomainObject).collect(Collectors.toList());
   }
 
   /**
@@ -82,12 +80,12 @@ public class UserRepository {
   public User createUser(UserKeyInfo userKeyInfo) {
     User user = User.builder().userKeyInfo(userKeyInfo).build();
     user.setNickname(user.getUsername());
-    long id = userDao.createUser(DatabaseUser.fromDomainObject(user));
+    long id = userDao.createUser(user.toDatabaseObject());
     return user.toBuilder().id(id).build();
   }
 
   public void updateUser(User user) {
-    userDao.updateUser(DatabaseUser.fromDomainObject(user));
+    userDao.updateUser(user.toDatabaseObject());
   }
 
   public void deleteUser(long userId) {

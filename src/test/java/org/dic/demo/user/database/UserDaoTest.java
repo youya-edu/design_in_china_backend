@@ -27,7 +27,7 @@ public class UserDaoTest {
                     .password("test-password")
                     .build())
             .build();
-    DatabaseUser databaseUser = DatabaseUser.fromDomainObject(user);
+    DatabaseUser databaseUser = user.toDatabaseObject();
     userDao.createUser(databaseUser);
     DatabaseUser selectedUser = userDao.getUserById(databaseUser.getId());
     assertEquals("test-username", selectedUser.getUsername());

@@ -6,13 +6,18 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.dic.demo.common.TransformableToDatabase;
+import org.dic.demo.common.TransformableToView;
 import org.dic.demo.composition.model.Composition;
 import org.dic.demo.order.model.Order;
+import org.dic.demo.user.database.DatabaseUser;
+import org.dic.demo.user.resource.ViewUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -20,7 +25,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Setter
 @ToString
 @Builder(toBuilder = true)
-public class User implements UserDetails {
+public class User
+    implements UserDetails, TransformableToView<ViewUser>, TransformableToDatabase<DatabaseUser> {
 
   private static final long serialVersionUID = 4358298328226766436L;
 
@@ -78,5 +84,44 @@ public class User implements UserDetails {
   @Override
   public boolean isEnabled() {
     return this.enabled;
+  }
+
+  @Override
+  public ViewUser toViewObject() {
+    return ViewUser.builder()
+        .id(this.getId())
+        .username(this.getUsername())
+        .email(this.getEmail())
+        .nickname(this.getNickname())
+        .avatar(this.getAvatar())
+        .phone(this.getPhone())
+        .description(this.getDescription())
+        .createdAt(this.getCreatedAt())
+        .compositions(
+            this.getCompositions().stream()
+                .map(Composition::toViewObject)
+                .collect(Collectors.toList()))
+        .followed(this.getFollowed().stream().map(User::getUsername).collect(Collectors.toList()))
+        .following(this.getFollowing().stream().map(User::getUsername).collect(Collectors.toList()))
+        .build();
+  }
+
+  @Override
+  public DatabaseUser toDatabaseObject() {
+    return DatabaseUser.builder()
+        .id(this.getId())
+        .username(this.getUsername())
+        .email(this.getEmail())
+        .password(this.getPassword())
+        .accountExpired(!this.isAccountNonExpired())
+        .accountLocked(!this.isAccountNonLocked())
+        .credentialsExpired(!this.isCredentialsNonExpired())
+        .enabled(this.isEnabled())
+        .nickname(this.getNickname())
+        .avatar(this.getAvatar())
+        .phone(this.getPhone())
+        .description(this.getDescription())
+        .createdAt(this.getCreatedAt())
+        .build();
   }
 }

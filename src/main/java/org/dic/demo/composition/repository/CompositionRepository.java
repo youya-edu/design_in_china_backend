@@ -37,7 +37,7 @@ public class CompositionRepository {
     return databaseCompositions.stream()
         .map(
             databaseComposition -> {
-              Composition composition = DatabaseComposition.toDomainObject(databaseComposition);
+              Composition composition = databaseComposition.toDomainObject();
               User author = userRepository.getUserById(databaseComposition.getAuthorId());
               composition.setAuthor(author);
               return composition;

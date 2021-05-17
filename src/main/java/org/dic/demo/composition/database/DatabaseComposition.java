@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.dic.demo.common.TransformableToDomain;
 import org.dic.demo.composition.model.Composition;
 import org.dic.demo.composition.model.CompositionStatus;
 import org.dic.demo.composition.model.Product;
@@ -13,7 +14,7 @@ import org.dic.demo.composition.model.Product;
 @Setter
 @Getter
 @Builder(toBuilder = true)
-public class DatabaseComposition {
+public class DatabaseComposition implements TransformableToDomain<Composition> {
 
   private long id;
   private long authorId;
@@ -30,41 +31,22 @@ public class DatabaseComposition {
   private BigDecimal price;
   private long stock;
 
-  public static Composition toDomainObject(DatabaseComposition databaseComposition) {
+  @Override
+  public Composition toDomainObject() {
     return Composition.builder()
-        .id(databaseComposition.id)
-        .name(databaseComposition.name)
-        .description(databaseComposition.description)
-        .image(databaseComposition.image)
-        .likes(new AtomicLong(databaseComposition.likes))
-        .viewed(new AtomicLong(databaseComposition.viewed))
-        .status(CompositionStatus.from(databaseComposition.status))
-        .createdAt(databaseComposition.createdAt)
-        .lastModified(databaseComposition.lastModified)
-        .issuedAt(databaseComposition.issuedAt)
-        .forSale(databaseComposition.forSale)
+        .id(this.id)
+        .name(this.name)
+        .description(this.description)
+        .image(this.image)
+        .likes(new AtomicLong(this.likes))
+        .viewed(new AtomicLong(this.viewed))
+        .status(CompositionStatus.from(this.status))
+        .createdAt(this.createdAt)
+        .lastModified(this.lastModified)
+        .issuedAt(this.issuedAt)
+        .forSale(this.forSale)
         .product(
-            Product.builder()
-                .price(databaseComposition.getPrice())
-                .stock(new AtomicLong(databaseComposition.getStock()))
-                .build())
-        .build();
-  }
-
-  public static DatabaseComposition fromDomainObject(Composition composition) {
-    return DatabaseComposition.builder()
-        .id(composition.getId())
-        .authorId(composition.getAuthor().getId())
-        .name(composition.getName())
-        .description(composition.getDescription())
-        .image(composition.getImage())
-        .likes(composition.getLikes().get())
-        .viewed(composition.getViewed().get())
-        .status(composition.getStatus().name())
-        .createdAt(composition.getCreatedAt())
-        .lastModified(composition.getCreatedAt())
-        .issuedAt(composition.getIssuedAt())
-        .forSale(composition.isForSale())
+            Product.builder().price(this.getPrice()).stock(new AtomicLong(this.getStock())).build())
         .build();
   }
 }
