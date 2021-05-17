@@ -4,7 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.dic.demo.composition.model.Composition;
 import org.dic.demo.composition.service.CompositionService;
-import org.dic.demo.util.HttpUtils;
+import org.dic.demo.util.web.WebUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +41,7 @@ public class UserCompositionResource {
       @PathVariable("userId") long userId,
       @RequestBody Composition composition,
       HttpServletRequest req) {
-    return ResponseEntity.created(HttpUtils.uriWithPath(req, String.valueOf(composition.getId())))
+    return ResponseEntity.created(WebUtils.uriWithPath(req, String.valueOf(composition.getId())))
         .body(compositionService.createComposition(userId, composition));
   }
 

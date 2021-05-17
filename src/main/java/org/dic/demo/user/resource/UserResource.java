@@ -12,7 +12,7 @@ import org.dic.demo.user.model.User;
 import org.dic.demo.user.model.UserKeyInfo;
 import org.dic.demo.user.service.UserChecker;
 import org.dic.demo.user.service.UserService;
-import org.dic.demo.util.HttpUtils;
+import org.dic.demo.util.web.WebUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,18 +22,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @AllArgsConstructor
 @RestController
+@RequestMapping("/users")
 public class UserResource {
 
   private final UserService userService;
   private final UserChecker userChecker;
 
-  @GetMapping("/u/{username}")
+  @GetMapping("/{username}")
   public ResponseEntity<ViewUser> getUser(@PathVariable("username") String username) {
     User user = userService.getUserByUsername(username);
     if (user == null) {
@@ -42,7 +44,7 @@ public class UserResource {
     return ResponseEntity.ok(user.toViewObject());
   }
 
-  @GetMapping("/users")
+  @GetMapping
   public ResponseEntity<ViewUserCollection> getAllUsers() {
     List<User> users = userService.getAllUsers();
     if (users == null) {
@@ -54,30 +56,30 @@ public class UserResource {
     return ResponseEntity.ok(viewUserCollection);
   }
 
-  @PostMapping("/users")
+  @PostMapping
   public ResponseEntity<User> signup(@RequestBody UserKeyInfo payload, HttpServletRequest req) {
     if (userChecker.isEmailExisted(payload) || userChecker.isUsernameExisted(payload)) {
       throw new UserUniqueViolationException();
     }
     User newUser = userService.createUser(payload);
-    return ResponseEntity.created(HttpUtils.uriWithPath(req, String.valueOf(newUser.getId())))
+    return ResponseEntity.created(WebUtils.uriWithPath(req, String.valueOf(newUser.getId())))
         .body(newUser);
   }
 
-  @PutMapping("/users")
+  @PutMapping
   public ResponseEntity<ViewUser> updateUser(@RequestBody ViewUser payload) {
     User user = payload.toDomainObject();
     userService.updateUser(user);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
-  @DeleteMapping("/users/{userId}")
+  @DeleteMapping("/{userId}")
   public ResponseEntity<Void> deleteUser(@PathVariable("userId") long userId) {
     userService.deleteUser(userId);
     return ResponseEntity.noContent().build();
   }
 
-  @PostMapping(value = "/users/{username}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @PostMapping(value = "/{username}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<ViewAvatar> uploadAvatar(
       @PathVariable("username") String username,
       @RequestParam("oldUrl") String oldAvatar,

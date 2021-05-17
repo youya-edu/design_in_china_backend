@@ -10,9 +10,9 @@ import org.dic.demo.composition.servicestub.CompositionServiceStub;
 import org.dic.demo.user.model.User;
 import org.dic.demo.user.repository.UserRepository;
 import org.dic.demo.user.servicestub.UserServiceStub;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
-@Repository
+@Component
 @AllArgsConstructor
 public class CompositionRepository {
 
@@ -20,7 +20,7 @@ public class CompositionRepository {
   private final UserRepository userRepository;
 
   public Composition getCompositionById(long compositionId) {
-    return CompositionServiceStub.getCompositionById(compositionId);
+    return convertToComposition(compositionDao.getCompositionById(compositionId));
   }
 
   public List<Composition> getAllCompositions() {
@@ -35,14 +35,15 @@ public class CompositionRepository {
 
   private List<Composition> convertToCompositions(List<DatabaseComposition> databaseCompositions) {
     return databaseCompositions.stream()
-        .map(
-            databaseComposition -> {
-              Composition composition = databaseComposition.toDomainObject();
-              User author = userRepository.getUserById(databaseComposition.getAuthorId());
-              composition.setAuthor(author);
-              return composition;
-            })
+        .map(this::convertToComposition)
         .collect(Collectors.toList());
+  }
+
+  private Composition convertToComposition(DatabaseComposition databaseComposition) {
+    Composition composition = databaseComposition.toDomainObject();
+    User author = userRepository.getUserById(databaseComposition.getAuthorId());
+    composition.setAuthor(author);
+    return composition;
   }
 
   public Composition createComposition(long userId, Composition composition) {

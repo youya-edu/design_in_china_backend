@@ -13,6 +13,8 @@ public interface CompositionDao {
 
   List<DatabaseComposition> getCompositionsByUserId(long userId);
 
+  DatabaseComposition getCompositionById(long id);
+
   boolean compositionExists();
 
   int createCompositions(@Param("compositions") List<DatabaseComposition> compositions);

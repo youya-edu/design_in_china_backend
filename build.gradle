@@ -44,7 +44,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.1.4'
-    testRuntimeOnly 'com.h2database:h2'
+    testRuntimeOnly 'mysql:mysql-connector-java'
 }
 
 test {
@@ -57,7 +57,7 @@ spotless {
     }
     sql {
         target 'src/**/*.sql'
-        dbeaver()
+        dbeaver().configFile('src/main/resources/style/sql/dbeaver.properties')
     }
     format 'xml', {
         target 'src/**/*.xml'

@@ -4,7 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.dic.demo.order.model.Order;
 import org.dic.demo.order.service.OrderService;
-import org.dic.demo.util.HttpUtils;
+import org.dic.demo.util.web.WebUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +38,7 @@ public class OrderResource {
   @PostMapping
   public ResponseEntity<Order> createOrder(@RequestBody Order payload, HttpServletRequest req) {
     Order newOrder = orderService.createOrder(payload);
-    return ResponseEntity.created(HttpUtils.uriWithPath(req, String.valueOf(newOrder.getId())))
+    return ResponseEntity.created(WebUtils.uriWithPath(req, String.valueOf(newOrder.getId())))
         .body(newOrder);
   }
 

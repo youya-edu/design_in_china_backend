@@ -5,8 +5,8 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.dic.demo.util.HttpUtils;
 import org.dic.demo.util.JwtUtils;
+import org.dic.demo.util.web.WebUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +27,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
-    String authorizationHeader = HttpUtils.getAuthorizationHeader(request);
+    String authorizationHeader = WebUtils.getAuthorizationHeader(request);
     String jwtToken = null;
     String username = null;
     if (AuthenticationType.isBearer(authorizationHeader)) {

@@ -1,21 +1,20 @@
 package org.dic.demo.user.service;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.dic.demo.composition.repository.CompositionRepository;
+import org.dic.demo.security.SecurityGuard;
 import org.dic.demo.user.exception.LoginInfoNotEnoughException;
-import org.dic.demo.user.exception.NoPermissionException;
 import org.dic.demo.user.exception.UserNotAuthenticatedException;
 import org.dic.demo.user.model.User;
 import org.dic.demo.user.model.UserKeyInfo;
 import org.dic.demo.user.repository.UserRepository;
-import org.dic.demo.util.HttpUtils;
 import org.dic.demo.util.media.MediaType;
 import org.dic.demo.util.media.MediaUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.dic.demo.util.web.WebHelper;
+import org.dic.demo.util.web.WebUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,6 +27,7 @@ public class UserService implements UserDetailsService {
 
   private final UserRepository userRepository;
   private final CompositionRepository compositionRepository;
+  private final WebHelper webHelper;
 
   public User getUserById(long userId) {
     return userRepository.getUserById(userId);
@@ -35,6 +35,9 @@ public class UserService implements UserDetailsService {
 
   public User getUserByUsername(String username) {
     User user = userRepository.getUserByUsername(username);
+    if (user == null) {
+      return null;
+    }
     fillUserWithCompositions(user);
     return user;
   }
@@ -92,20 +95,16 @@ public class UserService implements UserDetailsService {
       throws UsernameNotFoundException {
     // Check user's permission.
     // User can only change their own avatar.
-    String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-    if (!StringUtils.equals(targetUsername, currentUsername)) {
-      throw new NoPermissionException();
-    }
+    SecurityGuard.checkUserPermission(targetUsername);
 
     try {
-      String origin = HttpUtils.getOriginFromUrl(oldAvatarUrl);
-      String path = HttpUtils.resolveFilePathFromUrl(oldAvatarUrl);
+      String path = WebUtils.resolveFilePathFromUrl(oldAvatarUrl);
 
       // Delete old avatar.
       MediaUtils.deleteFile(path);
 
       // Save new avatar.
-      return Paths.get(origin, MediaUtils.uploadFile(MediaType.AVATAR, newAvatar)).toString();
+      return webHelper.getOrigin() + MediaUtils.uploadFile(MediaType.AVATAR, newAvatar);
     } catch (IOException e) {
       e.printStackTrace();
     }

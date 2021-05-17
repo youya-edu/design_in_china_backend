@@ -11,8 +11,7 @@ import lombok.Setter;
 @Builder(toBuilder = true)
 public class Product {
 
-  private long id;
+  private Composition composition;
   private BigDecimal price;
   private AtomicLong stock;
-  private Composition composition;
 }
