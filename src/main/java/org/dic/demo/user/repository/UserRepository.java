@@ -45,7 +45,7 @@ public class UserRepository {
     if (databaseUser == null) {
       return null;
     }
-    return userDao.getUserByUsername(username).toDomainObject();
+    return databaseUser.toDomainObject();
   }
 
   /**
@@ -59,7 +59,7 @@ public class UserRepository {
     if (databaseUser == null) {
       return null;
     }
-    return userDao.getUserByEmail(email).toDomainObject();
+    return databaseUser.toDomainObject();
   }
 
   /**

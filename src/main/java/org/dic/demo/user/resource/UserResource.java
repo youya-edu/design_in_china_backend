@@ -67,8 +67,8 @@ public class UserResource {
   }
 
   @PutMapping
-  public ResponseEntity<ViewUser> updateUser(@RequestBody ViewUser payload) {
-    User user = payload.toDomainObject();
+  public ResponseEntity<ViewUser> updateUser(@RequestBody ViewUser viewUser) {
+    User user = viewUser.toDomainObject();
     userService.updateUser(user);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }

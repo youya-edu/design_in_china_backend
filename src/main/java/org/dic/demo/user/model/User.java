@@ -15,6 +15,7 @@ import lombok.ToString;
 import org.dic.demo.common.TransformableToDatabase;
 import org.dic.demo.common.TransformableToView;
 import org.dic.demo.composition.model.Composition;
+import org.dic.demo.composition.resource.ViewComposition;
 import org.dic.demo.order.model.Order;
 import org.dic.demo.user.database.DatabaseUser;
 import org.dic.demo.user.resource.ViewUser;
@@ -97,13 +98,16 @@ public class User
         .phone(this.getPhone())
         .description(this.getDescription())
         .createdAt(this.getCreatedAt())
-        .compositions(
-            this.getCompositions().stream()
-                .map(Composition::toViewObject)
-                .collect(Collectors.toList()))
+        .compositions(getViewCompositions())
         .followed(this.getFollowed().stream().map(User::getUsername).collect(Collectors.toList()))
         .following(this.getFollowing().stream().map(User::getUsername).collect(Collectors.toList()))
         .build();
+  }
+
+  private List<ViewComposition> getViewCompositions() {
+    return this.getCompositions().stream()
+        .map(Composition::toViewObject)
+        .collect(Collectors.toList());
   }
 
   @Override
