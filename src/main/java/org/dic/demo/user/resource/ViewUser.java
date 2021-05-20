@@ -2,13 +2,13 @@ package org.dic.demo.user.resource;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.dic.demo.common.TransformableToDomain;
 import org.dic.demo.composition.resource.ViewComposition;
 import org.dic.demo.user.model.User;
 import org.dic.demo.user.model.UserKeyInfo;
@@ -19,7 +19,7 @@ import org.dic.demo.user.model.UserKeyInfo;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @ToString
-public class ViewUser {
+public class ViewUser implements TransformableToDomain<User> {
 
   private long id;
   private String username;
@@ -33,33 +33,14 @@ public class ViewUser {
   private List<String> followed;
   private List<String> following;
 
-  public static ViewUser fromDomainObject(User user) {
-    return ViewUser.builder()
-        .id(user.getId())
-        .username(user.getUsername())
-        .email(user.getEmail())
-        .nickname(user.getNickname())
-        .avatar(user.getAvatar())
-        .phone(user.getPhone())
-        .description(user.getDescription())
-        .createdAt(user.getCreatedAt())
-        .compositions(
-            user.getCompositions().stream()
-                .map(ViewComposition::fromDomainObject)
-                .collect(Collectors.toList()))
-        .followed(user.getFollowed().stream().map(User::getUsername).collect(Collectors.toList()))
-        .following(user.getFollowing().stream().map(User::getUsername).collect(Collectors.toList()))
-        .build();
-  }
-
-  public static User toDomainObject(ViewUser viewUser) {
+  @Override
+  public User toDomainObject() {
     return User.builder()
-        .id(viewUser.id)
-        .userKeyInfo(
-            UserKeyInfo.builder().email(viewUser.email).username(viewUser.username).build())
-        .nickname(viewUser.nickname)
-        .avatar(viewUser.avatar)
-        .description(viewUser.description)
+        .id(this.id)
+        .userKeyInfo(UserKeyInfo.builder().email(this.email).username(this.username).build())
+        .nickname(this.nickname)
+        .avatar(this.avatar)
+        .description(this.description)
         .build();
   }
 }

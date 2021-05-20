@@ -40,7 +40,7 @@ public class CompositionRepository {
   }
 
   private Composition convertToComposition(DatabaseComposition databaseComposition) {
-    Composition composition = DatabaseComposition.toDomainObject(databaseComposition);
+    Composition composition = databaseComposition.toDomainObject();
     User author = userRepository.getUserById(databaseComposition.getAuthorId());
     composition.setAuthor(author);
     return composition;

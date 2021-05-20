@@ -2,7 +2,6 @@ package org.dic.demo.security;
 
 import org.dic.demo.user.model.User;
 import org.dic.demo.user.model.UserKeyInfo;
-import org.dic.demo.user.resource.ViewUser;
 import org.dic.demo.user.service.UserService;
 import org.dic.demo.util.JwtUtils;
 import org.springframework.http.MediaType;
@@ -35,7 +34,6 @@ public class JwtAuthorizationController {
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(user.getUsername(), userKeyInfo.getPassword()));
     String jwtToken = JwtUtils.generateToken(user);
-    return ResponseEntity.ok(
-        new JwtAuthorizationResponse(jwtToken, ViewUser.fromDomainObject(user)));
+    return ResponseEntity.ok(new JwtAuthorizationResponse(jwtToken, user.toViewObject()));
   }
 }

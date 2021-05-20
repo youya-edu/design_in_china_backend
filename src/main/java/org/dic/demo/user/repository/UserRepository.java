@@ -31,7 +31,7 @@ public class UserRepository {
     if (databaseUser == null) {
       return null;
     }
-    return DatabaseUser.toDomainObject(databaseUser);
+    return databaseUser.toDomainObject();
   }
 
   /**
@@ -45,7 +45,7 @@ public class UserRepository {
     if (databaseUser == null) {
       return null;
     }
-    return DatabaseUser.toDomainObject(databaseUser);
+    return databaseUser.toDomainObject();
   }
 
   /**
@@ -59,7 +59,7 @@ public class UserRepository {
     if (databaseUser == null) {
       return null;
     }
-    return DatabaseUser.toDomainObject(databaseUser);
+    return databaseUser.toDomainObject();
   }
 
   /**
@@ -72,9 +72,7 @@ public class UserRepository {
     if (databaseUser == null) {
       return null;
     }
-    return userDao.getAllUsers().stream()
-        .map(DatabaseUser::toDomainObject)
-        .collect(Collectors.toList());
+    return databaseUser.stream().map(DatabaseUser::toDomainObject).collect(Collectors.toList());
   }
 
   /**
@@ -90,12 +88,12 @@ public class UserRepository {
     String avatarPath = MediaUtils.getDefaultFile(MediaType.AVATAR);
     String avatarUrl = webHelper.getOrigin() + avatarPath;
     user.setAvatar(avatarUrl);
-    long id = userDao.createUser(DatabaseUser.fromDomainObject(user));
+    long id = userDao.createUser(user.toDatabaseObject());
     return user.toBuilder().id(id).build();
   }
 
   public void updateUser(User user) {
-    userDao.updateUser(DatabaseUser.fromDomainObject(user));
+    userDao.updateUser(user.toDatabaseObject());
   }
 
   public void deleteUser(long userId) {

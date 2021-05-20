@@ -1,17 +1,20 @@
 package org.dic.demo.composition.resource;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicLong;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.dic.demo.common.TransformableToDomain;
 import org.dic.demo.composition.model.Composition;
+import org.dic.demo.composition.model.CompositionStatus;
+import org.dic.demo.composition.model.Product;
 
 @Getter
 @Setter
 @Builder(toBuilder = true)
-public class ViewComposition {
+public class ViewComposition implements TransformableToDomain<Composition> {
   private long id;
   private String author;
   private String name;
@@ -27,22 +30,21 @@ public class ViewComposition {
   private BigDecimal price;
   private long stock;
 
-  public static ViewComposition fromDomainObject(Composition composition) {
-    return ViewComposition.builder()
-        .id(composition.getId())
-        .author(composition.getAuthor() != null ? composition.getAuthor().getUsername() : "佚名")
-        .name(composition.getName())
-        .description(composition.getDescription())
-        .image(composition.getImage())
-        .likes(composition.getLikes().get())
-        .viewed(composition.getViewed().get())
-        .status(composition.getStatus().name())
-        .createdAt(composition.getCreatedAt())
-        .lastModified(composition.getLastModified())
-        .issuedAt(composition.getIssuedAt())
-        .forSale(composition.isForSale())
-        .price(composition.getPrice().setScale(2, RoundingMode.UP))
-        .stock(composition.getStock())
+  public Composition toDomainObject() {
+    return Composition.builder()
+        .id(this.id)
+        .name(this.name)
+        .description(this.description)
+        .image(this.image)
+        .likes(new AtomicLong(this.likes))
+        .viewed(new AtomicLong(this.viewed))
+        .status(CompositionStatus.from(this.status))
+        .createdAt(this.createdAt)
+        .lastModified(this.lastModified)
+        .issuedAt(this.issuedAt)
+        .forSale(this.forSale)
+        .product(
+            Product.builder().price(this.getPrice()).stock(new AtomicLong(this.getStock())).build())
         .build();
   }
 }

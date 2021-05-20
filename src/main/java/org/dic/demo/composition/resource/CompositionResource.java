@@ -30,7 +30,7 @@ public class CompositionResource {
   public ResponseEntity<List<ViewComposition>> getAllCompositions() {
     return ResponseEntity.ok(
         compositionService.getAllCompositions().stream()
-            .map(ViewComposition::fromDomainObject)
+            .map(Composition::toViewObject)
             .collect(Collectors.toList()));
   }
 }
