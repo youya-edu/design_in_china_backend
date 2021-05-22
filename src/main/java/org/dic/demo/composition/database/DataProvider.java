@@ -37,7 +37,7 @@ public class DataProvider {
                       .authorId(1)
                       .name(String.format("作品%d", idx))
                       .description("这是一个测试用的作品")
-                      .image("test.png")
+                      .image("http://localhost:8080/img/composition/default/000.png")
                       .status(CompositionStatus.PUBLIC.name())
                       .createdAt(now)
                       .lastModified(now)

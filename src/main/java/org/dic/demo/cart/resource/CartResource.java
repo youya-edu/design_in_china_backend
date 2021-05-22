@@ -26,7 +26,7 @@ public class CartResource {
     return ResponseEntity.ok(
         ViewCart.builder()
             .ownerId(cart.getOwner().getId())
-            .viewCartProducts(
+            .products(
                 cart.getProducts().stream()
                     .map(
                         cartProduct ->
