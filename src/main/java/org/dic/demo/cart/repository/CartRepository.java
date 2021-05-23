@@ -4,9 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.dic.demo.cart.database.CartDao;
-import org.dic.demo.cart.database.DatabaseCartProduct;
+import org.dic.demo.cart.database.DatabaseCartItem;
 import org.dic.demo.cart.model.Cart;
-import org.dic.demo.cart.model.CartProduct;
+import org.dic.demo.cart.model.CartItem;
+import org.dic.demo.composition.model.Composition;
 import org.dic.demo.composition.model.Product;
 import org.dic.demo.composition.repository.CompositionRepository;
 import org.dic.demo.user.model.User;
@@ -29,29 +30,31 @@ public class CartRepository {
    */
   public Cart getCartByUsername(String username) {
     User user = userRepository.getUserByUsername(username);
-    List<DatabaseCartProduct> databaseCartProducts = cartDao.getCartByUserId(user.getId());
-    List<CartProduct> cartProducts =
-        databaseCartProducts.stream()
+    List<DatabaseCartItem> databaseCartItems = cartDao.getCartByUserId(user.getId());
+    List<CartItem> cartItems =
+        databaseCartItems.stream()
             .map(
-                databaseCartProduct ->
-                    CartProduct.builder()
-                        .product(
-                            Product.builder()
-                                .composition(
-                                    compositionRepository.getCompositionById(
-                                        databaseCartProduct.getProductId()))
-                                .build())
-                        .quantity(databaseCartProduct.getQuantity())
-                        .build())
+                databaseCartItem -> {
+                  Composition composition =
+                      compositionRepository.getCompositionById(databaseCartItem.getProductId());
+                  return CartItem.builder()
+                      .product(
+                          Product.builder()
+                              .composition(composition)
+                              .price(composition.getPrice())
+                              .build())
+                      .quantity(databaseCartItem.getQuantity())
+                      .build();
+                })
             .collect(Collectors.toList());
 
-    return Cart.builder().owner(user).products(cartProducts).build();
+    return Cart.builder().owner(user).items(cartItems).build();
   }
 
   public void addProductToCart(String username, long productId, int quantity) {
     User user = userRepository.getUserByUsername(username);
-    cartDao.addProductToCart(
-        DatabaseCartProduct.builder()
+    cartDao.addItemToCart(
+        DatabaseCartItem.builder()
             .ownerId(user.getId())
             .productId(productId)
             .quantity(quantity)

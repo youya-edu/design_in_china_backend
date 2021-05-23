@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @Builder
 @ToString
-public class DatabaseCartProduct {
+public class DatabaseCartItem {
   private final long ownerId;
   private final long productId;
   private int quantity;

@@ -8,7 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 public interface CartDao {
 
-  List<DatabaseCartProduct> getCartByUserId(long userId);
+  boolean cartExists();
 
-  long addProductToCart(DatabaseCartProduct cartProduct);
+  List<DatabaseCartItem> getCartByUserId(long userId);
+
+  long addItemToCart(DatabaseCartItem cartItem);
+
+  int addItemsToCart(List<DatabaseCartItem> cartItems);
 }

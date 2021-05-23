@@ -6,5 +6,5 @@ import lombok.Builder;
 @Builder
 public class ViewCart {
   private final long ownerId;
-  private final List<ViewCartProduct> products;
+  private final List<ViewCartItem> items;
 }

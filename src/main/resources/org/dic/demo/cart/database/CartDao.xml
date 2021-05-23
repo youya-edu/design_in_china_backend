@@ -2,13 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.dic.demo.cart.database.CartDao">
-  <select id="getCartByUserId" resultType="CartProduct">
+  <select id="cartExists" resultType="boolean">
+    select exists(select 1 from cart)
+  </select>
+  <select id="getCartByUserId" resultType="CartItem">
     select *
     from cart
     where owner_id = #{userId}
   </select>
-  <insert id="addProductToCart" parameterType="CartProduct">
+  <insert id="addItemToCart" parameterType="CartItem">
     insert into cart (owner_id, product_id, quantity)
     values (#{ownerId}, #{productId}, #{quantity})
+  </insert>
+  <insert id="addItemsToCart" parameterType="CartItem" useGeneratedKeys="true">
+    insert into cart (owner_id, product_id, quantity)
+    values
+    <foreach collection="cartItems" item="item" separator=",">
+      (#{item.ownerId}, #{item.productId}, #{item.quantity})
+    </foreach>
   </insert>
 </mapper>

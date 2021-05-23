@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 @DependsOn("flywayInitializer")
 @AllArgsConstructor
-public class DataProvider {
+public class CompositionDataProvider {
   private final CompositionDao compositionDao;
 
   @PostConstruct

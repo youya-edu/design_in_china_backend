@@ -16,5 +16,5 @@ import org.dic.demo.user.model.User;
 public class Cart {
 
   private User owner;
-  @Default private List<CartProduct> products = new ArrayList<>();
+  @Default private List<CartItem> items = new ArrayList<>();
 }
