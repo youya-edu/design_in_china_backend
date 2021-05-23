@@ -5,9 +5,6 @@
   <insert id="createUser" useGeneratedKeys="true" keyProperty="id">
     insert into user (username, email, password, nickname, avatar, phone, description)
     values (#{username}, #{email}, #{password}, #{nickname}, #{avatar}, #{phone}, #{description})
-    <selectKey resultType="long" order="AFTER" keyProperty="id">
-      select last_insert_id() as id
-    </selectKey>
   </insert>
   <select id="getUserById" resultType="User">
     select *

@@ -88,8 +88,9 @@ public class UserRepository {
     String avatarPath = MediaUtils.getDefaultFile(MediaType.AVATAR);
     String avatarUrl = webHelper.getOrigin() + avatarPath;
     user.setAvatar(avatarUrl);
-    long id = userDao.createUser(user.toDatabaseObject());
-    return user.toBuilder().id(id).build();
+    DatabaseUser dataBaseUser = user.toDatabaseObject();
+    userDao.createUser(dataBaseUser);
+    return user.toBuilder().id(dataBaseUser.getId()).build();
   }
 
   public void updateUser(User user) {

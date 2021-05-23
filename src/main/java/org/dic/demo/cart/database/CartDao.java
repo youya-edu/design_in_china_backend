@@ -12,7 +12,7 @@ public interface CartDao {
 
   List<DatabaseCartItem> getCartByUserId(long userId);
 
-  long addItemToCart(DatabaseCartItem cartItem);
+  void addItemToCart(DatabaseCartItem cartItem);
 
   int addItemsToCart(List<DatabaseCartItem> cartItems);
 }
