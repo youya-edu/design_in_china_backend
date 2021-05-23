@@ -12,8 +12,8 @@
       alias="Composition"
     />
     <typeAlias
-      type="org.dic.demo.cart.database.DatabaseCartProduct"
-      alias="CartProduct"
+      type="org.dic.demo.cart.database.DatabaseCartItem"
+      alias="CartItem"
     />
   </typeAliases>
 </configuration>

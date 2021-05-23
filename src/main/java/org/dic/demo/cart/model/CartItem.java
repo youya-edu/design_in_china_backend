@@ -6,7 +6,7 @@ import org.dic.demo.composition.model.Product;
 
 @Getter
 @Builder
-public class CartProduct {
+public class CartItem {
 
   private final Product product;
   private final int quantity;

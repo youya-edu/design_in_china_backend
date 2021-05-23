@@ -12,13 +12,11 @@ public class CartService {
 
   private final CartRepository cartRepository;
 
-  public Cart getCartByUsername(String username) {
-    SecurityGuard.checkUserPermission(username);
-    return cartRepository.getCartByUsername(username);
+  public Cart getCartByUsername() {
+    return cartRepository.getCartByUsername(SecurityGuard.getCurrentUsername());
   }
 
-  public void addProductToCart(String username, long productId, int quantity) {
-    SecurityGuard.checkUserPermission(username);
-    cartRepository.addProductToCart(username, productId, quantity);
+  public void addProductToCart(long productId, int quantity) {
+    cartRepository.addProductToCart(SecurityGuard.getCurrentUsername(), productId, quantity);
   }
 }

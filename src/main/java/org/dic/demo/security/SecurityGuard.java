@@ -7,8 +7,12 @@ public final class SecurityGuard {
 
   private SecurityGuard() {}
 
+  public static String getCurrentUsername() {
+    return SecurityContextHolder.getContext().getAuthentication().getName();
+  }
+
   public static void checkUserPermission(String targetUsername) {
-    String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+    String currentUsername = getCurrentUsername();
     if (!StringUtils.equals(targetUsername, currentUsername)) {
       throw new NoPermissionException();
     }
