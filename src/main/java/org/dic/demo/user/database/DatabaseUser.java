@@ -11,7 +11,7 @@ import org.dic.demo.user.model.UserKeyInfo;
 
 @Getter
 @Setter
-@Builder
+@Builder(toBuilder = true)
 @ToString
 public class DatabaseUser implements TransformableToDomain<User> {
 
