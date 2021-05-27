@@ -33,7 +33,7 @@ public class JwtAuthorizationController {
     User user = userService.authenticateUser(userKeyInfo);
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(user.getUsername(), userKeyInfo.getPassword()));
-    String jwtToken = JwtUtils.generateToken(user);
+    String jwtToken = JwtUtils.generateToken(user.getUsername());
     return ResponseEntity.ok(new JwtAuthorizationResponse(jwtToken, user.toViewObject()));
   }
 }
