@@ -38,7 +38,7 @@ public class OrderResource {
   @PostMapping
   public ResponseEntity<Order> createOrder(@RequestBody Order payload, HttpServletRequest req) {
     Order newOrder = orderService.createOrder(payload);
-    return ResponseEntity.created(WebUtils.uriWithPath(req, String.valueOf(newOrder.getId())))
+    return ResponseEntity.created(WebUtils.addPathToUri(req, String.valueOf(newOrder.getId())))
         .body(newOrder);
   }
 

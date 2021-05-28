@@ -10,7 +10,7 @@ public final class WebUtils {
 
   private WebUtils() {}
 
-  public static URI uriWithPath(HttpServletRequest req, String path) {
+  public static URI addPathToUri(HttpServletRequest req, String path) {
     return UriComponentsBuilder.fromHttpRequest(new ServletServerHttpRequest(req))
         .pathSegment(path)
         .build()
@@ -21,7 +21,10 @@ public final class WebUtils {
     return req.getHeader(HttpHeaders.AUTHORIZATION);
   }
 
-  public static String resolvePathFromUrl(String url) {
-    return URI.create(url).getPath();
+  public static String resolvePathFromUri(String uri) {
+    if (uri == null) {
+      return null;
+    }
+    return URI.create(uri).getPath();
   }
 }
