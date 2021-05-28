@@ -21,7 +21,7 @@ public final class WebUtils {
     return req.getHeader(HttpHeaders.AUTHORIZATION);
   }
 
-  public static String resolveFilePathFromUrl(String url) {
+  public static String resolvePathFromUrl(String url) {
     return URI.create(url).getPath();
   }
 }

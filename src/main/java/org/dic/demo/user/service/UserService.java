@@ -98,7 +98,7 @@ public class UserService implements UserDetailsService {
     SecurityGuard.checkUserPermission(targetUsername);
 
     try {
-      String path = WebUtils.resolveFilePathFromUrl(oldAvatarUrl);
+      String path = WebUtils.resolvePathFromUrl(oldAvatarUrl);
 
       // Delete old avatar.
       MediaUtils.deleteFile(path);
