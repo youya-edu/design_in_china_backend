@@ -12,7 +12,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 class WebUtilsTest {
 
   @Nested
-  class AddPathToUriTest {
+  class AddPathToUri {
 
     @Test
     @DisplayName("If path is valid, new URI will be generated.")
@@ -45,6 +45,7 @@ class WebUtilsTest {
 
   @Nested
   class GetAuthorizationHeader {
+
     @Test
     @DisplayName("If authorization header exists, it's value will be returned.")
     void ifHeaderExists() {
