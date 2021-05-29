@@ -1,5 +1,6 @@
 package org.dic.demo.security;
 
+import java.util.Date;
 import org.dic.demo.user.model.User;
 import org.dic.demo.user.model.UserKeyInfo;
 import org.dic.demo.user.service.UserService;
@@ -33,7 +34,7 @@ public class JwtAuthorizationController {
     User user = userService.authenticateUser(userKeyInfo);
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(user.getUsername(), userKeyInfo.getPassword()));
-    String jwtToken = JwtUtils.generateToken(user.getUsername());
+    String jwtToken = JwtUtils.generateToken(user.getUsername(), new Date(), null);
     return ResponseEntity.ok(new JwtAuthorizationResponse(jwtToken, user.toViewObject()));
   }
 }
