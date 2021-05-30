@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public interface UserDao {
 
+  boolean userExists();
+
   void createUser(DatabaseUser user);
 
   DatabaseUser getUserById(long id);

@@ -23,6 +23,27 @@ create
 
 create
     table
+        role(
+            id int unsigned auto_increment,
+            role_name varchar(255) not null unique,
+            primary key(id)
+        );
+
+create
+    table
+        user_role(
+            user_id bigint unsigned,
+            role_id int unsigned,
+            primary key(
+                user_id,
+                role_id
+            ),
+            foreign key(user_id) references user(id),
+            foreign key(role_id) references role(id)
+        );
+
+create
+    table
         composition(
             id bigint unsigned auto_increment,
             author_id bigint unsigned not null,

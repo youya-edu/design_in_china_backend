@@ -1,9 +1,6 @@
 package org.dic.demo.user.resource;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.dic.demo.user.exception.UserNotFoundException;
@@ -42,18 +39,6 @@ public class UserResource {
       throw new UserNotFoundException();
     }
     return ResponseEntity.ok(user.toViewObject());
-  }
-
-  @GetMapping
-  public ResponseEntity<ViewUserCollection> getAllUsers() {
-    List<User> users = userService.getAllUsers();
-    if (users == null) {
-      users = new ArrayList<>();
-    }
-    List<ViewUser> viewUsers = users.stream().map(User::toViewObject).collect(Collectors.toList());
-    ViewUserCollection viewUserCollection =
-        ViewUserCollection.builder().users(viewUsers).size(viewUsers.size()).build();
-    return ResponseEntity.ok(viewUserCollection);
   }
 
   @PostMapping

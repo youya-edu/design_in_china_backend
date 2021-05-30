@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 /** Bean for providing data for development. Never use this in production...!! */
 @Profile("dev")
 @Component
-@DependsOn("flywayInitializer")
+@DependsOn({"flywayInitializer", "compositionDataProvider"})
 @AllArgsConstructor
 public class CartDataProvider {
   private final CartDao cartDao;
