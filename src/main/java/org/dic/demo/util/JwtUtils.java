@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 import java.util.function.Function;
+import org.apache.commons.lang3.StringUtils;
 import org.dic.demo.security.AuthenticationType;
 
 public class JwtUtils {
@@ -49,6 +50,9 @@ public class JwtUtils {
   }
 
   public static <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    if (StringUtils.isBlank(token)) {
+      return null;
+    }
     Claims claims;
     try {
       claims = validateTokenAndExtractAllClaims(token);
