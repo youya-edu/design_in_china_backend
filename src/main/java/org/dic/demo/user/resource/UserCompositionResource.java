@@ -41,7 +41,7 @@ public class UserCompositionResource {
       @PathVariable("userId") long userId,
       @RequestBody Composition composition,
       HttpServletRequest req) {
-    return ResponseEntity.created(WebUtils.uriWithPath(req, String.valueOf(composition.getId())))
+    return ResponseEntity.created(WebUtils.addPathToUri(req, String.valueOf(composition.getId())))
         .body(compositionService.createComposition(userId, composition));
   }
 

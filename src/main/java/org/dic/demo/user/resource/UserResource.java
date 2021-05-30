@@ -62,7 +62,7 @@ public class UserResource {
       throw new UserUniqueViolationException();
     }
     User newUser = userService.createUser(payload);
-    return ResponseEntity.created(WebUtils.uriWithPath(req, String.valueOf(newUser.getId())))
+    return ResponseEntity.created(WebUtils.addPathToUri(req, String.valueOf(newUser.getUsername())))
         .body(newUser);
   }
 
