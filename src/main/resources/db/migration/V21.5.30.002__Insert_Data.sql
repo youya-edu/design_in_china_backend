@@ -4,39 +4,3 @@ insert
     values('ADMIN'),
     ('DESIGNER'),
     ('USER');
-
-insert
-    into
-        user(
-            username,
-            email,
-            password,
-            nickname,
-            avatar
-        )
-    values(
-        'admin',
-        'a@dic.com',
-        '123',
-        'admin',
-        'http://localhost:8080/img/avatar/default/001.png'
-    );
-
-insert
-    into
-        user_role(
-            user_id,
-            role_id
-        )
-    values(
-        1,
-        1
-    ),
-    (
-        1,
-        2
-    ),
-    (
-        1,
-        3
-    );

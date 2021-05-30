@@ -12,11 +12,15 @@ public interface UserDao {
 
   void createUser(DatabaseUser user);
 
+  int createUserRoles(List<DatabaseUserRole> roles);
+
   DatabaseUser getUserById(long id);
 
   DatabaseUser getUserByUsername(String username);
 
   DatabaseUser getUserByEmail(String email);
+
+  List<DatabaseUser> getDesigners();
 
   List<DatabaseUser> getAllUsers();
 

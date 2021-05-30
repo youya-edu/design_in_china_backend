@@ -1,11 +1,17 @@
 package org.dic.demo.user.repository;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import org.dic.demo.common.PaginationParam;
 import org.dic.demo.user.database.DatabaseUser;
+import org.dic.demo.user.database.DatabaseUserRole;
 import org.dic.demo.user.database.UserDao;
 import org.dic.demo.user.model.User;
+import org.dic.demo.user.model.UserCollection;
 import org.dic.demo.user.model.UserKeyInfo;
 import org.dic.demo.user.servicestub.UserServiceStub;
 import org.dic.demo.util.media.MediaType;
@@ -63,16 +69,30 @@ public class UserRepository {
   }
 
   /**
-   * Gets all users.
+   * Gets all users, including roles of [ADMIN, DESIGNER, USER].
    *
    * @return all users in database, or null if there is no user.
    */
-  public List<User> getAllUsers() {
-    List<DatabaseUser> databaseUser = userDao.getAllUsers();
-    if (databaseUser == null) {
-      return null;
-    }
-    return databaseUser.stream().map(DatabaseUser::toDomainObject).collect(Collectors.toList());
+  public UserCollection getAllUsers(PaginationParam paginationParam) {
+    PageHelper.startPage(paginationParam.getPage(), paginationParam.getPageSize());
+    return getUsers(userDao::getAllUsers);
+  }
+
+  /**
+   * Gets all designers.
+   *
+   * @return all designers in database, or null if there is no designer.
+   */
+  public UserCollection getDesigners(PaginationParam paginationParam) {
+    PageHelper.startPage(paginationParam.getPage(), paginationParam.getPageSize());
+    return getUsers(userDao::getDesigners);
+  }
+
+  private UserCollection getUsers(Supplier<List<DatabaseUser>> supplier) {
+    List<DatabaseUser> designers = supplier.get();
+    return new UserCollection(
+        designers.stream().map(DatabaseUser::toDomainObject).collect(Collectors.toList()),
+        ((Page) designers).getTotal());
   }
 
   /**
@@ -90,6 +110,10 @@ public class UserRepository {
     user.setAvatar(avatarUrl);
     DatabaseUser dataBaseUser = user.toDatabaseObject();
     userDao.createUser(dataBaseUser);
+    userDao.createUserRoles(
+        user.getRoles().stream()
+            .map(userRole -> new DatabaseUserRole(dataBaseUser.getId(), userRole.getId()))
+            .collect(Collectors.toList()));
     return user.toBuilder().id(dataBaseUser.getId()).build();
   }
 

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.dic.demo.common.TransformableToDomain;
-import org.dic.demo.composition.resource.ViewComposition;
+import org.dic.demo.composition.resource.ViewCompositionCollection;
 import org.dic.demo.user.model.User;
 import org.dic.demo.user.model.UserKeyInfo;
 
@@ -29,7 +29,7 @@ public class ViewUser implements TransformableToDomain<User> {
   private String phone;
   private String description;
   private Date createdAt;
-  private List<ViewComposition> compositions;
+  private ViewCompositionCollection compositionCollection;
   private List<String> followed;
   private List<String> following;
 

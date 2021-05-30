@@ -1,19 +1,23 @@
 package org.dic.demo.composition.repository;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import org.dic.demo.common.PaginationParam;
 import org.dic.demo.composition.database.CompositionDao;
 import org.dic.demo.composition.database.DatabaseComposition;
 import org.dic.demo.composition.model.Composition;
+import org.dic.demo.composition.model.CompositionCollection;
 import org.dic.demo.composition.servicestub.CompositionServiceStub;
 import org.dic.demo.user.model.User;
 import org.dic.demo.user.repository.UserRepository;
-import org.dic.demo.user.servicestub.UserServiceStub;
 import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
+@SuppressWarnings("rawtypes")
 public class CompositionRepository {
 
   private final CompositionDao compositionDao;
@@ -23,14 +27,19 @@ public class CompositionRepository {
     return convertToComposition(compositionDao.getCompositionById(compositionId));
   }
 
-  public List<Composition> getAllCompositions() {
+  public CompositionCollection getAllCompositions(PaginationParam paginationParam) {
+    PageHelper.startPage(paginationParam.getPage(), paginationParam.getPageSize());
     List<DatabaseComposition> databaseCompositions = compositionDao.getAllCompositions();
-    return convertToCompositions(databaseCompositions);
+    return new CompositionCollection(
+        convertToCompositions(databaseCompositions), ((Page) databaseCompositions).getTotal());
   }
 
-  public List<Composition> getCompositionsByUserId(long userId) {
+  public CompositionCollection getCompositionsByUserId(long userId) {
+    PaginationParam paginationParam = new PaginationParam();
+    PageHelper.startPage(paginationParam.getPage(), paginationParam.getPageSize());
     List<DatabaseComposition> databaseCompositions = compositionDao.getCompositionsByUserId(userId);
-    return convertToCompositions(databaseCompositions);
+    return new CompositionCollection(
+        convertToCompositions(databaseCompositions), ((Page) databaseCompositions).getTotal());
   }
 
   private List<Composition> convertToCompositions(List<DatabaseComposition> databaseCompositions) {
@@ -47,14 +56,7 @@ public class CompositionRepository {
   }
 
   public Composition createComposition(long userId, Composition composition) {
-    User user = UserServiceStub.getUserById(userId);
-    if (user == null) {
-      return null;
-    }
-    Composition newComposition = CompositionServiceStub.createComposition(composition);
-    user.getCompositions().add(newComposition);
-    newComposition.setAuthor(user);
-    return newComposition;
+    throw new UnsupportedOperationException("This method has not been implemented yet.");
   }
 
   public Composition updateComposition(long userId, Composition composition) {

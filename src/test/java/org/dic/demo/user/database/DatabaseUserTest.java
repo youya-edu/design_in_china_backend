@@ -47,7 +47,7 @@ public class DatabaseUserTest {
         user.getAuthorities().isEmpty(),
         "Default databaseUser to user should have empty authorities.");
     assertTrue(
-        user.getCompositions().isEmpty(),
+        user.getCompositionCollection().getCompositions().isEmpty(),
         "Default databaseUser to user should have empty compositions.");
     assertTrue(
         user.getFollowed().isEmpty(), "Default databaseUser to user should have empty followed.");

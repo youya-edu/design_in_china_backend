@@ -11,5 +11,5 @@ import lombok.Setter;
 public class ViewUserCollection {
 
   private List<ViewUser> users;
-  private int size;
+  private long totalSize;
 }

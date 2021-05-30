@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 /** Bean for providing data for development. Never use this in production...!! */
 @Profile("dev")
 @Component
-@DependsOn("flywayInitializer")
+@DependsOn({"flywayInitializer", "userDataProvider"})
 @AllArgsConstructor
 public class CompositionDataProvider {
   private final CompositionDao compositionDao;
@@ -29,12 +29,12 @@ public class CompositionDataProvider {
 
     Random random = new Random();
     List<DatabaseComposition> compositions =
-        IntStream.range(0, 500)
+        IntStream.range(0, 2000)
             .mapToObj(
                 idx -> {
                   Date now = new Date();
                   return DatabaseComposition.builder()
-                      .authorId(1)
+                      .authorId(random.nextInt(500) + 1)
                       .name(String.format("作品%d", idx))
                       .description("这是一个测试用的作品")
                       .image("http://localhost:8080/img/composition/default/000.png")

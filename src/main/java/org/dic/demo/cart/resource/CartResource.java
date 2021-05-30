@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.dic.demo.cart.model.Cart;
 import org.dic.demo.cart.service.CartService;
+import org.dic.demo.common.PaginationParam;
 import org.dic.demo.composition.model.Composition;
 import org.dic.demo.composition.model.Product;
 import org.springframework.http.HttpStatus;
@@ -22,8 +23,8 @@ public class CartResource {
   private final CartService cartService;
 
   @GetMapping
-  public ResponseEntity<ViewCart> getCart() {
-    Cart cart = cartService.getCartByUsername();
+  public ResponseEntity<ViewCart> getCart(PaginationParam paginationParam) {
+    Cart cart = cartService.getCart(paginationParam);
     return ResponseEntity.ok(
         ViewCart.builder()
             .ownerId(cart.getOwner().getId())

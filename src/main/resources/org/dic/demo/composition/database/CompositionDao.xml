@@ -12,7 +12,7 @@
   <select id="getCompositionsByUserId" resultType="Composition">
     select *
     from composition c left join product p on c.id = p.id
-    where c.author_id = #{userId}
+    where c.author_id = #{userId} and c.issued_at is not null order by c.issued_at desc
   </select>
   <select id="getCompositionById" resultType="Composition">
     select *

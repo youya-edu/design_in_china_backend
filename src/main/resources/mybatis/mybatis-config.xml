@@ -8,6 +8,10 @@
   <typeAliases>
     <typeAlias type="org.dic.demo.user.database.DatabaseUser" alias="User" />
     <typeAlias
+      type="org.dic.demo.user.database.DatabaseUserRole"
+      alias="UserRole"
+    />
+    <typeAlias
       type="org.dic.demo.composition.database.DatabaseComposition"
       alias="Composition"
     />
@@ -16,4 +20,9 @@
       alias="CartItem"
     />
   </typeAliases>
+  <plugins>
+    <plugin interceptor="com.github.pagehelper.PageInterceptor">
+      <property name="helperDialect" value="mysql" />
+    </plugin>
+  </plugins>
 </configuration>

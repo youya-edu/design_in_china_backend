@@ -1,15 +1,17 @@
 package org.dic.demo.user.service;
 
 import java.io.IOException;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.dic.demo.common.PaginationParam;
 import org.dic.demo.composition.repository.CompositionRepository;
 import org.dic.demo.security.SecurityGuard;
 import org.dic.demo.user.exception.LoginInfoNotEnoughException;
 import org.dic.demo.user.exception.UserNotAuthenticatedException;
 import org.dic.demo.user.model.User;
+import org.dic.demo.user.model.UserCollection;
 import org.dic.demo.user.model.UserKeyInfo;
+import org.dic.demo.user.model.UserRole;
 import org.dic.demo.user.repository.UserRepository;
 import org.dic.demo.util.media.MediaType;
 import org.dic.demo.util.media.MediaUtils;
@@ -46,15 +48,24 @@ public class UserService implements UserDetailsService {
     return userRepository.getUserByEmail(email);
   }
 
-  public List<User> getAllUsers() {
-    List<User> users = userRepository.getAllUsers();
-    users.forEach(this::fillUserWithCompositions);
-    return users;
+  public UserCollection getUsers(UserRole userRole, PaginationParam paginationParam) {
+    UserCollection userCollection;
+    switch (userRole) {
+      case DESIGNER:
+        userCollection = userRepository.getDesigners(paginationParam);
+        userCollection.getUsers().forEach(this::fillUserWithCompositions);
+        break;
+      default:
+        userCollection = userRepository.getAllUsers(paginationParam);
+    }
+    return userCollection;
   }
 
   private void fillUserWithCompositions(User user) {
-    user.setCompositions(compositionRepository.getCompositionsByUserId(user.getId()));
-    user.getCompositions().forEach(composition -> composition.setAuthor(user));
+    user.setCompositionCollection(compositionRepository.getCompositionsByUserId(user.getId()));
+    user.getCompositionCollection()
+        .getCompositions()
+        .forEach(composition -> composition.setAuthor(user));
   }
 
   public User createUser(UserKeyInfo userKeyInfo) {
