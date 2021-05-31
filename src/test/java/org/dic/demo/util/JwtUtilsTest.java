@@ -20,20 +20,6 @@ import org.springframework.util.Base64Utils;
 
 class JwtUtilsTest {
 
-  // This test will fail if we change the secret.
-  @Test
-  @DisplayName("Can generate JWT Token.")
-  void generateToken() throws ParseException {
-    String expectedJwtToken =
-        "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0LXVzZXJuYW1lIiwiaWF0IjoxNjIyMzM1OTgzLCJleHAiOjE2MjI0NDM5ODN9.ZiU4DMhzNOUdVVgVG99jWXB9tBgPr--S6JqEEI1iif57U5R9H4raRj7_ixxi1HvkK4IDzUXl6th1QTtD23dovA";
-
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-    Date issueAt = simpleDateFormat.parse("2021-05-30T09:53:03Z");
-    String actualJwtToken = JwtUtils.generateToken("test-username", issueAt, null);
-
-    assertEquals(expectedJwtToken, actualJwtToken);
-  }
-
   @Nested
   class GetToken {
 
@@ -64,6 +50,7 @@ class JwtUtilsTest {
   class ValidateTokenAndExtractAllClaims {
 
     @Test
+    @SuppressWarnings("unchecked")
     @DisplayName("If JWT token is tampered, throw SignatureException.")
     void ifJwtTokenIsTampered() {
 
