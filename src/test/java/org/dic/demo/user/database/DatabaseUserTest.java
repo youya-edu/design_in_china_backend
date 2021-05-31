@@ -1,6 +1,7 @@
 package org.dic.demo.user.database;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -13,7 +14,7 @@ import org.junit.jupiter.api.Test;
 public class DatabaseUserTest {
 
   @Test
-  void testToDomainUser() {
+  void toDomainUser() {
     DatabaseUser databaseUser =
         DatabaseUser.builder()
             .accountExpired(false)
@@ -43,11 +44,18 @@ public class DatabaseUserTest {
     assertEquals("phone", user.getPhone());
     assertEquals(Date.from(Instant.ofEpochMilli(1621905378)), user.getCreatedAt());
 
-    assertTrue(user.getAuthorities().isEmpty(), "默认从databaseUser转过来的user是没有权限信息的");
-    assertTrue(user.getCompositions().isEmpty(), "默认从databaseUser转过来的user是没有作品信息的");
-    assertTrue(user.getFollowed().isEmpty(), "默认从databaseUser转过来的user是没有Followed信息的");
-    assertTrue(user.getFollowing().isEmpty(), "默认从databaseUser转过来的user是没有Following信息的");
-    assertTrue(user.getOrders().isEmpty(), "默认从databaseUser转过来的user是没有订单信息的");
+    assertFalse(
+        user.getAuthorities().isEmpty(),
+        "Default databaseUser to user should have empty authorities.");
+    assertTrue(
+        user.getCompositions().isEmpty(),
+        "Default databaseUser to user should have empty compositions.");
+    assertTrue(
+        user.getFollowed().isEmpty(), "Default databaseUser to user should have empty followed.");
+    assertTrue(
+        user.getFollowing().isEmpty(), "Default databaseUser to user should have empty following.");
+    assertTrue(
+        user.getOrders().isEmpty(), "Default databaseUser to user should have empty orders.");
 
     UserKeyInfo userKeyInfo = user.getUserKeyInfo();
     assertNotNull(userKeyInfo);

@@ -22,196 +22,186 @@ public class UserDaoTest {
 
   @Autowired private UserDao userDao;
 
-  private DatabaseUser createUser(
-      boolean accountExpired,
-      boolean accountLocked,
-      String avatar,
-      boolean credentialsExpired,
-      String email,
-      String description,
-      boolean enabled,
-      String username,
-      String nickname,
-      String password,
-      String phone) {
+  @Test
+  void getUserById() {
     DatabaseUser databaseUser =
         DatabaseUser.builder()
-            .accountExpired(accountExpired)
-            .accountLocked(accountLocked)
-            .avatar(avatar)
-            .credentialsExpired(credentialsExpired)
-            .email(email)
-            .description(description)
-            .enabled(enabled)
-            .username(username)
-            .nickname(nickname)
-            .password(password)
-            .phone(phone)
+            .accountExpired(false)
+            .accountLocked(false)
+            .avatar("avatar-getUserById")
+            .credentialsExpired(false)
+            .email("email-getUserById")
+            .description("description-getUserById")
+            .enabled(false)
+            .username("username-getUserById")
+            .nickname("nickname-getUserById")
+            .password("password-getUserById")
+            .phone("phone-getUserById")
             .build();
     userDao.createUser(databaseUser);
-    return databaseUser;
-  }
-
-  @Test
-  void testGetUserById() {
-    DatabaseUser databaseUser =
-        createUser(
-            false,
-            false,
-            "avatar-testGetUserById",
-            false,
-            "email-testGetUserById",
-            "description-testGetUserById",
-            false,
-            "username-testGetUserById",
-            "nickname-testGetUserById",
-            "password-testGetUserById",
-            "phone-testGetUserById");
 
     DatabaseUser selectedUser = userDao.getUserById(databaseUser.getId());
     assertNotNull(selectedUser);
     assertFalse(selectedUser.isAccountExpired());
     assertFalse(selectedUser.isAccountLocked());
-    assertEquals("avatar-testGetUserById", selectedUser.getAvatar());
+    assertEquals("avatar-getUserById", selectedUser.getAvatar());
     assertFalse(selectedUser.isCredentialsExpired());
-    assertEquals("email-testGetUserById", selectedUser.getEmail());
-    assertEquals("description-testGetUserById", selectedUser.getDescription());
+    assertEquals("email-getUserById", selectedUser.getEmail());
+    assertEquals("description-getUserById", selectedUser.getDescription());
     assertFalse(selectedUser.isEnabled());
-    assertEquals("username-testGetUserById", selectedUser.getUsername());
-    assertEquals("nickname-testGetUserById", selectedUser.getNickname());
-    assertEquals("phone-testGetUserById", selectedUser.getPhone());
+    assertEquals("username-getUserById", selectedUser.getUsername());
+    assertEquals("nickname-getUserById", selectedUser.getNickname());
+    assertEquals("phone-getUserById", selectedUser.getPhone());
     assertNotNull(selectedUser.getCreatedAt());
   }
 
   @Test
-  void testGetUserByEmail() {
-    createUser(
-        false,
-        false,
-        "avatar-testGetUserByEmail",
-        false,
-        "email-testGetUserByEmail",
-        "description-testGetUserByEmail",
-        false,
-        "username-testGetUserByEmail",
-        "nickname-testGetUserByEmail",
-        "password-testGetUserByEmail",
-        "phone-testGetUserByEmail");
-    DatabaseUser selectedUser = userDao.getUserByEmail("email-testGetUserByEmail");
+  void getUserByEmail() {
+    DatabaseUser databaseUser =
+        DatabaseUser.builder()
+            .accountExpired(false)
+            .accountLocked(false)
+            .avatar("avatar-getUserByEmail")
+            .credentialsExpired(false)
+            .email("email-getUserByEmail")
+            .description("description-getUserByEmail")
+            .enabled(false)
+            .username("username-getUserByEmail")
+            .nickname("nickname-getUserByEmail")
+            .password("password-getUserByEmail")
+            .phone("phone-getUserByEmail")
+            .build();
+    userDao.createUser(databaseUser);
+
+    DatabaseUser selectedUser = userDao.getUserByEmail("email-getUserByEmail");
     assertNotNull(selectedUser);
     assertFalse(selectedUser.isAccountExpired());
     assertFalse(selectedUser.isAccountLocked());
-    assertEquals("avatar-testGetUserByEmail", selectedUser.getAvatar());
+    assertEquals("avatar-getUserByEmail", selectedUser.getAvatar());
     assertFalse(selectedUser.isCredentialsExpired());
-    assertEquals("email-testGetUserByEmail", selectedUser.getEmail());
-    assertEquals("description-testGetUserByEmail", selectedUser.getDescription());
+    assertEquals("email-getUserByEmail", selectedUser.getEmail());
+    assertEquals("description-getUserByEmail", selectedUser.getDescription());
     assertFalse(selectedUser.isEnabled());
-    assertEquals("username-testGetUserByEmail", selectedUser.getUsername());
-    assertEquals("nickname-testGetUserByEmail", selectedUser.getNickname());
-    assertEquals("phone-testGetUserByEmail", selectedUser.getPhone());
+    assertEquals("username-getUserByEmail", selectedUser.getUsername());
+    assertEquals("nickname-getUserByEmail", selectedUser.getNickname());
+    assertEquals("phone-getUserByEmail", selectedUser.getPhone());
     assertNotNull(selectedUser.getCreatedAt());
   }
 
   @Test
-  void testGetUserByUsername() {
-    createUser(
-        false,
-        false,
-        "avatar-testGetUserByUsername",
-        false,
-        "email-testGetUserByUsername",
-        "description-testGetUserByUsername",
-        false,
-        "username-testGetUserByUsername",
-        "nickname-testGetUserByUsername",
-        "password-testGetUserByUsername",
-        "phone-testGetUserByUsername");
-    DatabaseUser selectedUser = userDao.getUserByEmail("email-testGetUserByUsername");
+  void getUserByUsername() {
+    DatabaseUser databaseUser =
+        DatabaseUser.builder()
+            .accountExpired(false)
+            .accountLocked(false)
+            .avatar("avatar-getUserByUsername")
+            .credentialsExpired(false)
+            .email("email-getUserByUsername")
+            .description("description-getUserByUsername")
+            .enabled(false)
+            .username("username-getUserByUsername")
+            .nickname("nickname-getUserByUsername")
+            .password("password-getUserByUsername")
+            .phone("phone-getUserByUsername")
+            .build();
+    userDao.createUser(databaseUser);
+
+    DatabaseUser selectedUser = userDao.getUserByUsername("username-getUserByUsername");
     assertNotNull(selectedUser);
     assertFalse(selectedUser.isAccountExpired());
     assertFalse(selectedUser.isAccountLocked());
-    assertEquals("avatar-testGetUserByUsername", selectedUser.getAvatar());
+    assertEquals("avatar-getUserByUsername", selectedUser.getAvatar());
     assertFalse(selectedUser.isCredentialsExpired());
-    assertEquals("email-testGetUserByUsername", selectedUser.getEmail());
-    assertEquals("description-testGetUserByUsername", selectedUser.getDescription());
+    assertEquals("email-getUserByUsername", selectedUser.getEmail());
+    assertEquals("description-getUserByUsername", selectedUser.getDescription());
     assertFalse(selectedUser.isEnabled());
-    assertEquals("username-testGetUserByUsername", selectedUser.getUsername());
-    assertEquals("nickname-testGetUserByUsername", selectedUser.getNickname());
-    assertEquals("phone-testGetUserByUsername", selectedUser.getPhone());
+    assertEquals("username-getUserByUsername", selectedUser.getUsername());
+    assertEquals("nickname-getUserByUsername", selectedUser.getNickname());
+    assertEquals("phone-getUserByUsername", selectedUser.getPhone());
     assertNotNull(selectedUser.getCreatedAt());
   }
 
   @Test
-  void testGetAllUsers() {
-    createUser(
-        false,
-        false,
-        "avatar-1",
-        false,
-        "email-1",
-        "description-1",
-        false,
-        "username-1",
-        "nickname-1",
-        "password-1",
-        "phone-1");
-    createUser(
-        false,
-        false,
-        "avatar-2",
-        false,
-        "email-2",
-        "description-2",
-        false,
-        "username-2",
-        "nickname-2",
-        "password-2",
-        "phone-2");
+  void getAllUsers() {
+    DatabaseUser databaseUser =
+        DatabaseUser.builder()
+            .accountExpired(false)
+            .accountLocked(false)
+            .avatar("avatar-1")
+            .credentialsExpired(false)
+            .email("email-1")
+            .description("description-1")
+            .enabled(false)
+            .username("username-1")
+            .nickname("nickname-1")
+            .password("password-1")
+            .phone("phone-1")
+            .build();
+    userDao.createUser(databaseUser);
+    databaseUser =
+        DatabaseUser.builder()
+            .accountExpired(false)
+            .accountLocked(false)
+            .avatar("avatar-2")
+            .credentialsExpired(false)
+            .email("email-2")
+            .description("description-2")
+            .enabled(false)
+            .username("username-2")
+            .nickname("nickname-2")
+            .password("password-2")
+            .phone("phone-2")
+            .build();
+    userDao.createUser(databaseUser);
+
     List<DatabaseUser> allUsers = userDao.getAllUsers();
     assertFalse(allUsers.isEmpty());
     assertEquals(2, allUsers.size());
   }
 
   @Test
-  void testUpdateUser() {
+  void updateUser() {
     DatabaseUser databaseUser =
-        createUser(
-            false,
-            false,
-            "avatar-testUpdateUser",
-            false,
-            "email-testUpdateUser",
-            "description-testUpdateUser",
-            false,
-            "username-testUpdateUser",
-            "nickname-testUpdateUser",
-            "password-testUpdateUser",
-            "phone-testUpdateUser");
+        DatabaseUser.builder()
+            .accountExpired(false)
+            .accountLocked(false)
+            .avatar("avatar-updateUser")
+            .credentialsExpired(false)
+            .email("email-updateUser")
+            .description("description-updateUser")
+            .enabled(false)
+            .username("username-updateUser")
+            .nickname("nickname-updateUser")
+            .password("password-updateUser")
+            .phone("phone-updateUser")
+            .build();
+    userDao.createUser(databaseUser);
     databaseUser.setAccountExpired(true);
     databaseUser.setAccountLocked(true);
-    databaseUser.setAvatar("avatar-testUpdateUser-modified");
+    databaseUser.setAvatar("avatar-updateUser-modified");
     databaseUser.setCredentialsExpired(true);
-    databaseUser.setEmail("email-testUpdateUser-modified");
-    databaseUser.setDescription("description-testUpdateUser-modified");
+    databaseUser.setEmail("email-updateUser-modified");
+    databaseUser.setDescription("description-updateUser-modified");
     databaseUser.setEnabled(true);
-    databaseUser.setUsername("username-testUpdateUser-modified");
-    databaseUser.setNickname("nickname-testUpdateUser-modified");
-    databaseUser.setPhone("phone-testUpdateUser-modified");
-    databaseUser.setPassword("password-testUpdateUser-modified");
+    databaseUser.setUsername("username-updateUser-modified");
+    databaseUser.setNickname("nickname-updateUser-modified");
+    databaseUser.setPhone("phone-updateUser-modified");
+    databaseUser.setPassword("password-updateUser-modified");
 
     userDao.updateUser(databaseUser);
     DatabaseUser selectedUser = userDao.getUserById(databaseUser.getId());
 
+    assertNotNull(selectedUser);
     assertTrue(selectedUser.isAccountExpired());
     assertTrue(selectedUser.isAccountLocked());
-    assertEquals("avatar-testUpdateUser-modified", selectedUser.getAvatar());
+    assertEquals("avatar-updateUser-modified", selectedUser.getAvatar());
     assertTrue(selectedUser.isCredentialsExpired());
-    assertEquals("email-testUpdateUser-modified", selectedUser.getEmail());
-    assertEquals("description-testUpdateUser-modified", selectedUser.getDescription());
+    assertEquals("email-updateUser-modified", selectedUser.getEmail());
+    assertEquals("description-updateUser-modified", selectedUser.getDescription());
     assertTrue(selectedUser.isEnabled());
-    assertEquals("username-testUpdateUser-modified", selectedUser.getUsername());
-    assertEquals("nickname-testUpdateUser-modified", selectedUser.getNickname());
-    assertEquals("phone-testUpdateUser-modified", selectedUser.getPhone());
-    assertNotNull(selectedUser);
+    assertEquals("username-updateUser-modified", selectedUser.getUsername());
+    assertEquals("nickname-updateUser-modified", selectedUser.getNickname());
+    assertEquals("phone-updateUser-modified", selectedUser.getPhone());
+    assertNotNull(selectedUser.getCreatedAt());
   }
 }
