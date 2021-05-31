@@ -4,17 +4,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.google.gson.Gson;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.util.Base64Utils;
 
 class JwtUtilsTest {
 
+  // This test will fail if we change the secret.
   @Test
   @DisplayName("Can generate JWT Token.")
   void generateToken() throws ParseException {
@@ -60,8 +66,21 @@ class JwtUtilsTest {
     @Test
     @DisplayName("If JWT token is tampered, throw SignatureException.")
     void ifJwtTokenIsTampered() {
-      String tamperedJwtToken =
-          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYWxpY2lvdXMtdXNlcm5hbWUiLCJpYXQiOjEuNjIyMjU1NjM3RTksImV4cCI6MS42MjIzNjM2MzdFOX0.V3qG7b5GMfQzPqsp8daWJqVt7o0IHCCvRaZlj5s22g1eDda6dCncHHp-mkZw4DI-jabCV8GHpCERluCeJD2HbQ";
+
+      // generate a valid JWT token
+      String[] jwtTokenParts =
+          JwtUtils.generateToken("test-username", new Date(), null).split("\\.");
+      String originalPayload = jwtTokenParts[1];
+
+      // tamper username
+      Gson gson = new Gson();
+      Map<String, Object> map =
+          gson.fromJson(new String(Base64Utils.decodeFromString(originalPayload)), Map.class);
+      map.put("sub", "malicious-username");
+      String tamperedPayload = gson.toJson(map);
+      jwtTokenParts[1] = Base64Utils.encodeToString(tamperedPayload.getBytes()).replace("=", "");
+      String tamperedJwtToken = String.join(".", jwtTokenParts);
+
       assertThrows(
           SignatureException.class,
           () -> JwtUtils.validateTokenAndExtractAllClaims(tamperedJwtToken));
@@ -69,9 +88,13 @@ class JwtUtilsTest {
 
     @Test
     @DisplayName("If JWT token is expired, throw ExpiredJwtException.")
-    void ifJwtTokenIsExpired() {
-      String expiredJwtToken =
-          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0LXVzZXJuYW1lIiwiaWF0IjoxNjIyMTQ3NzIxLCJleHAiOjE2MjIyNTU3MjF9.PEsY8WYLyCY-xlWNQzZrHYsWxVHKHtOAl7mB54-FQATVLSXOpbS5m8_k9f_wpWb9vmfaHBoFY1t7q35Jbz-KUg";
+    void ifJwtTokenIsExpired() throws ParseException {
+      SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      Date issueAtLongLongAgo = simpleDateFormat.parse("1990-11-01T12:34:42Z");
+      Claims claims = Jwts.claims();
+      claims.put("test-claim", "test-val");
+      String expiredJwtToken = JwtUtils.generateToken("test-username", issueAtLongLongAgo, claims);
+
       assertThrows(
           ExpiredJwtException.class,
           () -> JwtUtils.validateTokenAndExtractAllClaims(expiredJwtToken));
@@ -84,11 +107,12 @@ class JwtUtilsTest {
     @Test
     @DisplayName("If JWT token is valid, can extract claim.")
     void ifJwtTokenIsValid() {
-      String jwtToken =
-          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0LXVzZXJuYW1lIiwiaWF0IjoxNjIyMjYxMzQ3LCJleHAiOjE2MjIzNjkzNDcsInRlc3QtY2xhaW0iOiJ0ZXN0LXZhbHVlIn0.O93OtsqE_np1JgYv9i_QO6ihZtnQHNDVi4fWnAVS_3JjabbeI7rmLKqXLBaFT4yuf6QfUs57y_vO8QZNO1tLGg";
+      Claims claims = Jwts.claims();
+      claims.put("test-claim", "test-value");
+      String jwtToken = JwtUtils.generateToken("test-username", new Date(), claims);
 
       String expectedClaim = "test-value";
-      Object actualClaim = JwtUtils.extractClaim(jwtToken, claims -> claims.get("test-claim"));
+      Object actualClaim = JwtUtils.extractClaim(jwtToken, cs -> cs.get("test-claim"));
 
       assertEquals(expectedClaim, actualClaim);
     }
@@ -96,21 +120,24 @@ class JwtUtilsTest {
     @Test
     @DisplayName("If JWT token does not contain the claim, return null.")
     void ifJwtTokenNotContainClaim() {
-      String jwtToken =
-          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0LXVzZXJuYW1lIiwiaWF0IjoxNjIyMjYxMTQ3LCJleHAiOjE2MjIzNjkxNDd9.3K4um20aCabzqOajSxmaOGODyciOMC_qBVJT3g7n65KIGqZJI22rU4E_B68kjDxm3xPe1g6qyxRk4Mojv4XaNQ";
 
-      Object actualClaim = JwtUtils.extractClaim(jwtToken, claims -> claims.get("test-claim"));
+      String invalidToken = JwtUtils.generateToken("test-username", new Date(), null);
+      Object actualClaim = JwtUtils.extractClaim(invalidToken, cs -> cs.get("test-claim"));
 
       assertNull(actualClaim);
     }
 
     @Test
     @DisplayName("If JWT token is invalid, return null.")
-    void ifJwtTokenIsInvalid() {
-      String invalidToken =
-          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYWxpY2lvdXMtdXNlcm5hbWUiLCJpYXQiOjEuNjIyMjU1NjM3RTksImV4cCI6MS42MjIzNjM2MzdFOX0.V3qG7b5GMfQzPqsp8daWJqVt7o0IHCCvRaZlj5s22g1eDda6dCncHHp-mkZw4DI-jabCV8GHpCERluCeJD2HbQ";
+    void ifJwtTokenIsInvalid() throws ParseException {
 
-      Object actualClaim = JwtUtils.extractClaim(invalidToken, claims -> claims.get("test-claim"));
+      SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      Date issueAtLongLongAgo = simpleDateFormat.parse("1990-11-01T12:34:42Z");
+      Claims claims = Jwts.claims();
+      claims.put("test-claim", "test-value");
+      String invalidToken = JwtUtils.generateToken("test-username", issueAtLongLongAgo, claims);
+
+      Object actualClaim = JwtUtils.extractClaim(invalidToken, cs -> cs.get("test-claim"));
 
       assertNull(actualClaim);
     }
@@ -122,8 +149,7 @@ class JwtUtilsTest {
     @Test
     @DisplayName("If JWT token is valid and contains username claim, return extracted username.")
     void ifJwtTokenIsValidAndContainsUsername() {
-      String jwtToken =
-          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0LXVzZXJuYW1lIiwiaWF0IjoxNjIyMjYwMzgzLCJleHAiOjE2MjIzNjgzODN9.aw1Gsy7dm9N99LuFYN5lVmlrFrjortxMEcozdj44jgkaj9s63UGL9wan2KmQNRTl7Rw2llN2KBhcLfCe_qCDSw";
+      String jwtToken = JwtUtils.generateToken("test-username", new Date(), null);
 
       String expectedUsername = "test-username";
       String actualUsername = JwtUtils.extractUsername(jwtToken);
@@ -138,17 +164,12 @@ class JwtUtilsTest {
     @Test
     @DisplayName(
         "If JWT token is valid and contains expiration claim, return extracted expiration.")
-    void ifJwtTokenIsValidAndContainsExpiration() throws ParseException {
-      String jwtToken =
-          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0LXVzZXJuYW1lIiwiaWF0IjoxNjIyMzM1OTgzLCJleHAiOjE2MjI0NDM5ODN9.ZiU4DMhzNOUdVVgVG99jWXB9tBgPr--S6JqEEI1iif57U5R9H4raRj7_ixxi1HvkK4IDzUXl6th1QTtD23dovA";
+    void ifJwtTokenIsValidAndContainsExpiration() {
+      Date now = new Date();
+      String jwtToken = JwtUtils.generateToken("test-username", now, null);
 
-      SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       long expectedExpiration =
-          simpleDateFormat
-              .parse("2021-05-30T09:53:03Z")
-              .toInstant()
-              .plusSeconds(JwtUtils.TOKEN_EXPIRE_PERIOD)
-              .getEpochSecond();
+          now.toInstant().plusSeconds(JwtUtils.TOKEN_EXPIRE_PERIOD).getEpochSecond();
       long actualExpiration = JwtUtils.extractExpiration(jwtToken).toInstant().getEpochSecond();
 
       assertEquals(expectedExpiration, actualExpiration);
