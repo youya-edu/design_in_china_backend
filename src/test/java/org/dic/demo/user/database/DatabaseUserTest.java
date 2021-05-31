@@ -1,7 +1,6 @@
 package org.dic.demo.user.database;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -44,7 +43,7 @@ public class DatabaseUserTest {
     assertEquals("phone", user.getPhone());
     assertEquals(Date.from(Instant.ofEpochMilli(1621905378)), user.getCreatedAt());
 
-    assertFalse(
+    assertTrue(
         user.getAuthorities().isEmpty(),
         "Default databaseUser to user should have empty authorities.");
     assertTrue(
