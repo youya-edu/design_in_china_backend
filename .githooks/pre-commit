@@ -2,17 +2,17 @@
 
 echo "Current dir: $(pwd)"
 
-STAGED_FILES=$(git --no-pager diff --name-only --cached | tr '\n' ' ')
-echo "All staged files: $STAGED_FILES"
+echo "Start git pre-commit"
 
-./gradlew spotlessApply --daemon
-SPOTLESS_RESULT=$?
-if [ $SPOTLESS_RESULT -ne 0 ]
+.githooks/run-spotless-apply.sh
+RESULT=$?
+if [ $RESULT -ne 0 ]
 then
-        echo "spotlessApply failed"
+  exit $RESULT
 fi
 
-echo "git add $STAGED_FILES"
-git add $STAGED_FILES
+.githooks/run-gradle-build.sh
+RESULT=$?
 
-exit $SPOTLESS_RESULT
+echo "End git pre-commit"
+exit $RESULT
