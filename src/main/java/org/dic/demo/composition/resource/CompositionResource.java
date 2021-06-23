@@ -1,8 +1,9 @@
 package org.dic.demo.composition.resource;
 
-import java.util.List;
 import java.util.stream.Collectors;
+import org.dic.demo.common.PaginationParam;
 import org.dic.demo.composition.model.Composition;
+import org.dic.demo.composition.model.CompositionCollection;
 import org.dic.demo.composition.service.CompositionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,16 +22,21 @@ public class CompositionResource {
   }
 
   @GetMapping("/{compositionId}")
-  public ResponseEntity<Composition> getComposition(
+  public ResponseEntity<ViewComposition> getComposition(
       @PathVariable("compositionId") long compositionId) {
-    return ResponseEntity.ok(compositionService.getCompositionById(compositionId));
+    return ResponseEntity.ok(compositionService.getCompositionById(compositionId).toViewObject());
   }
 
   @GetMapping
-  public ResponseEntity<List<ViewComposition>> getAllCompositions() {
+  public ResponseEntity<ViewCompositionCollection> getAllCompositions(
+      PaginationParam paginationParam) {
+    CompositionCollection compositionCollection =
+        compositionService.getAllCompositions(paginationParam);
     return ResponseEntity.ok(
-        compositionService.getAllCompositions().stream()
-            .map(Composition::toViewObject)
-            .collect(Collectors.toList()));
+        new ViewCompositionCollection(
+            compositionCollection.getCompositions().stream()
+                .map(Composition::toViewObject)
+                .collect(Collectors.toList()),
+            compositionCollection.getTotalSize()));
   }
 }

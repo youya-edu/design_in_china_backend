@@ -2,6 +2,7 @@ package org.dic.demo.user.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -15,7 +16,8 @@ import lombok.ToString;
 import org.dic.demo.common.TransformableToDatabase;
 import org.dic.demo.common.TransformableToView;
 import org.dic.demo.composition.model.Composition;
-import org.dic.demo.composition.resource.ViewComposition;
+import org.dic.demo.composition.model.CompositionCollection;
+import org.dic.demo.composition.resource.ViewCompositionCollection;
 import org.dic.demo.order.model.Order;
 import org.dic.demo.user.database.DatabaseUser;
 import org.dic.demo.user.resource.ViewUser;
@@ -43,7 +45,8 @@ public class User
   private String phone;
   private String description;
   private transient Date createdAt;
-  @Default private List<Composition> compositions = new ArrayList<>();
+  @Default private CompositionCollection compositionCollection = new CompositionCollection();
+  @Default private List<UserRole> roles = new ArrayList<>(Collections.singletonList(UserRole.USER));
   @Default private List<Order> orders = new ArrayList<>();
   @Default private List<User> followed = new ArrayList<>();
   @Default private List<User> following = new ArrayList<>();
@@ -98,16 +101,18 @@ public class User
         .phone(this.getPhone())
         .description(this.getDescription())
         .createdAt(this.getCreatedAt())
-        .compositions(getViewCompositions())
+        .compositionCollection(this.getViewCompositionCollection())
         .followed(this.getFollowed().stream().map(User::getUsername).collect(Collectors.toList()))
         .following(this.getFollowing().stream().map(User::getUsername).collect(Collectors.toList()))
         .build();
   }
 
-  private List<ViewComposition> getViewCompositions() {
-    return this.getCompositions().stream()
-        .map(Composition::toViewObject)
-        .collect(Collectors.toList());
+  private ViewCompositionCollection getViewCompositionCollection() {
+    return new ViewCompositionCollection(
+        this.getCompositionCollection().getCompositions().stream()
+            .map(Composition::toViewObject)
+            .collect(Collectors.toList()),
+        this.getCompositionCollection().getTotalSize());
   }
 
   @Override

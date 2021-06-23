@@ -1,5 +1,6 @@
 package org.dic.demo.cart.repository;
 
+import com.github.pagehelper.PageHelper;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import org.dic.demo.cart.database.CartDao;
 import org.dic.demo.cart.database.DatabaseCartItem;
 import org.dic.demo.cart.model.Cart;
 import org.dic.demo.cart.model.CartItem;
+import org.dic.demo.common.PaginationParam;
 import org.dic.demo.composition.model.Composition;
 import org.dic.demo.composition.model.Product;
 import org.dic.demo.composition.repository.CompositionRepository;
@@ -28,8 +30,9 @@ public class CartRepository {
    * @param username the username
    * @return the user's cart, or null if the user's cart is empty
    */
-  public Cart getCartByUsername(String username) {
+  public Cart getCartByUsername(String username, PaginationParam paginationParam) {
     User user = userRepository.getUserByUsername(username);
+    PageHelper.startPage(paginationParam.getPage(), paginationParam.getPageSize());
     List<DatabaseCartItem> databaseCartItems = cartDao.getCartByUserId(user.getId());
     List<CartItem> cartItems =
         databaseCartItems.stream()

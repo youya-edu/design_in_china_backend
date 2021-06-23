@@ -1,8 +1,11 @@
 package org.dic.demo.user.resource;
 
-import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+import org.dic.demo.common.PaginationParam;
 import org.dic.demo.composition.model.Composition;
+import org.dic.demo.composition.model.CompositionCollection;
+import org.dic.demo.composition.resource.ViewCompositionCollection;
 import org.dic.demo.composition.service.CompositionService;
 import org.dic.demo.util.web.WebUtils;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +35,16 @@ public class UserCompositionResource {
   }
 
   @GetMapping
-  public ResponseEntity<List<Composition>> getAllCompositions() {
-    return ResponseEntity.ok(compositionService.getAllCompositions());
+  public ResponseEntity<ViewCompositionCollection> getAllCompositions(
+      PaginationParam paginationParam) {
+    CompositionCollection compositionCollection =
+        compositionService.getAllCompositions(paginationParam);
+    return ResponseEntity.ok(
+        new ViewCompositionCollection(
+            compositionCollection.getCompositions().stream()
+                .map(Composition::toViewObject)
+                .collect(Collectors.toList()),
+            compositionCollection.getTotalSize()));
   }
 
   @PostMapping

@@ -1,17 +1,19 @@
 package org.dic.demo.user.resource;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.dic.demo.common.PaginationParam;
 import org.dic.demo.user.exception.UserNotFoundException;
 import org.dic.demo.user.exception.UserUniqueViolationException;
 import org.dic.demo.user.model.User;
+import org.dic.demo.user.model.UserCollection;
 import org.dic.demo.user.model.UserKeyInfo;
+import org.dic.demo.user.model.UserRole;
 import org.dic.demo.user.service.UserChecker;
 import org.dic.demo.user.service.UserService;
+import org.dic.demo.util.web.BadRequestException;
 import org.dic.demo.util.web.WebUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -45,14 +47,21 @@ public class UserResource {
   }
 
   @GetMapping
-  public ResponseEntity<ViewUserCollection> getAllUsers() {
-    List<User> users = userService.getAllUsers();
-    if (users == null) {
-      users = new ArrayList<>();
+  public ResponseEntity<ViewUserCollection> getUsers(
+      @RequestParam("type") String type, PaginationParam paginationParam) {
+    UserRole userRole = UserRole.of(type);
+    if (userRole == null) {
+      throw new BadRequestException("No query parameter: type.");
     }
-    List<ViewUser> viewUsers = users.stream().map(User::toViewObject).collect(Collectors.toList());
+    UserCollection userCollection = userService.getUsers(userRole, paginationParam);
     ViewUserCollection viewUserCollection =
-        ViewUserCollection.builder().users(viewUsers).size(viewUsers.size()).build();
+        ViewUserCollection.builder()
+            .users(
+                userCollection.getUsers().stream()
+                    .map(User::toViewObject)
+                    .collect(Collectors.toList()))
+            .totalSize(userCollection.getTotalSize())
+            .build();
     return ResponseEntity.ok(viewUserCollection);
   }
 

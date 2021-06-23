@@ -7,4 +7,5 @@ import lombok.Builder;
 public class ViewCart {
   private final long ownerId;
   private final List<ViewCartItem> items;
+  private final int totalSize;
 }

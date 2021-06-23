@@ -1,7 +1,8 @@
 package org.dic.demo.composition.service;
 
-import java.util.List;
+import org.dic.demo.common.PaginationParam;
 import org.dic.demo.composition.model.Composition;
+import org.dic.demo.composition.model.CompositionCollection;
 import org.dic.demo.composition.repository.CompositionRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +19,11 @@ public class CompositionService {
     return compositionRepository.getCompositionById(compositionId);
   }
 
-  public List<Composition> getAllCompositions() {
-    return compositionRepository.getAllCompositions();
+  public CompositionCollection getAllCompositions(PaginationParam paginationParam) {
+    return compositionRepository.getAllCompositions(paginationParam);
   }
 
-  public List<Composition> getCompositionsByUserId(long userId) {
+  public CompositionCollection getCompositionsByUserId(long userId) {
     return compositionRepository.getCompositionsByUserId(userId);
   }
 
