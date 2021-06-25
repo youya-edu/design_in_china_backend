@@ -2,6 +2,7 @@ package org.dic.demo.user.database;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Random;
 import java.util.stream.IntStream;
 import javax.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,8 @@ public class UserDataProvider {
       return;
     }
 
+    Random random = new Random();
+
     // create 500 designers
     IntStream.range(0, 500)
         .forEach(
@@ -35,7 +38,7 @@ public class UserDataProvider {
                       .nickname("designer" + idx)
                       .avatar(
                           "http://localhost:8080/img/avatar/default/"
-                              + String.format("%03d", idx)
+                              + String.format("%03d", random.nextInt(100))
                               + ".png ")
                       .description("我是设计师" + idx)
                       .enabled(true)
@@ -59,7 +62,7 @@ public class UserDataProvider {
                       .nickname("user" + idx)
                       .avatar(
                           "http://localhost:8080/img/avatar/default/"
-                              + String.format("%03d", idx)
+                              + String.format("%03d", random.nextInt(100))
                               + ".png ")
                       .description("我是用户" + idx)
                       .enabled(true)
@@ -81,7 +84,7 @@ public class UserDataProvider {
                       .nickname("admin" + idx)
                       .avatar(
                           "http://localhost:8080/img/avatar/default/"
-                              + String.format("%03d", idx)
+                              + String.format("%03d", random.nextInt(100))
                               + ".png ")
                       .description("我是管理员" + idx)
                       .enabled(true)
