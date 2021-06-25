@@ -1,10 +1,10 @@
 package org.dic.demo.cart.resource;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.dic.demo.cart.model.Cart;
 import org.dic.demo.cart.service.CartService;
-import org.dic.demo.common.PaginationParam;
 import org.dic.demo.composition.model.Composition;
 import org.dic.demo.composition.model.Product;
 import org.springframework.http.HttpStatus;
@@ -23,27 +23,29 @@ public class CartResource {
   private final CartService cartService;
 
   @GetMapping
-  public ResponseEntity<ViewCart> getCart(PaginationParam paginationParam) {
-    Cart cart = cartService.getCart(paginationParam);
+  public ResponseEntity<ViewCart> getCart() {
+    Cart cart = cartService.getCart();
+    List<ViewCartItem> cartItems =
+        cart.getItems().stream()
+            .map(
+                cartItem -> {
+                  Product product = cartItem.getProduct();
+                  Composition composition = product.getComposition();
+                  return ViewCartItem.builder()
+                      .productId(composition.getId())
+                      .name(composition.getName())
+                      .description(composition.getDescription())
+                      .image(composition.getImage())
+                      .price(product.getPrice())
+                      .quantity(cartItem.getQuantity())
+                      .build();
+                })
+            .collect(Collectors.toList());
     return ResponseEntity.ok(
         ViewCart.builder()
             .ownerId(cart.getOwner().getId())
-            .items(
-                cart.getItems().stream()
-                    .map(
-                        cartItem -> {
-                          Product product = cartItem.getProduct();
-                          Composition composition = product.getComposition();
-                          return ViewCartItem.builder()
-                              .productId(composition.getId())
-                              .name(composition.getName())
-                              .description(composition.getDescription())
-                              .image(composition.getImage())
-                              .price(product.getPrice())
-                              .quantity(cartItem.getQuantity())
-                              .build();
-                        })
-                    .collect(Collectors.toList()))
+            .items(cartItems)
+            .totalSize(cartItems.size())
             .build());
   }
 
